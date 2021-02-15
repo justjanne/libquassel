@@ -34,14 +34,14 @@ fun <T> testQtSerializerVariant(
   matcher: Matcher<in T>? = null
 ) {
   val buffer = ChainedByteBuffer(limit = 16384)
-  QVariantSerializer.serialize(buffer, QVariant.of(data, serializer), featureSet)
+  QVariantSerializer.serialize(buffer, QVariant.Typed(data, serializer), featureSet)
   val result = buffer.toBuffer()
   val after = QVariantSerializer.deserialize(result, featureSet)
   assertEquals(0, result.remaining())
   if (matcher != null) {
     @Suppress("UNCHECKED_CAST")
-    assertThat(after.value() as T, matcher)
+    assertThat(after.data as T, matcher)
   } else {
-    assertEquals(data, after.value())
+    assertEquals(data, after.data)
   }
 }
