@@ -46,7 +46,7 @@ data class Message(
    */
   val bufferInfo: BufferInfo,
   /**
-   * nick!ident@host of the sender
+   * `nick!ident@host` of the sender
    */
   val sender: String,
   /**
