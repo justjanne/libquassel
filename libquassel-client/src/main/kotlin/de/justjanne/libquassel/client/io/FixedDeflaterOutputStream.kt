@@ -22,6 +22,10 @@ package de.justjanne.libquassel.client.io
 import java.io.OutputStream
 import java.util.zip.DeflaterOutputStream
 
+/**
+ * Wrapper class around a [DeflaterOutputStream] correctly handling closing of
+ * the current stream
+ */
 class FixedDeflaterOutputStream(
   stream: OutputStream
 ) : DeflaterOutputStream(stream, true) {

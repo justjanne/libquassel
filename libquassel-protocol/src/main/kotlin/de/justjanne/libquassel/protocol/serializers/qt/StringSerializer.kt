@@ -71,6 +71,9 @@ abstract class StringSerializer(
     return result
   }
 
+  /**
+   * Serialize a string, without length prefix, as a byte size
+   */
   fun serializeRaw(data: String?): ByteBuffer {
     val result = encoder().encode(data)
     if (nullLimited) {
@@ -82,6 +85,9 @@ abstract class StringSerializer(
     return result
   }
 
+  /**
+   * Deserialize a string from a given byte slice
+   */
   fun deserializeRaw(data: ByteBuffer): String {
     if (nullLimited) {
       data.limit(removeNullBytes(data.limit()))

@@ -19,15 +19,50 @@
 
 package de.justjanne.libquassel.protocol.types
 
-enum class TimeSpec(val value: Byte) {
+/**
+ * Zoned definition for timestamps
+ */
+enum class TimeSpec(
+  /**
+   * Underlying representation
+   */
+  val value: Byte
+) {
+  /**
+   * Unknown zone data
+   * Should be treated like [LocalStandard]
+   */
   LocalUnknown(-1),
+
+  /**
+   * Local zone data
+   * Should be serialized as local time without DST
+   */
   LocalStandard(0),
+
+  /**
+   * Local zone data
+   * Should be serialized as local time with DST, if applicable
+   */
   LocalDST(1),
+
+  /**
+   * Universal Time Coordinated
+   * Should be treated as a zone offset of 0
+   */
   UTC(2),
+
+  /**
+   * Time with specified offset in seconds
+   */
   OffsetFromUTC(3);
 
   companion object {
     private val map = values().associateBy(TimeSpec::value)
+
+    /**
+     * Obtain a zone specification by its underlying representation
+     */
     fun of(type: Byte) = map[type]
   }
 }

@@ -23,10 +23,26 @@ import java.security.cert.Certificate
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLSession
 
+/**
+ * Model representing the metadata of a negotiated TLS session
+ */
 data class TlsInfo(
+  /**
+   * Name of the TLS protocol, e.g. TLSv1.3
+   */
   val protocol: String,
+  /**
+   * Negotiated cipher suite
+   */
   val cipherSuite: String,
+  /**
+   * Negotiated key exchange mechanism if applicable
+   * Deprecated in TLSv1.3
+   */
   val keyExchangeMechanism: String?,
+  /**
+   * Peer certificate chain
+   */
   val certificateChain: List<X509Certificate>,
 ) {
 
@@ -54,6 +70,9 @@ data class TlsInfo(
       }
     }
 
+    /**
+     * Obtain the TLS metadata of an existing [SSLSession]
+     */
     fun ofSession(session: SSLSession): TlsInfo? {
       val (cipherSuite, keyExchangeMechanism) = parseCipherSuite(
         session.protocol,

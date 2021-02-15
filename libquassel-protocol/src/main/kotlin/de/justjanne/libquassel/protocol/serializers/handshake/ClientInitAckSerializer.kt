@@ -49,10 +49,10 @@ object ClientInitAckSerializer : HandshakeSerializer<HandshakeMessage.ClientInit
   )
 
   override fun deserialize(data: QVariantMap) = HandshakeMessage.ClientInitAck(
-    coreFeatures = LegacyFeature.of(data["CoreFeatures"].into<UInt>()),
+    coreConfigured = data["Configured"].into(),
     backendInfo = data["StorageBackends"].into(emptyList()),
     authenticatorInfo = data["Authenticators"].into(emptyList()),
-    coreConfigured = data["Configured"].into(),
+    coreFeatures = LegacyFeature.of(data["CoreFeatures"].into<UInt>()),
     featureList = data["FeatureList"].into<QStringList>(emptyList())
       .filterNotNull()
       .map(::QuasselFeatureName),
