@@ -4,7 +4,9 @@ RUN mkdir /build && \
 COPY . /build/src
 WORKDIR /build/src/
 ENV GRADLE_USER_HOME=/build/.gradle
-RUN /build/src/gradlew dokkaHtmlMultiModule
+RUN /build/src/gradlew dokkaHtmlMultiModule && \
+    cp /build/src/build/dokka/htmlMultiModule/-modules.html \
+       /build/src/build/dokka/htmlMultiModule/index.html
 
 FROM nginx:stable-alpine
 COPY --from=builder /build/src/build/dokka/htmlMultiModule/ /usr/share/nginx/html/javadoc
