@@ -22,7 +22,6 @@ package de.justjanne.libquassel.protocol.features
 import de.justjanne.bitflags.Flag
 import de.justjanne.bitflags.Flags
 import de.justjanne.bitflags.toEnumSet
-import de.justjanne.libquassel.protocol.types.MessageType
 
 /**
  * List of optional features in a quassel connection.
