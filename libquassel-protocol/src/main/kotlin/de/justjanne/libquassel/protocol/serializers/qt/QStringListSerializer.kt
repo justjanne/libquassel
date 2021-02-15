@@ -22,7 +22,7 @@ package de.justjanne.libquassel.protocol.serializers.qt
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
 import de.justjanne.libquassel.protocol.serializers.QtSerializer
-import de.justjanne.libquassel.protocol.variant.QStringList
+import de.justjanne.libquassel.protocol.types.QStringList
 import de.justjanne.libquassel.protocol.variant.QtType
 import java.nio.ByteBuffer
 

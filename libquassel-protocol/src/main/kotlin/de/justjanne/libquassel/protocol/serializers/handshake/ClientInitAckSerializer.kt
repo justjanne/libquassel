@@ -25,7 +25,7 @@ import de.justjanne.libquassel.protocol.features.LegacyFeature
 import de.justjanne.libquassel.protocol.features.QuasselFeatureName
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
 import de.justjanne.libquassel.protocol.types.HandshakeMessage
-import de.justjanne.libquassel.protocol.variant.QStringList
+import de.justjanne.libquassel.protocol.types.QStringList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.QtType
 import de.justjanne.libquassel.protocol.variant.into
