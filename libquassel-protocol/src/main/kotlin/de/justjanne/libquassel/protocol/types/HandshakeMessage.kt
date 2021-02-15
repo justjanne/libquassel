@@ -29,9 +29,10 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
  */
 sealed class HandshakeMessage {
   /**
-   * Client registration message containing metadata about the connecting client
+   * Client registration message containing metadata about the connecting
+   * client.
    *
-   * Core should respond with either [ClientInitAck] or [ClientInitReject]
+   * Core should respond with either [ClientInitAck] or [ClientInitReject].
    */
   data class ClientInit(
     /**
@@ -54,11 +55,10 @@ sealed class HandshakeMessage {
   ) : HandshakeMessage()
 
   /**
-   * Message representing a successful client registration attempt
+   * Message representing a successful client registration attempt. Contains
+   * metadata about the core.
    *
-   * Contains metadata about the core
-   *
-   * Client should proceed with either [ClientLogin] or [CoreSetupData]
+   * Client should proceed with either [ClientLogin] or [CoreSetupData].
    */
   data class ClientInitAck(
     /**
@@ -87,9 +87,9 @@ sealed class HandshakeMessage {
   ) : HandshakeMessage()
 
   /**
-   * Message representing a failed client registration attempt
+   * Message representing a failed client registration attempt.
    *
-   * Client should abort the connection
+   * Client should abort the connection.
    */
   data class ClientInitReject(
     /**
@@ -99,9 +99,9 @@ sealed class HandshakeMessage {
   ) : HandshakeMessage()
 
   /**
-   * Client login message containing authentication data
+   * Client login message containing authentication data.
    *
-   * Core should respond with either [ClientLoginAck] or [ClientLoginReject]
+   * Core should respond with either [ClientLoginAck] or [ClientLoginReject].
    */
   data class ClientLogin(
     /**
@@ -115,9 +115,9 @@ sealed class HandshakeMessage {
   ) : HandshakeMessage()
 
   /**
-   * Message representing a successful client login attempt
+   * Message representing a successful client login attempt.
    *
-   * Client will receive [SessionInit] immediately afterwards
+   * Client will receive [SessionInit] immediately afterwards.
    */
   object ClientLoginAck : HandshakeMessage() {
     override fun toString(): String {
@@ -126,9 +126,9 @@ sealed class HandshakeMessage {
   }
 
   /**
-   * Message representing a failed client login attempt
+   * Message representing a failed client login attempt.
    *
-   * Client should retry with different [ClientLogin] or abort the connection
+   * Client should retry with different [ClientLogin] or abort the connection.
    */
   data class ClientLoginReject(
     /**
@@ -138,9 +138,9 @@ sealed class HandshakeMessage {
   ) : HandshakeMessage()
 
   /**
-   * Message representing a successful core configuration attempt
+   * Message representing a successful core configuration attempt.
    *
-   * Client should proceed with [ClientLogin]
+   * Client should proceed with [ClientLogin].
    */
   object CoreSetupAck : HandshakeMessage() {
     override fun toString(): String {
@@ -149,11 +149,10 @@ sealed class HandshakeMessage {
   }
 
   /**
-   * Core configuration message containing initial configuration properties
+   * Core configuration message containing initial configuration properties.
+   * Configuration has to happen before login.
    *
-   * Configuration has to happen before login
-   *
-   * Core should respond with either [CoreSetupAck] or [CoreSetupReject]
+   * Core should respond with either [CoreSetupAck] or [CoreSetupReject].
    */
   data class CoreSetupData(
     /**
@@ -183,9 +182,9 @@ sealed class HandshakeMessage {
   ) : HandshakeMessage()
 
   /**
-   * Message representing a failed core configuration attempt
+   * Message representing a failed core configuration attempt.
    *
-   * Client should retry with different [CoreSetupData] or abort the connection
+   * Client should retry with different [CoreSetupData] or abort the connection.
    */
   data class CoreSetupReject(
     /**
@@ -199,24 +198,24 @@ sealed class HandshakeMessage {
    */
   data class SessionInit(
     /**
-     * List of Identity sync objects existing at the current time
+     * List of Identity sync objects existing at the current time.
      *
      * Identity objects created or modified after [SessionInit] will be defined
-     * via sync updates and RPC identity creation messages
+     * via sync updates and RPC identity creation messages.
      */
     val identities: QVariantList?,
     /**
-     * List of existing buffers at the current time
+     * List of existing buffers at the current time.
      *
      * Buffers created or deleted after [SessionInit] will be defined via RPC
      * messages
      */
     val bufferInfos: QVariantList?,
     /**
-     * List of Ids of Network sync objects existing at the current time
+     * List of Ids of Network sync objects existing at the current time.
      *
      * Network objects created or modified after [SessionInit] will be defined
-     * via sync updates and RPC identity creation messages
+     * via sync updates and RPC identity creation messages.
      */
     val networkIds: QVariantList?
   ) : HandshakeMessage()
