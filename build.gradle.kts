@@ -2,7 +2,6 @@ import de.justjanne.coverageconverter.CoverageConverterExtension
 
 plugins {
   id("org.jlleitschuh.gradle.ktlint") version "10.0.0" apply false
-  id("org.jetbrains.dokka") version "1.4.20" apply false
   id("com.vanniktech.maven.publish") version "0.13.0" apply false
   id("de.justjanne.jacoco-cobertura-converter") apply false
 }
@@ -12,17 +11,13 @@ buildscript {
     mavenCentral()
   }
   dependencies {
+    classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.4.20")
     classpath("org.jetbrains.kotlin", "kotlin-gradle-plugin", "1.4.30")
   }
 }
 
-subprojects {
-  apply(plugin = "org.jetbrains.kotlin.jvm")
+allprojects {
   apply(plugin = "org.jetbrains.dokka")
-  apply(plugin = "org.jlleitschuh.gradle.ktlint")
-  apply(plugin = "jacoco")
-  apply(plugin = "de.justjanne.jacoco-cobertura-converter")
-
   repositories {
     mavenCentral()
     exclusiveContent {
@@ -41,6 +36,13 @@ subprojects {
       }
     }
   }
+}
+
+subprojects {
+  apply(plugin = "org.jetbrains.kotlin.jvm")
+  apply(plugin = "org.jlleitschuh.gradle.ktlint")
+  apply(plugin = "jacoco")
+  apply(plugin = "de.justjanne.jacoco-cobertura-converter")
 
   dependencies {
     val implementation by configurations

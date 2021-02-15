@@ -5,7 +5,4 @@
 /.idea/*
 !/.idea/copyright/
 .DS_Store
-/captures
 build/
-/reports/
-/persistence/schemas/
