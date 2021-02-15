@@ -21,39 +21,25 @@ package de.justjanne.libquassel.protocol.testutil
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
-import de.justjanne.libquassel.protocol.serializers.Serializer
 import de.justjanne.libquassel.protocol.serializers.qt.HandshakeMapSerializer
-import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
+import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
-import java.nio.ByteBuffer
+import org.junit.jupiter.api.Assertions.assertEquals
 
-fun <T> serialize(
-  serializer: Serializer<T>,
-  data: T,
-  featureSet: FeatureSet = FeatureSet.all()
-): ByteBuffer {
-  val buffer = ChainedByteBuffer()
-  serializer.serialize(buffer, data, featureSet)
-  return buffer.toBuffer()
-}
-
-fun <T> testSerialize(
-  serializer: Serializer<T>,
-  data: T,
-  buffer: ByteBuffer,
-  featureSet: FeatureSet = FeatureSet.all()
-) {
-  val after = serialize(serializer, data, featureSet)
-  assertThat(after, ByteBufferMatcher(buffer))
-}
-
-fun <T> testSerialize(
+fun <T> testHandshakeSerializerEncoded(
   serializer: HandshakeSerializer<T>,
   data: T,
-  buffer: ByteBuffer,
-  featureSet: FeatureSet = FeatureSet.all()
+  featureSet: FeatureSet = FeatureSet.all(),
+  matcher: Matcher<T>? = null
 ) {
-  val map = serializer.serialize(data)
-  val after = serialize(HandshakeMapSerializer, map, featureSet)
-  assertThat(after, ByteBufferMatcher(buffer))
+  val buffer = ChainedByteBuffer(limit = 16384)
+  HandshakeMapSerializer.serialize(buffer, serializer.serialize(data), featureSet)
+  val result = buffer.toBuffer()
+  val after = serializer.deserialize(HandshakeMapSerializer.deserialize(result, featureSet))
+  assertEquals(0, result.remaining())
+  if (matcher != null) {
+    assertThat(after, matcher)
+  } else {
+    assertEquals(data, after)
+  }
 }

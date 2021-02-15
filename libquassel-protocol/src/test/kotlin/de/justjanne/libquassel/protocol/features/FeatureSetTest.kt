@@ -29,7 +29,7 @@ class FeatureSetTest {
   fun testParse() {
     assertEquals(
       emptyList<QuasselFeatureName>(),
-      FeatureSet.parse(
+      FeatureSet.build(
         LegacyFeature.none(),
         emptyList()
       ).featureList()
@@ -41,7 +41,7 @@ class FeatureSetTest {
         QuasselFeature.ExtendedFeatures.feature,
         QuasselFeatureName("_unknownFeature")
       ),
-      FeatureSet.parse(
+      FeatureSet.build(
         LegacyFeature.of(
           LegacyFeature.SynchronizedMarkerLine
         ),

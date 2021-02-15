@@ -23,21 +23,21 @@ import de.justjanne.bitflags.of
 import de.justjanne.libquassel.client.io.CoroutineChannel
 import de.justjanne.libquassel.client.testutil.QuasselCoreContainer
 import de.justjanne.libquassel.client.testutil.TestX509TrustManager
-import de.justjanne.libquassel.messages.handshake.ClientInitSerializer
-import de.justjanne.libquassel.messages.handshake.ClientLoginSerializer
-import de.justjanne.libquassel.messages.handshake.CoreSetupDataSerializer
-import de.justjanne.libquassel.messages.handshake.HandshakeMessage
-import de.justjanne.libquassel.messages.handshake.HandshakeSerializers
-import de.justjanne.libquassel.protocol.connection.ConnectionHeader
-import de.justjanne.libquassel.protocol.connection.ConnectionHeaderSerializer
+import de.justjanne.libquassel.protocol.connection.ClientHeader
+import de.justjanne.libquassel.protocol.connection.ClientHeaderSerializer
+import de.justjanne.libquassel.protocol.connection.CoreHeaderSerializer
 import de.justjanne.libquassel.protocol.connection.ProtocolFeature
-import de.justjanne.libquassel.protocol.connection.ProtocolInfoSerializer
 import de.justjanne.libquassel.protocol.connection.ProtocolMeta
 import de.justjanne.libquassel.protocol.connection.ProtocolVersion
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.serializers.HandshakeSerializers
+import de.justjanne.libquassel.protocol.serializers.handshake.ClientInitSerializer
+import de.justjanne.libquassel.protocol.serializers.handshake.ClientLoginSerializer
+import de.justjanne.libquassel.protocol.serializers.handshake.CoreSetupDataSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.HandshakeMapSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.IntSerializer
+import de.justjanne.libquassel.protocol.types.HandshakeMessage
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.testcontainersci.api.providedContainer
 import de.justjanne.testcontainersci.extension.CiContainers
@@ -80,17 +80,17 @@ class EndToEndTest {
 
     println("Writing protocol")
     write(sizePrefix = false) {
-      ConnectionHeaderSerializer.serialize(
+      ClientHeaderSerializer.serialize(
         it,
-        ConnectionHeader(
+        ClientHeader(
           features = ProtocolFeature.of(
             ProtocolFeature.Compression,
             ProtocolFeature.TLS
           ),
           versions = listOf(
             ProtocolMeta(
-              0x0000u,
               ProtocolVersion.Datastream,
+              0x0000u,
             ),
           )
         ),
@@ -100,19 +100,19 @@ class EndToEndTest {
 
     println("Reading protocol")
     read(4) {
-      val protocol = ProtocolInfoSerializer.deserialize(it, connectionFeatureSet)
+      val protocol = CoreHeaderSerializer.deserialize(it, connectionFeatureSet)
       assertEquals(
         ProtocolFeature.of(
           ProtocolFeature.TLS,
           ProtocolFeature.Compression
         ),
-        protocol.flags
+        protocol.features
       )
       println("Negotiated protocol $protocol")
-      if (protocol.flags.contains(ProtocolFeature.TLS)) {
+      if (protocol.features.contains(ProtocolFeature.TLS)) {
         channel.enableTLS(sslContext)
       }
-      if (protocol.flags.contains(ProtocolFeature.Compression)) {
+      if (protocol.features.contains(ProtocolFeature.Compression)) {
         channel.enableCompression()
       }
     }

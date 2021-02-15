@@ -19,7 +19,9 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
 import de.justjanne.libquassel.protocol.serializers.Serializer
+import de.justjanne.libquassel.protocol.serializers.qt.HandshakeMapSerializer
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -52,5 +54,27 @@ fun <T> testDeserialize(
   featureSet: FeatureSet = FeatureSet.all()
 ) {
   val after = deserialize(serializer, buffer, featureSet)
+  assertEquals(data, after)
+}
+
+fun <T> testDeserialize(
+  serializer: HandshakeSerializer<T>,
+  matcher: Matcher<in T>,
+  buffer: ByteBuffer,
+  featureSet: FeatureSet = FeatureSet.all()
+) {
+  val map = deserialize(HandshakeMapSerializer, buffer, featureSet)
+  val after = serializer.deserialize(map)
+  assertThat(after, matcher)
+}
+
+fun <T> testDeserialize(
+  serializer: HandshakeSerializer<T>,
+  data: T,
+  buffer: ByteBuffer,
+  featureSet: FeatureSet = FeatureSet.all()
+) {
+  val map = deserialize(HandshakeMapSerializer, buffer, featureSet)
+  val after = serializer.deserialize(map)
   assertEquals(data, after)
 }
