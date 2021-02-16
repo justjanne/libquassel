@@ -11,6 +11,7 @@
 package de.justjanne.libquassel.protocol.models
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 
@@ -190,13 +191,13 @@ sealed class HandshakeMessage {
      * Buffers created or deleted after [SessionInit] will be defined via RPC
      * messages
      */
-    val bufferInfos: QVariantList?,
+    val bufferInfos: List<BufferInfo>,
     /**
      * List of Ids of Network sync objects existing at the current time.
      *
      * Network objects created or modified after [SessionInit] will be defined
      * via sync updates and RPC identity creation messages.
      */
-    val networkIds: QVariantList?
+    val networkIds: List<NetworkId>
   ) : HandshakeMessage()
 }
