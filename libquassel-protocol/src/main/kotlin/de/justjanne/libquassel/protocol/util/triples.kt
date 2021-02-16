@@ -10,10 +10,16 @@
 
 package de.justjanne.libquassel.protocol.util
 
+/**
+ * Returns a partitioned list of triples
+ */
 fun <T> Iterable<T>.triples(): List<Triple<T, T, T>> {
   return triples { a, b, c -> Triple(a, b, c) }
 }
 
+/**
+ * Returns a partitioned list of triples transformed with the given transformer
+ */
 inline fun <T, R> Iterable<T>.triples(transform: (a: T, b: T, c: T) -> R): List<R> {
   val iterator = iterator()
   val result = mutableListOf<R>()

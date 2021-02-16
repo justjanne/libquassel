@@ -12,8 +12,20 @@ package de.justjanne.libquassel.protocol.models
 
 import de.justjanne.libquassel.protocol.variant.QVariant_
 
+/**
+ * Model of a backend configuration entry
+ */
 data class SetupEntry(
+  /**
+   * Key for the configuration field
+   */
   val key: String,
+  /**
+   * User-visible display name
+   */
   val displayName: String,
+  /**
+   * Default value. The type of this value also determines the UI widget used.
+   */
   val defaultValue: QVariant_,
 )

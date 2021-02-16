@@ -10,10 +10,29 @@
 
 package de.justjanne.libquassel.protocol.models
 
+/**
+ * Model for storage/authenticator backend configuration
+ */
 data class BackendInfo(
+  /**
+   * Configuration entries
+   */
   val entries: List<SetupEntry>,
+  /**
+   * Whether or not this backend is default. Newer quassel clients use the first
+   * entry in the list instead of checking this field
+   */
   val isDefault: Boolean,
+  /**
+   * User-visible name of the backend
+   */
   val displayName: String,
+  /**
+   * User-visible description of the backend
+   */
   val description: String,
+  /**
+   * ID
+   */
   val backendId: String,
 )

@@ -18,7 +18,13 @@ import de.justjanne.libquassel.protocol.variant.QVariant_
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 
+/**
+ * Handshake Serializer for [BackendInfo]
+ */
 object BackendInfoSerializer {
+  /**
+   * Serialize backend info into a [QVariantMap] (for further serialization)
+   */
   fun serialize(data: BackendInfo): QVariantMap = mapOf(
     "SetupKeys" to qVariant<QStringList>(
       data.entries.map(SetupEntry::key),
@@ -63,6 +69,9 @@ object BackendInfoSerializer {
     SetupEntry(key.into(""), displayName.into(""), defaultValue)
   } ?: defaults.map { (key, value) -> SetupEntry(key, key, value) }
 
+  /**
+   * Deserialize backend info from a [QVariantMap]
+   */
   fun deserialize(data: QVariantMap) = BackendInfo(
     entries = parseSetupEntries(
       data["SetupData"].into<QVariantList>(),

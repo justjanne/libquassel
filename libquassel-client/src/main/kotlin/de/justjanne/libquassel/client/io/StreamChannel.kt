@@ -22,6 +22,9 @@ import java.util.zip.InflaterInputStream
 import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSocket
 
+/**
+ * Channel wrapping a Socket with support for TLS and compression layers
+ */
 class StreamChannel constructor(
   private val socket: Socket,
   private val inputStream: InputStream = socket.getInputStream(),
@@ -30,11 +33,17 @@ class StreamChannel constructor(
   private val input = ReadableWrappedChannel(inputStream)
   private val output = WritableWrappedChannel(outputStream)
 
+  /**
+   * Return metadata about the current TLS session, if enabled
+   */
   fun tlsInfo(): TlsInfo? {
     val sslSocket = socket as? SSLSocket ?: return null
     return TlsInfo.ofSession(sslSocket.session)
   }
 
+  /**
+   * Return a copy of the current channel with DEFLATE compression
+   */
   fun withCompression(): StreamChannel {
     return StreamChannel(
       socket,
@@ -43,6 +52,9 @@ class StreamChannel constructor(
     )
   }
 
+  /**
+   * Return a copy of the current channel with TLS
+   */
   fun withTLS(
     context: SSLContext,
   ): StreamChannel {
@@ -57,20 +69,34 @@ class StreamChannel constructor(
     return StreamChannel(sslSocket)
   }
 
+  /**
+   * Close the underlying streams and channels
+   */
   override fun close() {
     input.close()
     output.close()
     socket.close()
   }
 
+  /**
+   * Returns whether the current channel is open, can be read from and written to
+   */
   override fun isOpen(): Boolean {
     return !socket.isClosed
   }
 
+  /**
+   * Reads from the channel into a given byte buffer and returns the amount of
+   * written bytes
+   */
   override fun read(dst: ByteBuffer): Int {
     return input.read(dst)
   }
 
+  /**
+   * Write a given byte buffer to the channel and return the amount of written
+   * bytes
+   */
   override fun write(src: ByteBuffer): Int {
     return output.write(src)
   }
