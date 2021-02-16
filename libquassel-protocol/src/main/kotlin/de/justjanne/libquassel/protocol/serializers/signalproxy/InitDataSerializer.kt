@@ -11,6 +11,9 @@ import de.justjanne.libquassel.protocol.variant.toVariantList
 import de.justjanne.libquassel.protocol.variant.toVariantMap
 import java.nio.ByteBuffer
 
+/**
+ * Serializer for [SignalProxyMessage.InitData]
+ */
 object InitDataSerializer : SignalProxySerializer<SignalProxyMessage.InitData> {
   override val type: Int = 4
 

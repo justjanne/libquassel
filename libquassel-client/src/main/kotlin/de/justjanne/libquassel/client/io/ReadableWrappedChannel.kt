@@ -24,12 +24,19 @@ import java.nio.ByteBuffer
 import java.nio.channels.ReadableByteChannel
 import java.nio.channels.spi.AbstractInterruptibleChannel
 
+/**
+ * Utility function to wrap an input stream into a readable channel
+ */
 class ReadableWrappedChannel(
   private var backingStream: InputStream
 ) : AbstractInterruptibleChannel(), ReadableByteChannel {
   private val buffer = ByteBuffer.allocate(PAGE_SIZE)
   private val lock = Any()
 
+  /**
+   * Reads from the channel into a given byte buffer and returns the amount of
+   * written bytes
+   */
   override fun read(dst: ByteBuffer): Int {
     val totalData = dst.remaining()
     var remainingData = totalData
@@ -81,6 +88,9 @@ class ReadableWrappedChannel(
     return (totalData - remainingData)
   }
 
+  /**
+   * Close the underlying stream
+   */
   override fun implCloseChannel() = backingStream.close()
 
   companion object {

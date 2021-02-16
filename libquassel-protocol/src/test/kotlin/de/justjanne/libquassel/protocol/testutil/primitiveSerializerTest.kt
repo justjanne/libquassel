@@ -19,8 +19,7 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.io.use
+import de.justjanne.libquassel.protocol.io.useChainedByteBuffer
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
@@ -86,7 +85,7 @@ inline fun <reified T : Any?> primitiveSerializerTest(
       }
     }
     if (serializeFeatureSet != null) {
-      val after = ChainedByteBuffer().use {
+      val after = useChainedByteBuffer {
         serializer.serialize(it, value, serializeFeatureSet)
       }
       assertThat(after, ByteBufferMatcher(encoded.rewind()))

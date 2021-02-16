@@ -29,6 +29,9 @@ import java.util.zip.DeflaterOutputStream
 class FixedDeflaterOutputStream(
   stream: OutputStream
 ) : DeflaterOutputStream(stream, true) {
+  /**
+   * Close the underlying stream and deflater
+   */
   override fun close() {
     try {
       super.close()

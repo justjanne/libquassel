@@ -9,6 +9,9 @@ import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import java.nio.ByteBuffer
 
+/**
+ * Serializer for [SignalProxyMessage.Rpc]
+ */
 object RpcSerializer : SignalProxySerializer<SignalProxyMessage.Rpc> {
   override val type: Int = 2
 

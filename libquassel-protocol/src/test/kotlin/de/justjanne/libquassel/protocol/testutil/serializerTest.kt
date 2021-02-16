@@ -19,8 +19,7 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.io.use
+import de.justjanne.libquassel.protocol.io.useChainedByteBuffer
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import org.hamcrest.Matcher
@@ -47,7 +46,7 @@ fun <T : Any?> serializerTest(
       }
     }
     if (serializeFeatureSet != null) {
-      val after = ChainedByteBuffer().use {
+      val after = useChainedByteBuffer {
         serializer.serialize(it, value, serializeFeatureSet)
       }
       assertThat(after, ByteBufferMatcher(encoded.rewind()))

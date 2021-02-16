@@ -28,10 +28,14 @@ enum class DccIpDetectionMode(
    */
   val value: UByte,
 ) {
-  /** Automatic detection (network socket or USERHOST) */
+  /**
+   * Automatic detection
+   */
   Automatic(0x00u),
 
-  /** Manually specified IP */
+  /**
+   * Manually specified
+   */
   Manual(0x01u);
 
   companion object {

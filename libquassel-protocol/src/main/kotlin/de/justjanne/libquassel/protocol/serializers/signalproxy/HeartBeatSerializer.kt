@@ -8,6 +8,9 @@ import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import org.threeten.bp.Instant
 
+/**
+ * Serializer for [SignalProxyMessage.HeartBeat]
+ */
 object HeartBeatSerializer : SignalProxySerializer<SignalProxyMessage.HeartBeat> {
   override val type: Int = 5
 

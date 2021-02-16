@@ -28,10 +28,14 @@ enum class DccPortSelectionMode(
    */
   val value: UByte,
 ) {
-  /** Automatic port selection */
+  /**
+   * Automatic port selection
+   */
   Automatic(0x00u),
 
-  /** Manually specified port range */
+  /**
+   * Manually specified port range
+   */
   Manual(0x01u);
 
   companion object {

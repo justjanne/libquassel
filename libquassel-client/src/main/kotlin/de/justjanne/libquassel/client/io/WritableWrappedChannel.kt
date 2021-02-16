@@ -24,12 +24,19 @@ import java.nio.ByteBuffer
 import java.nio.channels.WritableByteChannel
 import java.nio.channels.spi.AbstractInterruptibleChannel
 
+/**
+ * Utility function to wrap an output stream into a writable channel
+ */
 class WritableWrappedChannel(
   private var backingStream: OutputStream
 ) : AbstractInterruptibleChannel(), WritableByteChannel {
   private val buffer = ByteBuffer.allocate(PAGE_SIZE)
   private val lock = Any()
 
+  /**
+   * Write a given byte buffer to the channel and return the amount of written
+   * bytes
+   */
   override fun write(src: ByteBuffer): Int {
     val totalData = src.remaining()
     var remainingData = totalData
@@ -63,6 +70,9 @@ class WritableWrappedChannel(
     }
   }
 
+  /**
+   * Close the underlying stream
+   */
   override fun implCloseChannel() = backingStream.close()
 
   companion object {

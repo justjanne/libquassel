@@ -26,6 +26,10 @@ import java.security.cert.X509Certificate
 
 private val certificateFactory = CertificateFactory.getInstance("X.509")
 
+/**
+ * Utility function to extract, if available, an X509 Certificate from a given
+ * certificate
+ */
 fun Certificate.toX509(): X509Certificate =
   certificateFactory.generateCertificate(ByteArrayInputStream(this.encoded))
     as X509Certificate

@@ -7,7 +7,10 @@ import de.justjanne.libquassel.protocol.models.types.QtType
  */
 typealias QVariantMap = Map<String, QVariant_>
 
+/**
+ * Transform a QVariantMap into a QVariantList of interleaved keys and values
+ */
 fun QVariantMap.toVariantList(): QVariantList =
-  this.toList().flatMap { (key, value) ->
+  flatMap { (key, value) ->
     listOf(qVariant(key, QtType.QString), value)
   }

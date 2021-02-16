@@ -5,7 +5,10 @@ package de.justjanne.libquassel.protocol.variant
  */
 typealias QVariantList = List<QVariant_>
 
+/**
+ * Transform a QVariantList of interleaved keys and values into a QVariantMap
+ */
 fun QVariantList.toVariantMap(): QVariantMap =
-  this.zipWithNext().map { (key, value) ->
+  zipWithNext { key, value ->
     Pair(key.into(""), value)
   }.toMap()

@@ -19,8 +19,7 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.io.use
+import de.justjanne.libquassel.protocol.io.useChainedByteBuffer
 import de.justjanne.libquassel.protocol.models.HandshakeMessage
 import de.justjanne.libquassel.protocol.serializers.HandshakeMessageSerializer
 import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
@@ -48,7 +47,7 @@ inline fun <reified T : HandshakeMessage> handshakeSerializerTest(
     }
     if (serializeFeatureSet != null) {
       assertThat(
-        ChainedByteBuffer().use {
+        useChainedByteBuffer {
           HandshakeMessageSerializer.serialize(it, value, serializeFeatureSet)
         },
         ByteBufferMatcher(encoded.rewind())
@@ -57,7 +56,7 @@ inline fun <reified T : HandshakeMessage> handshakeSerializerTest(
   }
   for (featureSet in featureSets) {
     val after = HandshakeMessageSerializer.deserialize(
-      ChainedByteBuffer().use {
+      useChainedByteBuffer {
         HandshakeMessageSerializer.serialize(it, value, featureSet)
       },
       featureSet
