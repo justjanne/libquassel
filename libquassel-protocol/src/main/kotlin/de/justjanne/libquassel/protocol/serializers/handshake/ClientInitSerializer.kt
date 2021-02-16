@@ -12,9 +12,11 @@ package de.justjanne.libquassel.protocol.serializers.handshake
 
 import de.justjanne.bitflags.of
 import de.justjanne.bitflags.toBits
+import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.features.LegacyFeature
 import de.justjanne.libquassel.protocol.features.QuasselFeatureName
 import de.justjanne.libquassel.protocol.models.HandshakeMessage
+import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
 import de.justjanne.libquassel.protocol.variant.QVariantMap
@@ -31,9 +33,9 @@ object ClientInitSerializer : HandshakeSerializer<HandshakeMessage.ClientInit> {
     "MsgType" to qVariant(type, QtType.QString),
     "ClientVersion" to qVariant(data.clientVersion, QtType.QString),
     "ClientDate" to qVariant(data.buildDate, QtType.QString),
-    "Features" to qVariant(data.clientFeatures.toBits(), QtType.UInt),
+    "Features" to qVariant(data.featureSet.legacyFeatures().toBits(), QtType.UInt),
     "FeatureList" to qVariant(
-      data.featureList.map(QuasselFeatureName::name),
+      data.featureSet.featureList().map(QuasselFeatureName::name),
       QtType.QStringList
     ),
   )
@@ -41,7 +43,11 @@ object ClientInitSerializer : HandshakeSerializer<HandshakeMessage.ClientInit> {
   override fun deserialize(data: QVariantMap) = HandshakeMessage.ClientInit(
     clientVersion = data["ClientVersion"].into(),
     buildDate = data["ClientDate"].into(),
-    clientFeatures = LegacyFeature.of(data["Features"].into<UInt>()),
-    featureList = data["FeatureList"].into(emptyList<String>()).map(::QuasselFeatureName),
+    featureSet = FeatureSet.build(
+      LegacyFeature.of(data["Features"].into<UInt>()),
+      data["FeatureList"].into<QStringList>(emptyList())
+        .filterNotNull()
+        .map(::QuasselFeatureName)
+    )
   )
 }

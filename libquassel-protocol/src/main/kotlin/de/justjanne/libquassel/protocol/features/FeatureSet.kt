@@ -16,7 +16,7 @@ import de.justjanne.bitflags.of
  * Model representing the set of negotiated or supported features for a
  * connection or library
  */
-class FeatureSet internal constructor(
+data class FeatureSet internal constructor(
   private val features: Set<QuasselFeature>,
   private val additional: Set<QuasselFeatureName> = emptySet()
 ) {

@@ -119,15 +119,14 @@ class EndToEndTest {
         HandshakeMessage.ClientInit(
           clientVersion = "Quasseldroid test",
           buildDate = "Never",
-          clientFeatures = connectionFeatureSet.legacyFeatures(),
-          featureList = connectionFeatureSet.featureList()
+          featureSet = connectionFeatureSet
         ),
         connectionFeatureSet
       )
     }
     println("Reading clientInit response")
     read {
-      HandshakeMessageSerializer.deserialize(it, connectionFeatureSet)
+      println(HandshakeMessageSerializer.deserialize(it, connectionFeatureSet))
     }
     println("Writing invalid core init")
     write {
@@ -168,7 +167,7 @@ class EndToEndTest {
     }
     println("Reading valid clientInit response")
     read {
-      HandshakeMessageSerializer.deserialize(it, connectionFeatureSet)
+      println(HandshakeMessageSerializer.deserialize(it, connectionFeatureSet))
     }
     println("Writing invalid clientLogin")
     write {
@@ -206,11 +205,11 @@ class EndToEndTest {
     }
     println("Reading valid clientLogin response")
     read {
-      HandshakeMessageSerializer.deserialize(it, connectionFeatureSet)
+      println(HandshakeMessageSerializer.deserialize(it, connectionFeatureSet))
     }
     println("Reading valid session init")
     read {
-      HandshakeMessageSerializer.deserialize(it, connectionFeatureSet)
+      println(HandshakeMessageSerializer.deserialize(it, connectionFeatureSet))
     }
   }
 

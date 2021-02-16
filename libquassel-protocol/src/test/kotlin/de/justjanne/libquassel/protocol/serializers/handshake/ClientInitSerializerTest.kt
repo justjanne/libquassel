@@ -18,9 +18,7 @@
  */
 package de.justjanne.libquassel.protocol.serializers.handshake
 
-import de.justjanne.bitflags.none
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.features.LegacyFeature
 import de.justjanne.libquassel.protocol.models.HandshakeMessage
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.handshakeSerializerTest
@@ -32,8 +30,7 @@ class ClientInitSerializerTest {
     HandshakeMessage.ClientInit(
       clientVersion = "Quasseldroid test",
       buildDate = "Never",
-      clientFeatures = LegacyFeature.none(),
-      featureList = emptyList()
+      featureSet = FeatureSet.none()
     ),
     byteBufferOf(
       0x00u, 0x00u, 0x00u, 0x0Au, 0x00u, 0x00u, 0x00u, 0x0Cu,
@@ -71,8 +68,8 @@ class ClientInitSerializerTest {
       clientVersion = "Quasseldroid <a href=\"https://git.kuschku.de/justJanne/QuasselDroid-ng/commit/" +
         "b622ad63056b6054b06e09f8e1f1ef2b0c3aaf9a\">v1.3.3</a>",
       buildDate = "2020-04-27T22:21:17Z",
-      clientFeatures = FeatureSet.all().legacyFeatures(),
-      featureList = FeatureSet.all().featureList()
-    )
+      featureSet = FeatureSet.all()
+    ),
+    // byteBufferOf(0x00u)
   )
 }

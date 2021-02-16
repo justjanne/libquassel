@@ -10,8 +10,7 @@
 
 package de.justjanne.libquassel.protocol.models
 
-import de.justjanne.libquassel.protocol.features.LegacyFeatures
-import de.justjanne.libquassel.protocol.features.QuasselFeatureName
+import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 
@@ -35,14 +34,9 @@ sealed class HandshakeMessage {
      */
     val buildDate: String?,
     /**
-     * Set of legacy features supported
+     * Enabled client features for this connection
      */
-    val clientFeatures: LegacyFeatures,
-    /**
-     * List of supported features. If a feature can also be represented as
-     * legacy feature, it is included in both.
-     */
-    val featureList: List<QuasselFeatureName>
+    val featureSet: FeatureSet,
   ) : HandshakeMessage()
 
   /**
@@ -60,21 +54,16 @@ sealed class HandshakeMessage {
      * If the core needs to be configured, this contains metadata about the
      * supported storage backends
      */
-    val backendInfo: QVariantList,
+    val backendInfo: List<BackendInfo>,
     /**
      * If the core needs to be configured, this contains metadata about the
      * supported authentication backends
      */
-    val authenticatorInfo: QVariantList,
+    val authenticatorInfo: List<BackendInfo>,
     /**
-     * Set of legacy features supported
+     * Enabled features for this connection
      */
-    val coreFeatures: LegacyFeatures,
-    /**
-     * List of supported features. If a feature can also be represented as
-     * legacy feature, it is included in both.
-     */
-    val featureList: List<QuasselFeatureName>
+    val featureSet: FeatureSet,
   ) : HandshakeMessage()
 
   /**
