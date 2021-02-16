@@ -21,15 +21,13 @@ package de.justjanne.libquassel.protocol.serializers.qt
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QtSerializer
-import de.justjanne.libquassel.protocol.variant.QtType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import java.nio.ByteBuffer
 
 /**
  * Serializer for [Double]
  */
-object DoubleSerializer : QtSerializer<Double> {
-  override val qtType: QtType = QtType.Double
+object DoubleSerializer : PrimitiveSerializer<Double> {
   override val javaType: Class<Double> = Double::class.javaObjectType
 
   override fun serialize(buffer: ChainedByteBuffer, data: Double, featureSet: FeatureSet) {

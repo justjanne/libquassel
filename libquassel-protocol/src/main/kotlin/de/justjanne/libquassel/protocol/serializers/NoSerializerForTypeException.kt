@@ -19,8 +19,8 @@
 
 package de.justjanne.libquassel.protocol.serializers
 
-import de.justjanne.libquassel.protocol.variant.QtType
-import de.justjanne.libquassel.protocol.variant.QuasselType
+import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.models.types.QuasselType
 
 /**
  * Exception describing a missing serializer condition

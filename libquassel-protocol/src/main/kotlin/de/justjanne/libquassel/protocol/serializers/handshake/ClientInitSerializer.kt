@@ -23,10 +23,10 @@ import de.justjanne.bitflags.of
 import de.justjanne.bitflags.toBits
 import de.justjanne.libquassel.protocol.features.LegacyFeature
 import de.justjanne.libquassel.protocol.features.QuasselFeatureName
+import de.justjanne.libquassel.protocol.models.HandshakeMessage
+import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
-import de.justjanne.libquassel.protocol.types.HandshakeMessage
 import de.justjanne.libquassel.protocol.variant.QVariantMap
-import de.justjanne.libquassel.protocol.variant.QtType
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 
@@ -35,8 +35,6 @@ import de.justjanne.libquassel.protocol.variant.qVariant
  */
 object ClientInitSerializer : HandshakeSerializer<HandshakeMessage.ClientInit> {
   override val type: String = "ClientInit"
-  override val javaType: Class<out HandshakeMessage.ClientInit> =
-    HandshakeMessage.ClientInit::class.java
 
   override fun serialize(data: HandshakeMessage.ClientInit) = mapOf(
     "MsgType" to qVariant(type, QtType.QString),

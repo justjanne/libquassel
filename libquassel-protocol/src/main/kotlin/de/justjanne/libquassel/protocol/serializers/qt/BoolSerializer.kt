@@ -21,15 +21,13 @@ package de.justjanne.libquassel.protocol.serializers.qt
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QtSerializer
-import de.justjanne.libquassel.protocol.variant.QtType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import java.nio.ByteBuffer
 
 /**
  * Serializer for [Boolean]
  */
-object BoolSerializer : QtSerializer<Boolean> {
-  override val qtType: QtType = QtType.Bool
+object BoolSerializer : PrimitiveSerializer<Boolean> {
   override val javaType: Class<Boolean> = Boolean::class.javaObjectType
 
   override fun serialize(buffer: ChainedByteBuffer, data: Boolean, featureSet: FeatureSet) {

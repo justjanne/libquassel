@@ -18,10 +18,9 @@
  */
 package de.justjanne.libquassel.protocol.serializers.quassel
 
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializers
+import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
-import de.justjanne.libquassel.protocol.variant.QuasselType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.net.Inet4Address
@@ -33,9 +32,7 @@ class QHostAddressSerializerTest {
   fun testIsRegistered() {
     assertEquals(
       QHostAddressSerializer,
-      QuasselSerializers.find<InetAddress>(
-        QuasselType.QHostAddress
-      ),
+      QuasselType.QHostAddress.serializer<InetAddress>(),
     )
   }
 

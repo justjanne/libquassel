@@ -21,10 +21,9 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializer
+import de.justjanne.libquassel.protocol.models.NetworkLayerProtocol
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UByteSerializer
-import de.justjanne.libquassel.protocol.types.NetworkLayerProtocol
-import de.justjanne.libquassel.protocol.variant.QuasselType
 import java.net.Inet4Address
 import java.net.Inet6Address
 import java.net.InetAddress
@@ -33,8 +32,7 @@ import java.nio.ByteBuffer
 /**
  * Serializer for [InetAddress]
  */
-object QHostAddressSerializer : QuasselSerializer<InetAddress> {
-  override val quasselType: QuasselType = QuasselType.QHostAddress
+object QHostAddressSerializer : PrimitiveSerializer<InetAddress> {
   override val javaType: Class<out InetAddress> = InetAddress::class.java
 
   override fun serialize(

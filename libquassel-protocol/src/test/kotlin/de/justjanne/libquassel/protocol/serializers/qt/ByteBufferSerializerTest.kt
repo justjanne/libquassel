@@ -18,11 +18,10 @@
  */
 package de.justjanne.libquassel.protocol.serializers.qt
 
-import de.justjanne.libquassel.protocol.serializers.QtSerializers
+import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import de.justjanne.libquassel.protocol.testutil.qtSerializerTest
-import de.justjanne.libquassel.protocol.variant.QtType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.nio.ByteBuffer
@@ -32,7 +31,7 @@ class ByteBufferSerializerTest {
   fun testIsRegistered() {
     assertEquals(
       ByteBufferSerializer,
-      QtSerializers.find<ByteBuffer>(QtType.QByteArray),
+      QtType.QByteArray.serializer<ByteBuffer>(),
     )
   }
 

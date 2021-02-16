@@ -21,17 +21,15 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializer
+import de.justjanne.libquassel.protocol.models.ids.BufferId
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.IntSerializer
-import de.justjanne.libquassel.protocol.types.BufferId
-import de.justjanne.libquassel.protocol.variant.QuasselType
 import java.nio.ByteBuffer
 
 /**
  * Serializer for [BufferId]
  */
-object BufferIdSerializer : QuasselSerializer<BufferId> {
-  override val quasselType: QuasselType = QuasselType.BufferId
+object BufferIdSerializer : PrimitiveSerializer<BufferId> {
   override val javaType: Class<out BufferId> = BufferId::class.java
 
   override fun serialize(buffer: ChainedByteBuffer, data: BufferId, featureSet: FeatureSet) {

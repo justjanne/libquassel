@@ -18,10 +18,9 @@
  */
 package de.justjanne.libquassel.protocol.serializers.qt
 
-import de.justjanne.libquassel.protocol.serializers.QtSerializers
+import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.qtSerializerTest
-import de.justjanne.libquassel.protocol.variant.QtType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -30,7 +29,7 @@ class IntSerializerTest {
   fun testIsRegistered() {
     assertEquals(
       IntSerializer,
-      QtSerializers.find<Int>(QtType.Int),
+      QtType.Int.serializer<Int>(),
     )
   }
 

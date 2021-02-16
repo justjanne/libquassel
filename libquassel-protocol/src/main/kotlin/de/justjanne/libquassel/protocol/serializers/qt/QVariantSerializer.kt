@@ -21,31 +21,28 @@ package de.justjanne.libquassel.protocol.serializers.qt
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.serializers.NoSerializerForTypeException
-import de.justjanne.libquassel.protocol.serializers.QtSerializer
-import de.justjanne.libquassel.protocol.serializers.QtSerializers
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializer
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializers
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.variant.QVariant
 import de.justjanne.libquassel.protocol.variant.QVariant_
-import de.justjanne.libquassel.protocol.variant.QtType
-import de.justjanne.libquassel.protocol.variant.QuasselType
 import java.nio.ByteBuffer
 
 /**
  * Serializer for [QVariant]
  */
-object QVariantSerializer : QtSerializer<QVariant_> {
-  override val qtType = QtType.QVariant
+object QVariantSerializer : PrimitiveSerializer<QVariant_> {
   override val javaType: Class<QVariant_> = QVariant::class.java
 
   override fun serialize(buffer: ChainedByteBuffer, data: QVariant_, featureSet: FeatureSet) {
-    IntSerializer.serialize(buffer, data.serializer.qtType.id, featureSet)
-    BoolSerializer.serialize(buffer, false, featureSet)
-    if (data.serializer.qtType == QtType.UserType && data is QVariant.Custom) {
-      StringSerializerAscii.serialize(buffer, data.serializer.quasselType.typeName, featureSet)
+    when (data) {
+      is QVariant.Typed -> {
+        IntSerializer.serialize(buffer, data.type.id, featureSet)
+        BoolSerializer.serialize(buffer, false, featureSet)
+        data.serialize(buffer, featureSet)
+      }
     }
-    data.serialize(buffer, featureSet)
   }
 
   override fun deserialize(buffer: ByteBuffer, featureSet: FeatureSet): QVariant_ {
@@ -67,17 +64,19 @@ object QVariantSerializer : QtSerializer<QVariant_> {
 
   @Suppress("UNCHECKED_CAST")
   private fun deserialize(type: QtType, buffer: ByteBuffer, featureSet: FeatureSet): QVariant_ {
-    val serializer = QtSerializers[type]
+    val serializer = type.serializer
+      as? PrimitiveSerializer<Any>
       ?: throw NoSerializerForTypeException.Qt(type)
     val value = serializer.deserialize(buffer, featureSet)
-    return QVariant.Typed(value, serializer as QtSerializer<Any?>)
+    return QVariant.Typed(value, type, serializer)
   }
 
   @Suppress("UNCHECKED_CAST")
   private fun deserialize(type: QuasselType, buffer: ByteBuffer, featureSet: FeatureSet): QVariant_ {
-    val serializer = QuasselSerializers[type]
+    val serializer = type.serializer
+      as? PrimitiveSerializer<Any>
       ?: throw NoSerializerForTypeException.Quassel(type)
     val value = serializer.deserialize(buffer, featureSet)
-    return QVariant.Custom(value, serializer as QuasselSerializer<Any?>)
+    return QVariant.Custom(value, type, serializer)
   }
 }

@@ -23,7 +23,7 @@ import de.justjanne.bitflags.of
 import de.justjanne.bitflags.toBits
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.Serializer
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UByteSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UIntSerializer
 import java.nio.ByteBuffer
@@ -31,7 +31,8 @@ import java.nio.ByteBuffer
 /**
  * Serializer for a [ClientHeader]
  */
-object ClientHeaderSerializer : Serializer<ClientHeader> {
+object ClientHeaderSerializer : PrimitiveSerializer<ClientHeader> {
+  override val javaType: Class<out ClientHeader> = ClientHeader::class.java
   private const val magic: UInt = 0x42b3_3f00u
   private const val featureMask: UInt = 0x0000_00ffu
   private const val lastMagic: UByte = 0x80u

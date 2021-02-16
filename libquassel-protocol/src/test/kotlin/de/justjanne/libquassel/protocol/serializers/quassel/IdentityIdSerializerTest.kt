@@ -18,11 +18,10 @@
  */
 package de.justjanne.libquassel.protocol.serializers.quassel
 
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializers
+import de.justjanne.libquassel.protocol.models.ids.IdentityId
+import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
-import de.justjanne.libquassel.protocol.types.IdentityId
-import de.justjanne.libquassel.protocol.variant.QuasselType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -31,7 +30,7 @@ class IdentityIdSerializerTest {
   fun testIsRegistered() {
     assertEquals(
       IdentityIdSerializer,
-      QuasselSerializers.find<IdentityId>(QuasselType.IdentityId),
+      QuasselType.IdentityId.serializer<IdentityId>(),
     )
   }
 

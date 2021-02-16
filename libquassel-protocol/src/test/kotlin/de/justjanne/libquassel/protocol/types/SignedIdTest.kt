@@ -19,6 +19,11 @@
 
 package de.justjanne.libquassel.protocol.types
 
+import de.justjanne.libquassel.protocol.models.ids.BufferId
+import de.justjanne.libquassel.protocol.models.ids.IdentityId
+import de.justjanne.libquassel.protocol.models.ids.MsgId
+import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.models.ids.isValid
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue

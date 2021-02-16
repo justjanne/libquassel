@@ -21,15 +21,13 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializer
-import de.justjanne.libquassel.protocol.variant.QuasselType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import java.nio.ByteBuffer
 
 /**
  * Serializer for PeerPtr, which is implemented as [ULong]
  */
-object PeerPtrSerializer : QuasselSerializer<ULong> {
-  override val quasselType: QuasselType = QuasselType.PeerPtr
+object PeerPtrSerializer : PrimitiveSerializer<ULong> {
   override val javaType: Class<ULong> = ULong::class.java
 
   override fun serialize(buffer: ChainedByteBuffer, data: ULong, featureSet: FeatureSet) {

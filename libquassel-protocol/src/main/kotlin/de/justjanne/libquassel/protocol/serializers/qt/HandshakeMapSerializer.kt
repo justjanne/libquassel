@@ -21,10 +21,10 @@ package de.justjanne.libquassel.protocol.serializers.qt
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QtSerializer
+import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
-import de.justjanne.libquassel.protocol.variant.QtType
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import java.nio.ByteBuffer
@@ -33,8 +33,7 @@ import java.nio.ByteBuffer
  * Serializer for [QVariantMap] during handshake,
  * which uses a special format instead of [QVariantMapSerializer]
  */
-object HandshakeMapSerializer : QtSerializer<QVariantMap> {
-  override val qtType = QtType.QVariantMap
+object HandshakeMapSerializer : PrimitiveSerializer<QVariantMap> {
 
   @Suppress("UNCHECKED_CAST")
   override val javaType: Class<out QVariantMap> = Map::class.java as Class<QVariantMap>

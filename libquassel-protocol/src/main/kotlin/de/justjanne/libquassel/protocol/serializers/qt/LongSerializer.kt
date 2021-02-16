@@ -21,15 +21,13 @@ package de.justjanne.libquassel.protocol.serializers.qt
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QtSerializer
-import de.justjanne.libquassel.protocol.variant.QtType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import java.nio.ByteBuffer
 
 /**
  * Serializer for [Long]
  */
-object LongSerializer : QtSerializer<Long> {
-  override val qtType: QtType = QtType.Long
+object LongSerializer : PrimitiveSerializer<Long> {
   override val javaType: Class<Long> = Long::class.javaObjectType
 
   override fun serialize(buffer: ChainedByteBuffer, data: Long, featureSet: FeatureSet) {

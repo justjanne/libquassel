@@ -22,8 +22,7 @@ package de.justjanne.libquassel.protocol.serializers.qt
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
 import de.justjanne.libquassel.protocol.io.StringEncoder
-import de.justjanne.libquassel.protocol.serializers.QtSerializer
-import de.justjanne.libquassel.protocol.variant.QtType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import kotlin.concurrent.getOrSet
@@ -36,8 +35,7 @@ import kotlin.concurrent.getOrSet
 abstract class StringSerializer(
   private val charset: Charset,
   private val nullLimited: Boolean,
-) : QtSerializer<String?> {
-  override val qtType = QtType.QString
+) : PrimitiveSerializer<String?> {
   override val javaType: Class<out String> = String::class.java
 
   private val encoderLocal = ThreadLocal<StringEncoder>()

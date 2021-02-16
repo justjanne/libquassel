@@ -21,19 +21,16 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializer
+import de.justjanne.libquassel.protocol.models.DccPortSelectionMode
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UByteSerializer
-import de.justjanne.libquassel.protocol.types.DccPortSelectionMode
-import de.justjanne.libquassel.protocol.variant.QuasselType
 import java.nio.ByteBuffer
 
 /**
  * Serializer for [DccPortSelectionMode]
  */
-object DccPortSelectionModeSerializer : QuasselSerializer<DccPortSelectionMode?> {
-  override val quasselType: QuasselType = QuasselType.DccConfigPortSelectionMode
+object DccPortSelectionModeSerializer : PrimitiveSerializer<DccPortSelectionMode?> {
 
-  @Suppress("UNCHECKED_CAST")
   override val javaType: Class<out DccPortSelectionMode?> =
     DccPortSelectionMode::class.java
 

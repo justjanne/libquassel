@@ -19,8 +19,10 @@
 
 package de.justjanne.libquassel.protocol.variant
 
+import de.justjanne.libquassel.protocol.models.ids.BufferId
+import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.types.BufferId
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -28,21 +30,21 @@ class QVariantTest {
   @Test
   fun testString() {
     assertEquals(
-      "QVariant(ByteBufferSerializer, DEADBEEF)",
+      "QVariant(QByteArray, DEADBEEF)",
       qVariant(
         byteBufferOf(0xDEu, 0xADu, 0xBEu, 0xEFu),
         QtType.QByteArray
       ).toString()
     )
     assertEquals(
-      "QVariant(StringSerializerUtf16, DEADBEEF)",
+      "QVariant(QString, DEADBEEF)",
       qVariant(
         "DEADBEEF",
         QtType.QString
       ).toString()
     )
     assertEquals(
-      "QVariant(BufferIdSerializer, BufferId(-1))",
+      "QVariant(BufferId, BufferId(-1))",
       qVariant(
         BufferId(-1),
         QuasselType.BufferId

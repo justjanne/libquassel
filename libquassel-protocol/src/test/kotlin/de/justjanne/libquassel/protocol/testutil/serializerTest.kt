@@ -19,12 +19,12 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.serializers.Serializer
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import org.hamcrest.Matcher
 import java.nio.ByteBuffer
 
 fun <T : Any?> serializerTest(
-  serializer: Serializer<T>,
+  serializer: PrimitiveSerializer<T>,
   value: T,
   encoded: ByteBuffer? = null,
   matcher: ((T) -> Matcher<T>)? = null,

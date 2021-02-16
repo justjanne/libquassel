@@ -21,22 +21,12 @@ package de.justjanne.libquassel.protocol.serializers.handshake
 import de.justjanne.bitflags.none
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.features.LegacyFeature
-import de.justjanne.libquassel.protocol.serializers.HandshakeSerializers
+import de.justjanne.libquassel.protocol.models.HandshakeMessage
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.handshakeSerializerTest
-import de.justjanne.libquassel.protocol.types.HandshakeMessage
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class ClientInitSerializerTest {
-  @Test
-  fun testIsRegistered() {
-    assertEquals(
-      ClientInitSerializer,
-      HandshakeSerializers.find<HandshakeMessage.ClientInit>("ClientInit"),
-    )
-  }
-
   @Test
   fun testSimple() = handshakeSerializerTest(
     ClientInitSerializer,

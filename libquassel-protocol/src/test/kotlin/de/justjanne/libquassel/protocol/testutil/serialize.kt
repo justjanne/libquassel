@@ -21,14 +21,14 @@ package de.justjanne.libquassel.protocol.testutil
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
-import de.justjanne.libquassel.protocol.serializers.Serializer
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.HandshakeMapSerializer
 import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import org.hamcrest.MatcherAssert.assertThat
 import java.nio.ByteBuffer
 
 fun <T> serialize(
-  serializer: Serializer<T>,
+  serializer: PrimitiveSerializer<T>,
   data: T,
   featureSet: FeatureSet = FeatureSet.all()
 ): ByteBuffer {
@@ -38,7 +38,7 @@ fun <T> serialize(
 }
 
 fun <T> testSerialize(
-  serializer: Serializer<T>,
+  serializer: PrimitiveSerializer<T>,
   data: T,
   buffer: ByteBuffer,
   featureSet: FeatureSet = FeatureSet.all()

@@ -19,15 +19,43 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializer
+import de.justjanne.libquassel.protocol.models.types.QuasselType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import org.hamcrest.Matcher
 import java.nio.ByteBuffer
 
-fun <T> quasselSerializerTest(
-  serializer: QuasselSerializer<T>,
+inline fun <reified T : Any?> quasselSerializerTest(
+  type: QuasselType,
   value: T,
   encoded: ByteBuffer? = null,
-  matcher: ((T) -> Matcher<T>)? = null,
+  noinline matcher: ((T) -> Matcher<T>)? = null,
+  featureSets: List<FeatureSet> = listOf(FeatureSet.none(), FeatureSet.all()),
+  deserializeFeatureSet: FeatureSet? = FeatureSet.all(),
+  serializeFeatureSet: FeatureSet? = FeatureSet.all(),
+) {
+  if (encoded != null) {
+    if (deserializeFeatureSet != null) {
+      if (matcher != null) {
+        testDeserialize(type.serializer<T>(), matcher(value), encoded.rewind(), deserializeFeatureSet)
+      } else {
+        testDeserialize(type.serializer(), value, encoded.rewind(), deserializeFeatureSet)
+      }
+    }
+    if (serializeFeatureSet != null) {
+      testSerialize(type.serializer(), value, encoded.rewind(), serializeFeatureSet)
+    }
+  }
+  for (featureSet in featureSets) {
+    testPrimitiveSerializerDirect(type.serializer(), value, featureSet, matcher?.invoke(value))
+    testQuasselSerializerVariant(type, value, featureSet, matcher?.invoke(value))
+  }
+}
+
+inline fun <reified T : Any?> quasselSerializerTest(
+  serializer: PrimitiveSerializer<T>,
+  value: T,
+  encoded: ByteBuffer? = null,
+  noinline matcher: ((T) -> Matcher<T>)? = null,
   featureSets: List<FeatureSet> = listOf(FeatureSet.none(), FeatureSet.all()),
   deserializeFeatureSet: FeatureSet? = FeatureSet.all(),
   serializeFeatureSet: FeatureSet? = FeatureSet.all(),
@@ -45,7 +73,6 @@ fun <T> quasselSerializerTest(
     }
   }
   for (featureSet in featureSets) {
-    testQuasselSerializerDirect(serializer, value, featureSet, matcher?.invoke(value))
-    testQuasselSerializerVariant(serializer, value, featureSet, matcher?.invoke(value))
+    testPrimitiveSerializerDirect(serializer, value, featureSet, matcher?.invoke(value))
   }
 }

@@ -24,24 +24,22 @@ import de.justjanne.bitflags.toBits
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.features.QuasselFeature
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializer
+import de.justjanne.libquassel.protocol.models.Message
+import de.justjanne.libquassel.protocol.models.flags.MessageFlag
+import de.justjanne.libquassel.protocol.models.flags.MessageType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.IntSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.LongSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
 import de.justjanne.libquassel.protocol.serializers.qt.UByteSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UIntSerializer
-import de.justjanne.libquassel.protocol.types.Message
-import de.justjanne.libquassel.protocol.types.MessageFlag
-import de.justjanne.libquassel.protocol.types.MessageType
-import de.justjanne.libquassel.protocol.variant.QuasselType
 import org.threeten.bp.Instant
 import java.nio.ByteBuffer
 
 /**
  * Serializer for [Message]
  */
-object MessageSerializer : QuasselSerializer<Message> {
-  override val quasselType: QuasselType = QuasselType.Message
+object MessageSerializer : PrimitiveSerializer<Message> {
   override val javaType: Class<out Message> = Message::class.java
 
   override fun serialize(buffer: ChainedByteBuffer, data: Message, featureSet: FeatureSet) {

@@ -20,7 +20,7 @@ package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
-import de.justjanne.libquassel.protocol.serializers.Serializer
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.HandshakeMapSerializer
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import java.nio.ByteBuffer
 
 fun <T> deserialize(
-  serializer: Serializer<T>,
+  serializer: PrimitiveSerializer<T>,
   buffer: ByteBuffer,
   featureSet: FeatureSet = FeatureSet.all()
 ): T {
@@ -38,7 +38,7 @@ fun <T> deserialize(
 }
 
 fun <T> testDeserialize(
-  serializer: Serializer<T>,
+  serializer: PrimitiveSerializer<T>,
   matcher: Matcher<in T>,
   buffer: ByteBuffer,
   featureSet: FeatureSet = FeatureSet.all()
@@ -48,7 +48,7 @@ fun <T> testDeserialize(
 }
 
 fun <T> testDeserialize(
-  serializer: Serializer<T>,
+  serializer: PrimitiveSerializer<T>,
   data: T,
   buffer: ByteBuffer,
   featureSet: FeatureSet = FeatureSet.all()

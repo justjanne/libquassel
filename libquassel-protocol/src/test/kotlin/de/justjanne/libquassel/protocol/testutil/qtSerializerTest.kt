@@ -19,19 +19,46 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.serializers.QtSerializer
+import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import org.hamcrest.Matcher
 import java.nio.ByteBuffer
 
-fun <T : Any?> qtSerializerTest(
-  serializer: QtSerializer<T>,
+inline fun <reified T : Any?> qtSerializerTest(
+  type: QtType,
   value: T,
   encoded: ByteBuffer? = null,
-  matcher: ((T) -> Matcher<T>)? = null,
+  noinline matcher: ((T) -> Matcher<T>)? = null,
   featureSets: List<FeatureSet> = listOf(FeatureSet.none(), FeatureSet.all()),
   deserializeFeatureSet: FeatureSet? = FeatureSet.all(),
   serializeFeatureSet: FeatureSet? = FeatureSet.all(),
-  supportsVariant: Boolean = true,
+) {
+  if (encoded != null) {
+    if (deserializeFeatureSet != null) {
+      if (matcher != null) {
+        testDeserialize(type.serializer<T>(), matcher(value), encoded.rewind(), deserializeFeatureSet)
+      } else {
+        testDeserialize(type.serializer(), value, encoded.rewind(), deserializeFeatureSet)
+      }
+    }
+    if (serializeFeatureSet != null) {
+      testSerialize(type.serializer(), value, encoded.rewind(), serializeFeatureSet)
+    }
+  }
+  for (featureSet in featureSets) {
+    testPrimitiveSerializerDirect(type.serializer(), value, featureSet, matcher?.invoke(value))
+    testQtSerializerVariant(type, value, featureSet, matcher?.invoke(value))
+  }
+}
+
+inline fun <reified T : Any?> qtSerializerTest(
+  serializer: PrimitiveSerializer<T>,
+  value: T,
+  encoded: ByteBuffer? = null,
+  noinline matcher: ((T) -> Matcher<T>)? = null,
+  featureSets: List<FeatureSet> = listOf(FeatureSet.none(), FeatureSet.all()),
+  deserializeFeatureSet: FeatureSet? = FeatureSet.all(),
+  serializeFeatureSet: FeatureSet? = FeatureSet.all(),
 ) {
   if (encoded != null) {
     if (deserializeFeatureSet != null) {
@@ -46,9 +73,6 @@ fun <T : Any?> qtSerializerTest(
     }
   }
   for (featureSet in featureSets) {
-    testQtSerializerDirect(serializer, value, featureSet, matcher?.invoke(value))
-    if (supportsVariant) {
-      testQtSerializerVariant(serializer, value, featureSet, matcher?.invoke(value))
-    }
+    testPrimitiveSerializerDirect(serializer, value, featureSet, matcher?.invoke(value))
   }
 }

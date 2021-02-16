@@ -22,18 +22,17 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 import de.justjanne.bitflags.none
 import de.justjanne.bitflags.validValues
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializers
+import de.justjanne.libquassel.protocol.models.BufferInfo
+import de.justjanne.libquassel.protocol.models.Message
+import de.justjanne.libquassel.protocol.models.flags.BufferType
+import de.justjanne.libquassel.protocol.models.flags.MessageFlag
+import de.justjanne.libquassel.protocol.models.flags.MessageType
+import de.justjanne.libquassel.protocol.models.ids.BufferId
+import de.justjanne.libquassel.protocol.models.ids.MsgId
+import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
-import de.justjanne.libquassel.protocol.types.BufferId
-import de.justjanne.libquassel.protocol.types.BufferInfo
-import de.justjanne.libquassel.protocol.types.BufferType
-import de.justjanne.libquassel.protocol.types.Message
-import de.justjanne.libquassel.protocol.types.MessageFlag
-import de.justjanne.libquassel.protocol.types.MessageType
-import de.justjanne.libquassel.protocol.types.MsgId
-import de.justjanne.libquassel.protocol.types.NetworkId
-import de.justjanne.libquassel.protocol.variant.QuasselType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.threeten.bp.Instant
@@ -43,7 +42,7 @@ class MessageSerializerTest {
   fun testIsRegistered() {
     assertEquals(
       MessageSerializer,
-      QuasselSerializers.find<Message>(QuasselType.Message),
+      QuasselType.Message.serializer<Message>(),
     )
   }
 

@@ -19,10 +19,10 @@
 
 package de.justjanne.libquassel.protocol.serializers.handshake
 
+import de.justjanne.libquassel.protocol.models.HandshakeMessage
+import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
-import de.justjanne.libquassel.protocol.types.HandshakeMessage
 import de.justjanne.libquassel.protocol.variant.QVariantMap
-import de.justjanne.libquassel.protocol.variant.QtType
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 
@@ -31,8 +31,6 @@ import de.justjanne.libquassel.protocol.variant.qVariant
  */
 object CoreSetupDataSerializer : HandshakeSerializer<HandshakeMessage.CoreSetupData> {
   override val type: String = "CoreSetupData"
-  override val javaType: Class<out HandshakeMessage.CoreSetupData> =
-    HandshakeMessage.CoreSetupData::class.java
 
   override fun serialize(data: HandshakeMessage.CoreSetupData) = mapOf(
     "MsgType" to qVariant(type, QtType.QString),

@@ -18,12 +18,11 @@
  */
 package de.justjanne.libquassel.protocol.serializers.qt
 
-import de.justjanne.libquassel.protocol.serializers.QtSerializers
+import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.MapMatcher
 import de.justjanne.libquassel.protocol.testutil.qtSerializerTest
 import de.justjanne.libquassel.protocol.variant.QVariantMap
-import de.justjanne.libquassel.protocol.variant.QtType
 import de.justjanne.libquassel.protocol.variant.qVariant
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -33,7 +32,7 @@ class QVariantMapSerializerTest {
   fun testIsRegistered() {
     assertEquals(
       QVariantMapSerializer,
-      QtSerializers.find<QVariantMap>(QtType.QVariantMap),
+      QtType.QVariantMap.serializer<QVariantMap>(),
     )
   }
 

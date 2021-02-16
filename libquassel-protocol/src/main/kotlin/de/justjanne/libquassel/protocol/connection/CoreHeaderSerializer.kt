@@ -23,14 +23,16 @@ import de.justjanne.bitflags.of
 import de.justjanne.bitflags.toBits
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.Serializer
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UByteSerializer
 import java.nio.ByteBuffer
 
 /**
  * Serializer for a [CoreHeader]
  */
-object CoreHeaderSerializer : Serializer<CoreHeader> {
+object CoreHeaderSerializer : PrimitiveSerializer<CoreHeader> {
+  override val javaType: Class<out CoreHeader> = CoreHeader::class.java
+
   override fun serialize(buffer: ChainedByteBuffer, data: CoreHeader, featureSet: FeatureSet) {
     UByteSerializer.serialize(buffer, data.features.toBits(), featureSet)
     ProtocolMetaSerializer.serialize(buffer, data.version, featureSet)

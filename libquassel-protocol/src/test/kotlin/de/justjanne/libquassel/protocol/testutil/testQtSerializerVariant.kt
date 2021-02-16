@@ -20,21 +20,21 @@ package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QtSerializer
+import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.serializers.qt.QVariantSerializer
-import de.justjanne.libquassel.protocol.variant.QVariant
+import de.justjanne.libquassel.protocol.variant.qVariant
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 
-fun <T> testQtSerializerVariant(
-  serializer: QtSerializer<T>,
+inline fun <reified T> testQtSerializerVariant(
+  type: QtType,
   data: T,
   featureSet: FeatureSet = FeatureSet.all(),
   matcher: Matcher<in T>? = null
 ) {
   val buffer = ChainedByteBuffer(limit = 16384)
-  QVariantSerializer.serialize(buffer, QVariant.Typed(data, serializer), featureSet)
+  QVariantSerializer.serialize(buffer, qVariant(data, type), featureSet)
   val result = buffer.toBuffer()
   val after = QVariantSerializer.deserialize(result, featureSet)
   assertEquals(0, result.remaining())

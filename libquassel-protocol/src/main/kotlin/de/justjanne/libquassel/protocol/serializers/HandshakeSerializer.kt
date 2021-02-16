@@ -21,19 +21,15 @@ package de.justjanne.libquassel.protocol.serializers
 
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 
-/** High-level serializer for handshake messages. */
+/**
+ * High-level serializer for handshake messages.
+ */
 interface HandshakeSerializer<T> {
   /**
    * The underlying handshake message type this serializer can (de-)serialize.
    * Used for type-safe serializer autodiscovery.
    */
   val type: String
-
-  /**
-   * The underlying java type this serializer can (de-)serialize.
-   * Used for type-safe serializer autodiscovery.
-   */
-  val javaType: Class<out T>
 
   /**
    * Serialize a handshake message into a [QVariantMap] (for further serialization)

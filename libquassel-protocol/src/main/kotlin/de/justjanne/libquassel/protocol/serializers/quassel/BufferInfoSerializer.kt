@@ -23,20 +23,18 @@ import de.justjanne.bitflags.of
 import de.justjanne.bitflags.toBits
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializer
+import de.justjanne.libquassel.protocol.models.BufferInfo
+import de.justjanne.libquassel.protocol.models.flags.BufferType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.IntSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
 import de.justjanne.libquassel.protocol.serializers.qt.UShortSerializer
-import de.justjanne.libquassel.protocol.types.BufferInfo
-import de.justjanne.libquassel.protocol.types.BufferType
-import de.justjanne.libquassel.protocol.variant.QuasselType
 import java.nio.ByteBuffer
 
 /**
  * Serializer for [BufferInfo]
  */
-object BufferInfoSerializer : QuasselSerializer<BufferInfo> {
-  override val quasselType: QuasselType = QuasselType.BufferInfo
+object BufferInfoSerializer : PrimitiveSerializer<BufferInfo> {
   override val javaType: Class<out BufferInfo> = BufferInfo::class.java
 
   override fun serialize(buffer: ChainedByteBuffer, data: BufferInfo, featureSet: FeatureSet) {

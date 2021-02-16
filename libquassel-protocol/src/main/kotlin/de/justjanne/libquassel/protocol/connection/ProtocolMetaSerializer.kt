@@ -21,7 +21,7 @@ package de.justjanne.libquassel.protocol.connection
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.Serializer
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UByteSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UShortSerializer
 import java.nio.ByteBuffer
@@ -29,7 +29,9 @@ import java.nio.ByteBuffer
 /**
  * Serializer for a [ProtocolMeta]
  */
-object ProtocolMetaSerializer : Serializer<ProtocolMeta> {
+object ProtocolMetaSerializer : PrimitiveSerializer<ProtocolMeta> {
+  override val javaType: Class<out ProtocolMeta> = ProtocolMeta::class.java
+
   override fun serialize(buffer: ChainedByteBuffer, data: ProtocolMeta, featureSet: FeatureSet) {
     UShortSerializer.serialize(buffer, data.data, featureSet)
     UByteSerializer.serialize(buffer, data.version.value, featureSet)

@@ -21,17 +21,15 @@ package de.justjanne.libquassel.protocol.serializers.qt
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.serializers.QtSerializer
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariant_
-import de.justjanne.libquassel.protocol.variant.QtType
 import java.nio.ByteBuffer
 
 /**
  * Serializer for [QVariantList]
  */
-object QVariantListSerializer : QtSerializer<QVariantList> {
-  override val qtType = QtType.QVariantList
+object QVariantListSerializer : PrimitiveSerializer<QVariantList> {
 
   @Suppress("UNCHECKED_CAST")
   override val javaType: Class<QVariantList> = List::class.java as Class<QVariantList>

@@ -22,16 +22,14 @@ package de.justjanne.libquassel.protocol.serializers.qt
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
 import de.justjanne.libquassel.protocol.io.StringEncoder
-import de.justjanne.libquassel.protocol.serializers.QtSerializer
-import de.justjanne.libquassel.protocol.variant.QtType
+import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import java.nio.ByteBuffer
 import kotlin.concurrent.getOrSet
 
 /**
  * Serializer for [Char]
  */
-object QCharSerializer : QtSerializer<Char> {
-  override val qtType: QtType = QtType.QChar
+object QCharSerializer : PrimitiveSerializer<Char> {
   override val javaType: Class<out Char> = Char::class.javaObjectType
 
   private val encoderLocal = ThreadLocal<StringEncoder>()

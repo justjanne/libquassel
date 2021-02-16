@@ -18,11 +18,10 @@
  */
 package de.justjanne.libquassel.protocol.serializers.quassel
 
-import de.justjanne.libquassel.protocol.serializers.QuasselSerializers
+import de.justjanne.libquassel.protocol.models.DccIpDetectionMode
+import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
-import de.justjanne.libquassel.protocol.types.DccIpDetectionMode
-import de.justjanne.libquassel.protocol.variant.QuasselType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -31,9 +30,7 @@ class DccIpDetectionModeSerializerTest {
   fun testIsRegistered() {
     assertEquals(
       DccIpDetectionModeSerializer,
-      QuasselSerializers.find<DccIpDetectionMode>(
-        QuasselType.DccConfigIpDetectionMode
-      ),
+      QuasselType.DccConfigIpDetectionMode.serializer<DccIpDetectionMode>(),
     )
   }
 
