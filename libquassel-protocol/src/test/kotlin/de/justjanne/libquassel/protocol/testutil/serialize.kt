@@ -20,9 +20,13 @@ package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.models.HandshakeMessage
+import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
+import de.justjanne.libquassel.protocol.serializers.SignalProxySerializer
 import de.justjanne.libquassel.protocol.serializers.qt.HandshakeMapSerializer
+import de.justjanne.libquassel.protocol.serializers.qt.QVariantListSerializer
 import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import org.hamcrest.MatcherAssert.assertThat
 import java.nio.ByteBuffer
@@ -47,7 +51,7 @@ fun <T> testSerialize(
   assertThat(after, ByteBufferMatcher(buffer))
 }
 
-fun <T> testSerialize(
+fun <T : HandshakeMessage> testSerialize(
   serializer: HandshakeSerializer<T>,
   data: T,
   buffer: ByteBuffer,
@@ -55,5 +59,16 @@ fun <T> testSerialize(
 ) {
   val map = serializer.serialize(data)
   val after = serialize(HandshakeMapSerializer, map, featureSet)
+  assertThat(after, ByteBufferMatcher(buffer))
+}
+
+fun <T : SignalProxyMessage> testSerialize(
+  serializer: SignalProxySerializer<T>,
+  data: T,
+  buffer: ByteBuffer,
+  featureSet: FeatureSet = FeatureSet.all()
+) {
+  val list = serializer.serialize(data)
+  val after = serialize(QVariantListSerializer, list, featureSet)
   assertThat(after, ByteBufferMatcher(buffer))
 }

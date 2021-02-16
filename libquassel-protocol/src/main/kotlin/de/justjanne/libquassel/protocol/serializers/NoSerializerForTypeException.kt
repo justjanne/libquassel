@@ -83,11 +83,11 @@ sealed class NoSerializerForTypeException : Exception() {
    * Exception describing a missing serializer condition for a signal proxy type
    */
   data class SignalProxy(
-    private val type: String,
+    private val type: Int,
     private val javaType: Class<*>? = null
   ) : NoSerializerForTypeException() {
     override fun toString(): String {
-      return "NoSerializerForTypeException.Handshake(type='$type', javaType=$javaType)"
+      return "NoSerializerForTypeException.SignalProxy(type='$type', javaType=$javaType)"
     }
   }
 }

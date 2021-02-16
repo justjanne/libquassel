@@ -20,13 +20,14 @@ package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.models.HandshakeMessage
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.HandshakeMapSerializer
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 
-fun <T> testHandshakeSerializerEncoded(
+fun <T : HandshakeMessage> testHandshakeSerializerEncoded(
   serializer: HandshakeSerializer<T>,
   data: T,
   featureSet: FeatureSet = FeatureSet.all(),

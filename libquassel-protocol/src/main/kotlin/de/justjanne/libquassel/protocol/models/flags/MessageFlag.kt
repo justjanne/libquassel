@@ -65,7 +65,8 @@ enum class MessageFlag(
   Backlog(0x80u);
 
   companion object : Flags<UInt, MessageFlag> {
-    private val values = values().associateBy(MessageFlag::value)
+    private val values = enumValues<MessageFlag>()
+      .associateBy(MessageFlag::value)
     override val all: MessageFlags = values.values.toEnumSet()
   }
 }

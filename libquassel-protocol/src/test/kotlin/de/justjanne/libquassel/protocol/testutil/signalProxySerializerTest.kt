@@ -19,13 +19,13 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.models.HandshakeMessage
-import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
+import de.justjanne.libquassel.protocol.models.SignalProxyMessage
+import de.justjanne.libquassel.protocol.serializers.SignalProxySerializer
 import org.hamcrest.Matcher
 import java.nio.ByteBuffer
 
-fun <T : HandshakeMessage> handshakeSerializerTest(
-  serializer: HandshakeSerializer<T>,
+fun <T : SignalProxyMessage> signalProxySerializerTest(
+  serializer: SignalProxySerializer<T>,
   value: T,
   encoded: ByteBuffer? = null,
   matcher: ((T) -> Matcher<T>)? = null,
@@ -46,7 +46,7 @@ fun <T : HandshakeMessage> handshakeSerializerTest(
     }
   }
   for (featureSet in featureSets) {
-    testHandshakeSerializerDirect(serializer, value)
-    testHandshakeSerializerEncoded(serializer, value, featureSet)
+    testSignalProxySerializerDirect(serializer, value)
+    testSignalProxySerializerEncoded(serializer, value, featureSet)
   }
 }

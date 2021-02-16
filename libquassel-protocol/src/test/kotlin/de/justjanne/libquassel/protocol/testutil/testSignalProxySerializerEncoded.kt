@@ -18,18 +18,26 @@
  */
 package de.justjanne.libquassel.protocol.testutil
 
-import de.justjanne.libquassel.protocol.models.HandshakeMessage
-import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
+import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.models.SignalProxyMessage
+import de.justjanne.libquassel.protocol.serializers.SignalProxySerializer
+import de.justjanne.libquassel.protocol.serializers.qt.QVariantListSerializer
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 
-fun <T : HandshakeMessage> testHandshakeSerializerDirect(
-  serializer: HandshakeSerializer<T>,
+fun <T : SignalProxyMessage> testSignalProxySerializerEncoded(
+  serializer: SignalProxySerializer<T>,
   data: T,
+  featureSet: FeatureSet = FeatureSet.all(),
   matcher: Matcher<T>? = null
 ) {
-  val after = serializer.deserialize(serializer.serialize(data))
+  val buffer = ChainedByteBuffer(limit = 16384)
+  QVariantListSerializer.serialize(buffer, serializer.serialize(data), featureSet)
+  val result = buffer.toBuffer()
+  val after = serializer.deserialize(QVariantListSerializer.deserialize(result, featureSet))
+  assertEquals(0, result.remaining())
   if (matcher != null) {
     assertThat(after, matcher)
   } else {

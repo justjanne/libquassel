@@ -58,7 +58,8 @@ enum class TimeSpec(
   OffsetFromUTC(3);
 
   companion object {
-    private val map = values().associateBy(TimeSpec::value)
+    private val map = enumValues<TimeSpec>()
+      .associateBy(TimeSpec::value)
 
     /**
      * Obtain a zone specification by its underlying representation

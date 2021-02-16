@@ -53,7 +53,8 @@ enum class NetworkLayerProtocol(
   UnknownNetworkLayerProtocol(0xFFu);
 
   companion object {
-    private val values = values().associateBy(NetworkLayerProtocol::value)
+    private val values = enumValues<NetworkLayerProtocol>()
+      .associateBy(NetworkLayerProtocol::value)
 
     /**
      * Obtain from underlying representation

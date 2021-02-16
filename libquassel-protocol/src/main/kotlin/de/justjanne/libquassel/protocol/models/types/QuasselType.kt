@@ -151,7 +151,8 @@ enum class QuasselType(
   }
 
   companion object {
-    private val values = values().associateBy(QuasselType::typeName)
+    private val values = enumValues<QuasselType>()
+      .associateBy(QuasselType::typeName)
 
     /**
      * Obtain a QtType by its standardized name

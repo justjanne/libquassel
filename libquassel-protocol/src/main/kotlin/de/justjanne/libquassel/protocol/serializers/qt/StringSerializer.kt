@@ -86,7 +86,10 @@ abstract class StringSerializer(
   /**
    * Deserialize a string from a given byte slice
    */
-  fun deserializeRaw(data: ByteBuffer): String {
+  fun deserializeRaw(data: ByteBuffer?): String {
+    if (data == null) {
+      return ""
+    }
     if (nullLimited) {
       data.limit(removeNullBytes(data.limit()))
     }

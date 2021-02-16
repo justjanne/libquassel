@@ -17,30 +17,28 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.serializers
+
+import de.justjanne.libquassel.protocol.models.SignalProxyMessage
+import de.justjanne.libquassel.protocol.variant.QVariantList
 
 /**
- * Mode for detecting the outgoing IP
+ * High-level serializer for signal proxy messages.
  */
-enum class DccIpDetectionMode(
+interface SignalProxySerializer<T : SignalProxyMessage> {
   /**
-   * Underlying representation
+   * The underlying signal proxy message type this serializer can (de-)serialize.
+   * Used for type-safe serializer autodiscovery.
    */
-  val value: UByte,
-) {
-  /** Automatic detection (network socket or USERHOST) */
-  Automatic(0x00u),
+  val type: Int
 
-  /** Manually specified IP */
-  Manual(0x01u);
+  /**
+   * Serialize a signal proxy message into a [QVariantList] (for further serialization)
+   */
+  fun serialize(data: T): QVariantList
 
-  companion object {
-    private val values = enumValues<DccIpDetectionMode>()
-      .associateBy(DccIpDetectionMode::value)
-
-    /**
-     * Obtain from underlying representation
-     */
-    fun of(value: UByte): DccIpDetectionMode? = values[value]
-  }
+  /**
+   * Deserialize a signal proxy message from a [QVariantList]
+   */
+  fun deserialize(data: QVariantList): T
 }

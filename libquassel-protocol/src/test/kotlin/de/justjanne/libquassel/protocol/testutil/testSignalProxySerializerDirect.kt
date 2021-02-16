@@ -16,31 +16,23 @@
  * You should have received a copy of the GNU General Public License along
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+package de.justjanne.libquassel.protocol.testutil
 
-package de.justjanne.libquassel.protocol.models
+import de.justjanne.libquassel.protocol.models.SignalProxyMessage
+import de.justjanne.libquassel.protocol.serializers.SignalProxySerializer
+import org.hamcrest.Matcher
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.jupiter.api.Assertions.assertEquals
 
-/**
- * Mode for detecting the outgoing IP
- */
-enum class DccIpDetectionMode(
-  /**
-   * Underlying representation
-   */
-  val value: UByte,
+fun <T : SignalProxyMessage> testSignalProxySerializerDirect(
+  serializer: SignalProxySerializer<T>,
+  data: T,
+  matcher: Matcher<T>? = null
 ) {
-  /** Automatic detection (network socket or USERHOST) */
-  Automatic(0x00u),
-
-  /** Manually specified IP */
-  Manual(0x01u);
-
-  companion object {
-    private val values = enumValues<DccIpDetectionMode>()
-      .associateBy(DccIpDetectionMode::value)
-
-    /**
-     * Obtain from underlying representation
-     */
-    fun of(value: UByte): DccIpDetectionMode? = values[value]
+  val after = serializer.deserialize(serializer.serialize(data))
+  if (matcher != null) {
+    assertThat(after, matcher)
+  } else {
+    assertEquals(data, after)
   }
 }

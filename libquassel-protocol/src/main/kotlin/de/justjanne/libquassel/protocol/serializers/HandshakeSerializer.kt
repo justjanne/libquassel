@@ -19,12 +19,13 @@
 
 package de.justjanne.libquassel.protocol.serializers
 
+import de.justjanne.libquassel.protocol.models.HandshakeMessage
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 
 /**
  * High-level serializer for handshake messages.
  */
-interface HandshakeSerializer<T> {
+interface HandshakeSerializer<T : HandshakeMessage> {
   /**
    * The underlying handshake message type this serializer can (de-)serialize.
    * Used for type-safe serializer autodiscovery.

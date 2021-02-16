@@ -45,7 +45,8 @@ enum class BufferActivity(
   Highlight(0x04u);
 
   companion object : Flags<UInt, BufferActivity> {
-    private val values = values().associateBy(BufferActivity::value)
+    private val values = enumValues<BufferActivity>()
+      .associateBy(BufferActivity::value)
     override val all: BufferActivities = values.values.toEnumSet()
   }
 }

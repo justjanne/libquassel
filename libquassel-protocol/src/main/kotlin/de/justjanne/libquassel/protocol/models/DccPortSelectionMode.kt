@@ -35,7 +35,8 @@ enum class DccPortSelectionMode(
   Manual(0x01u);
 
   companion object {
-    private val values = values().associateBy(DccPortSelectionMode::value)
+    private val values = enumValues<DccPortSelectionMode>()
+      .associateBy(DccPortSelectionMode::value)
 
     /**
      * Obtain from underlying representation

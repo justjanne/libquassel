@@ -19,9 +19,13 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.models.HandshakeMessage
+import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
+import de.justjanne.libquassel.protocol.serializers.SignalProxySerializer
 import de.justjanne.libquassel.protocol.serializers.qt.HandshakeMapSerializer
+import de.justjanne.libquassel.protocol.serializers.qt.QVariantListSerializer
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -57,7 +61,7 @@ fun <T> testDeserialize(
   assertEquals(data, after)
 }
 
-fun <T> testDeserialize(
+fun <T : HandshakeMessage> testDeserialize(
   serializer: HandshakeSerializer<T>,
   matcher: Matcher<in T>,
   buffer: ByteBuffer,
@@ -68,7 +72,7 @@ fun <T> testDeserialize(
   assertThat(after, matcher)
 }
 
-fun <T> testDeserialize(
+fun <T : HandshakeMessage> testDeserialize(
   serializer: HandshakeSerializer<T>,
   data: T,
   buffer: ByteBuffer,
@@ -76,5 +80,27 @@ fun <T> testDeserialize(
 ) {
   val map = deserialize(HandshakeMapSerializer, buffer, featureSet)
   val after = serializer.deserialize(map)
+  assertEquals(data, after)
+}
+
+fun <T : SignalProxyMessage> testDeserialize(
+  serializer: SignalProxySerializer<T>,
+  matcher: Matcher<in T>,
+  buffer: ByteBuffer,
+  featureSet: FeatureSet = FeatureSet.all()
+) {
+  val list = deserialize(QVariantListSerializer, buffer, featureSet)
+  val after = serializer.deserialize(list)
+  assertThat(after, matcher)
+}
+
+fun <T : SignalProxyMessage> testDeserialize(
+  serializer: SignalProxySerializer<T>,
+  data: T,
+  buffer: ByteBuffer,
+  featureSet: FeatureSet = FeatureSet.all()
+) {
+  val list = deserialize(QVariantListSerializer, buffer, featureSet)
+  val after = serializer.deserialize(list)
   assertEquals(data, after)
 }

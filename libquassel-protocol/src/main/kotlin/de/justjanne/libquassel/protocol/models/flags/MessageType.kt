@@ -125,7 +125,8 @@ enum class MessageType(
   Markerline(0x40000u);
 
   companion object : Flags<UInt, MessageType> {
-    private val values = values().associateBy(MessageType::value)
+    private val values = enumValues<MessageType>()
+      .associateBy(MessageType::value)
     override val all: MessageTypes = values.values.toEnumSet()
   }
 }

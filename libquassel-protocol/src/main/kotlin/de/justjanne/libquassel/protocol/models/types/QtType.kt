@@ -204,7 +204,8 @@ enum class QtType(
   }
 
   companion object {
-    private val values = values().associateBy(QtType::id)
+    private val values = enumValues<QtType>()
+      .associateBy(QtType::id)
 
     /**
      * Obtain a QtType by its underlying representation

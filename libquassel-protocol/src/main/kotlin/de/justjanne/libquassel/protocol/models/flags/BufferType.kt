@@ -50,7 +50,8 @@ enum class BufferType(
   Group(0x08u);
 
   companion object : Flags<UShort, BufferType> {
-    private val values = values().associateBy(BufferType::value)
+    private val values = enumValues<BufferType>()
+      .associateBy(BufferType::value)
     override val all: BufferTypes = values.values.toEnumSet()
   }
 }
