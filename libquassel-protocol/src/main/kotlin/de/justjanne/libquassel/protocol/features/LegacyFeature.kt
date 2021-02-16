@@ -1,20 +1,11 @@
 /*
- * Quasseldroid - Quassel client for Android
- *
+ * libquassel
  * Copyright (c) 2021 Janne Mareike Koschinski
  * Copyright (c) 2021 The Quassel Project
  *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 3 as published
- * by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package de.justjanne.libquassel.protocol.features
@@ -62,56 +53,60 @@ enum class LegacyFeature(
   PasswordChange(0x0010u, QuasselFeature.PasswordChange),
 
   /**
-   * IRCv3 capability negotiation, account tracking
+   * Support for IRCv3 capabilities and the IRCv3 account tag
    */
   CapNegotiation(0x0020u, QuasselFeature.CapNegotiation),
 
   /**
-   *  IRC server SSL validation
+   *  Support for validating the TLS connection to IRC servers
    */
   VerifyServerSSL(0x0040u, QuasselFeature.VerifyServerSSL),
 
   /**
-   *  IRC server custom message rate limits
+   *  Support for custom rate limits for connections to IRC servers
    */
   CustomRateLimits(0x0080u, QuasselFeature.CustomRateLimits),
   /**
-   *  (X)DCC direct file transfers (EXPERIMENTAL)
+   *  Experimental support for (X)DCC transfers
    */
   DccFileTransfer(0x0100u, QuasselFeature.DccFileTransfer),
 
   /**
-   * Timestamp formatting in away (e.g. %%hh:mm%%)
+   * Support for time formatting in away messages using QDateTime format
+   * surrounded by %%h:m:s ap%%
+   *
+   * See [QDateTime Documentation](https://doc.qt.io/qt-5/qdatetime.html#toString)
    */
   AwayFormatTimestamp(0x0200u, QuasselFeature.AwayFormatTimestamp),
 
   /**
-   * Whether or not the core supports auth backends.
+   * Support for customizable authentication backends
    */
   Authenticators(0x0400u, QuasselFeature.Authenticators),
 
   /**
-   * Sync buffer activity status
+   * Support for syncing the unread state of buffers
    */
   BufferActivitySync(0x0800u, QuasselFeature.BufferActivitySync),
 
   /**
-   * Core-Side highlight configuration and matching
+   * Support for handling and configuring highlights via the core
    */
   CoreSideHighlights(0x1000u, QuasselFeature.CoreSideHighlights),
 
   /**
-   * Show prefixes for senders in backlog
+   * Support for showing sender prefix modes in backlog messages
    */
   SenderPrefixes(0x2000u, QuasselFeature.SenderPrefixes),
 
   /**
-   * Supports RPC call disconnectFromCore to remotely disconnect a client
+   * Support for remotely disconnecting other clients of the same user via
+   * disconnectFromCore
    */
   RemoteDisconnect(0x4000u, QuasselFeature.RemoteDisconnect),
 
   /**
-   * Transmit features as list of strings
+   * Support for feature negotiation via a list of strings
    */
   ExtendedFeatures(0x8000u, QuasselFeature.ExtendedFeatures);
 

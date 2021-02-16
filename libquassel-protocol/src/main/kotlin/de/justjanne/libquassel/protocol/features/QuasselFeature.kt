@@ -1,20 +1,11 @@
 /*
- * Quasseldroid - Quassel client for Android
- *
+ * libquassel
  * Copyright (c) 2021 Janne Mareike Koschinski
  * Copyright (c) 2021 The Quassel Project
  *
- * This program is free software: you can redistribute it and/or modify it
- * under the terms of the GNU General Public License version 3 as published
- * by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License along
- * with this program. If not, see <http://www.gnu.org/licenses/>.
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package de.justjanne.libquassel.protocol.features
@@ -52,87 +43,93 @@ enum class QuasselFeature {
   PasswordChange,
 
   /**
-   * IRCv3 capability negotiation, account tracking
+   * Support for IRCv3 capabilities and the IRCv3 account tag
    */
   CapNegotiation,
 
   /**
-   * IRC server SSL validation
+   * Support for validating the TLS connection to IRC servers
    */
   VerifyServerSSL,
 
   /**
-   * IRC server custom message rate limits
+   * Support for custom rate limits for connections to IRC servers
    */
   CustomRateLimits,
 
   /**
-   *  (X)DCC direct file transfers (EXPERIMENTAL)
+   *  Experimental support for (X)DCC transfers
    */
   DccFileTransfer,
 
   /**
-   * Timestamp formatting in away (e.g. %%hh:mm%%)
+   * Support for time formatting in away messages using QDateTime format
+   * surrounded by %%h:m:s ap%%
+   *
+   * See [QDateTime Documentation](https://doc.qt.io/qt-5/qdatetime.html#toString)
    */
   AwayFormatTimestamp,
 
   /**
-   * Whether or not the core supports auth backends.
+   * Support for customizable authentication backends
    */
   Authenticators,
 
   /**
-   * Sync buffer activity status
+   * Support for syncing the unread state of buffers
    */
   BufferActivitySync,
 
   /**
-   * Core-Side highlight configuration and matching
+   * Support for handling and configuring highlights via the core
    */
   CoreSideHighlights,
 
   /**
-   * Show prefixes for senders in backlog
+   * Support for showing sender prefix modes in backlog messages
    */
   SenderPrefixes,
 
   /**
-   * Supports RPC call disconnectFromCore to remotely disconnect a client
+   * Support for remotely disconnecting other clients of the same user via
+   * disconnectFromCore
    */
   RemoteDisconnect,
 
   /**
-   * Transmit features as list of strings
+   * Support for feature negotiation via a list of strings
    */
   ExtendedFeatures,
 
   /**
-   * Serialize message time as 64-bit
+   * Support for 64-bit message time
    */
   LongTime,
 
   /**
-   * Real Name and Avatar URL in backlog
+   * Support for sender avatar and realname in backlog messages
    */
   RichMessages,
 
   /**
-   * Backlogmanager supports filtering backlog by messagetype
+   * Support for loading backlog filtered by
+   * [de.justjanne.libquassel.protocol.models.flags.MessageType] and
+   * [de.justjanne.libquassel.protocol.models.flags.MessageFlag]
    */
   BacklogFilterType,
 
   /**
-   * ECDSA keys for CertFP in identities
+   * Support for ECDSA keys for SASL EXTERNAL in identities
    */
   EcdsaCertfpKeys,
 
   /**
-   * 64-bit IDs for messages
+   * Support for 64-bit message ids
    */
   LongMessageId,
 
   /**
-   * CoreInfo dynamically updated using signals
+   * Support for dynamically updated core information
    */
   SyncedCoreInfo;
 
