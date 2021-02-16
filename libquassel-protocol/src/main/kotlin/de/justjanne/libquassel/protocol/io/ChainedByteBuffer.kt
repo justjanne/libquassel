@@ -204,3 +204,11 @@ class ChainedByteBuffer(
       buffer.bufferList[index++].duplicate().flip()
   }
 }
+
+inline fun ChainedByteBuffer.use(
+  function: (ChainedByteBuffer) -> Unit
+): ByteBuffer {
+  val buffer = ChainedByteBuffer()
+  function(buffer)
+  return buffer.toBuffer()
+}

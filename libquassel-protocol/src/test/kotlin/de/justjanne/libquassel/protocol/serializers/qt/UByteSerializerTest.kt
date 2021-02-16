@@ -20,7 +20,7 @@ package de.justjanne.libquassel.protocol.serializers.qt
 
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.testutil.qtSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -34,28 +34,28 @@ class UByteSerializerTest {
   }
 
   @Test
-  fun testZero() = qtSerializerTest(
+  fun testZero() = primitiveSerializerTest(
     UByteSerializer,
     0.toUByte(),
     byteBufferOf(0)
   )
 
   @Test
-  fun testMinimal() = qtSerializerTest(
+  fun testMinimal() = primitiveSerializerTest(
     UByteSerializer,
     UByte.MIN_VALUE,
     byteBufferOf(0)
   )
 
   @Test
-  fun testMaximal() = qtSerializerTest(
+  fun testMaximal() = primitiveSerializerTest(
     UByteSerializer,
     UByte.MAX_VALUE,
     byteBufferOf(255u)
   )
 
   @Test
-  fun testAllOnes() = qtSerializerTest(
+  fun testAllOnes() = primitiveSerializerTest(
     UByteSerializer,
     0.toUByte().inv(),
     byteBufferOf(255u)

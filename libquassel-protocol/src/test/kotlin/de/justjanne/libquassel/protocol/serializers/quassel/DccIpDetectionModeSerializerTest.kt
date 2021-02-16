@@ -21,7 +21,7 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 import de.justjanne.libquassel.protocol.models.DccIpDetectionMode
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -35,21 +35,21 @@ class DccIpDetectionModeSerializerTest {
   }
 
   @Test
-  fun testAutomatic() = quasselSerializerTest(
+  fun testAutomatic() = primitiveSerializerTest(
     DccIpDetectionModeSerializer,
     DccIpDetectionMode.Automatic,
     byteBufferOf(0x00u)
   )
 
   @Test
-  fun testManual() = quasselSerializerTest(
+  fun testManual() = primitiveSerializerTest(
     DccIpDetectionModeSerializer,
     DccIpDetectionMode.Manual,
     byteBufferOf(0x01u)
   )
 
   @Test
-  fun testNull() = quasselSerializerTest(
+  fun testNull() = primitiveSerializerTest(
     DccIpDetectionModeSerializer,
     null,
     byteBufferOf(0x00u),

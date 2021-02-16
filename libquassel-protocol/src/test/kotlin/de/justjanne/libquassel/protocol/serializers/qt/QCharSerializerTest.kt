@@ -21,7 +21,7 @@ package de.justjanne.libquassel.protocol.serializers.qt
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.BomMatcherChar
-import de.justjanne.libquassel.protocol.testutil.qtSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -35,7 +35,7 @@ class QCharSerializerTest {
   }
 
   @Test
-  fun testNull() = qtSerializerTest(
+  fun testNull() = primitiveSerializerTest(
     QCharSerializer,
     '\u0000',
     byteBufferOf(0, 0),
@@ -43,7 +43,7 @@ class QCharSerializerTest {
   )
 
   @Test
-  fun testAllOnes() = qtSerializerTest(
+  fun testAllOnes() = primitiveSerializerTest(
     QCharSerializer,
     '\uFFFF',
     byteBufferOf(-1, -1),
@@ -51,7 +51,7 @@ class QCharSerializerTest {
   )
 
   @Test
-  fun testBOM1() = qtSerializerTest(
+  fun testBOM1() = primitiveSerializerTest(
     QCharSerializer,
     '\uFFFE',
     byteBufferOf(-1, -2),
@@ -59,7 +59,7 @@ class QCharSerializerTest {
   )
 
   @Test
-  fun testBOM2() = qtSerializerTest(
+  fun testBOM2() = primitiveSerializerTest(
     QCharSerializer,
     '\uFEFF',
     byteBufferOf(-2, -1),
@@ -68,17 +68,17 @@ class QCharSerializerTest {
 
   @Test
   fun testAlphabet() {
-    for (value in 'a'..'z') qtSerializerTest(
+    for (value in 'a'..'z') primitiveSerializerTest(
       QCharSerializer,
       value,
       byteBufferOf(0, value.toByte())
     )
-    for (value in 'A'..'Z') qtSerializerTest(
+    for (value in 'A'..'Z') primitiveSerializerTest(
       QCharSerializer,
       value,
       byteBufferOf(0, value.toByte())
     )
-    for (value in '0'..'9') qtSerializerTest(
+    for (value in '0'..'9') primitiveSerializerTest(
       QCharSerializer,
       value,
       byteBufferOf(0, value.toByte())
@@ -87,7 +87,7 @@ class QCharSerializerTest {
 
   @Test
   fun testAlphabetExtended() {
-    for (value in listOf('ä', 'ö', 'ü', 'ß', 'æ', 'ø', 'µ')) qtSerializerTest(
+    for (value in listOf('ä', 'ö', 'ü', 'ß', 'æ', 'ø', 'µ')) primitiveSerializerTest(
       QCharSerializer,
       value
     )

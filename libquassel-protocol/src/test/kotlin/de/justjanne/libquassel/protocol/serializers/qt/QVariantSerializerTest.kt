@@ -18,10 +18,10 @@
  */
 package de.justjanne.libquassel.protocol.serializers.qt
 
+import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.serializers.NoSerializerForTypeException
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.testutil.deserialize
 import de.justjanne.libquassel.protocol.variant.QVariant_
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -39,9 +39,9 @@ class QVariantSerializerTest {
   @Test
   fun testUnregisteredQtType() {
     assertThrows<NoSerializerForTypeException> {
-      deserialize(
-        QVariantSerializer,
-        byteBufferOf(0x00u, 0x00u, 0x01u, 0x00u, 0x00u)
+      QVariantSerializer.deserialize(
+        byteBufferOf(0x00u, 0x00u, 0x01u, 0x00u, 0x00u),
+        FeatureSet.all()
       )
     }
   }
@@ -49,9 +49,9 @@ class QVariantSerializerTest {
   @Test
   fun testUnknownQtType() {
     assertThrows<NoSerializerForTypeException> {
-      deserialize(
-        QVariantSerializer,
-        byteBufferOf(0x00u, 0xFFu, 0x00u, 0x00u, 0x00u)
+      QVariantSerializer.deserialize(
+        byteBufferOf(0x00u, 0xFFu, 0x00u, 0x00u, 0x00u),
+        FeatureSet.all()
       )
     }
   }
@@ -59,8 +59,7 @@ class QVariantSerializerTest {
   @Test
   fun testUnregisteredQuasselType() {
     assertThrows<NoSerializerForTypeException> {
-      deserialize(
-        QVariantSerializer,
+      QVariantSerializer.deserialize(
         byteBufferOf(
           // QtType
           0x00u, 0x00u, 0x00u, 0x7Fu,
@@ -68,7 +67,8 @@ class QVariantSerializerTest {
           0x00u,
           // QuasselType length
           0x00u, 0x00u, 0x00u, 0x00u,
-        )
+        ),
+        FeatureSet.all()
       )
     }
   }
@@ -76,8 +76,7 @@ class QVariantSerializerTest {
   @Test
   fun testUnknownQuasselType() {
     assertThrows<NoSerializerForTypeException> {
-      deserialize(
-        QVariantSerializer,
+      QVariantSerializer.deserialize(
         byteBufferOf(
           // QtType
           0x00u, 0x00u, 0x00u, 0x7Fu,
@@ -87,7 +86,8 @@ class QVariantSerializerTest {
           0x00u, 0x00u, 0x00u, 0x03u,
           // "foo"
           0x66u, 0x6fu, 0x6fu
-        )
+        ),
+        FeatureSet.all()
       )
     }
   }

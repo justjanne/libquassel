@@ -21,7 +21,7 @@ package de.justjanne.libquassel.protocol.serializers.qt
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
-import de.justjanne.libquassel.protocol.testutil.qtSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.nio.ByteBuffer
@@ -36,7 +36,7 @@ class ByteBufferSerializerTest {
   }
 
   @Test
-  fun testBaseCase() = qtSerializerTest(
+  fun testBaseCase() = primitiveSerializerTest(
     ByteBufferSerializer,
     byteBufferOf(0),
     byteBufferOf(0, 0, 0, 1, 0),
@@ -44,7 +44,7 @@ class ByteBufferSerializerTest {
   )
 
   @Test
-  fun testNormal() = qtSerializerTest(
+  fun testNormal() = primitiveSerializerTest(
     ByteBufferSerializer,
     byteBufferOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
     byteBufferOf(0, 0, 0, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9),
@@ -52,7 +52,7 @@ class ByteBufferSerializerTest {
   )
 
   @Test
-  fun testEmpty() = qtSerializerTest(
+  fun testEmpty() = primitiveSerializerTest(
     ByteBufferSerializer,
     ByteBuffer.allocate(0),
     byteBufferOf(0, 0, 0, 0),
@@ -61,7 +61,7 @@ class ByteBufferSerializerTest {
 
   @Test
   fun testNull() {
-    qtSerializerTest(
+    primitiveSerializerTest(
       ByteBufferSerializer,
       null,
       byteBufferOf(0, 0, 0, 0),
@@ -69,7 +69,7 @@ class ByteBufferSerializerTest {
       serializeFeatureSet = null
     )
 
-    qtSerializerTest(
+    primitiveSerializerTest(
       ByteBufferSerializer,
       null,
       byteBufferOf(-1, -1, -1, -1),

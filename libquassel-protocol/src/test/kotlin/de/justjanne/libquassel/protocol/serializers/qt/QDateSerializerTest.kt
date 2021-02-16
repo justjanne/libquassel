@@ -21,7 +21,7 @@ package de.justjanne.libquassel.protocol.serializers.qt
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.TemporalMatcher
-import de.justjanne.libquassel.protocol.testutil.qtSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.threeten.bp.LocalDate
@@ -37,7 +37,7 @@ class QDateSerializerTest {
   }
 
   @Test
-  fun testEpoch() = qtSerializerTest(
+  fun testEpoch() = primitiveSerializerTest(
     QDateSerializer,
     LocalDate
       .of(1970, 1, 1),
@@ -46,7 +46,7 @@ class QDateSerializerTest {
   )
 
   @Test
-  fun testNormalCase() = qtSerializerTest(
+  fun testNormalCase() = primitiveSerializerTest(
     QDateSerializer,
     LocalDate
       .of(2019, Month.JANUARY, 15),

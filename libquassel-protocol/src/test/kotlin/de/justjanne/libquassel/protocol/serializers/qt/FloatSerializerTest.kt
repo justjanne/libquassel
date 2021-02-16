@@ -20,7 +20,7 @@ package de.justjanne.libquassel.protocol.serializers.qt
 
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.testutil.qtSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -34,42 +34,42 @@ class FloatSerializerTest {
   }
 
   @Test
-  fun testZero() = qtSerializerTest(
+  fun testZero() = primitiveSerializerTest(
     FloatSerializer,
     0f,
     byteBufferOf(0x00u, 0x00u, 0x00u, 0x00u)
   )
 
   @Test
-  fun testMinimal() = qtSerializerTest(
+  fun testMinimal() = primitiveSerializerTest(
     FloatSerializer,
     Float.MIN_VALUE,
     byteBufferOf(0x00u, 0x00u, 0x00u, 0x01u)
   )
 
   @Test
-  fun testMaximal() = qtSerializerTest(
+  fun testMaximal() = primitiveSerializerTest(
     FloatSerializer,
     Float.MAX_VALUE,
     byteBufferOf(0x7Fu, 0x7Fu, 0xFFu, 0xFFu)
   )
 
   @Test
-  fun testInfinityPositive() = qtSerializerTest(
+  fun testInfinityPositive() = primitiveSerializerTest(
     FloatSerializer,
     Float.POSITIVE_INFINITY,
     byteBufferOf(0x7Fu, 0x80u, 0x00u, 0x00u)
   )
 
   @Test
-  fun testInfinityNegative() = qtSerializerTest(
+  fun testInfinityNegative() = primitiveSerializerTest(
     FloatSerializer,
     Float.NEGATIVE_INFINITY,
     byteBufferOf(0xFFu, 0x80u, 0x00u, 0x00u)
   )
 
   @Test
-  fun testNotANumber() = qtSerializerTest(
+  fun testNotANumber() = primitiveSerializerTest(
     FloatSerializer,
     Float.NaN,
     byteBufferOf(0x7Fu, 0xC0u, 0x00u, 0x00u)

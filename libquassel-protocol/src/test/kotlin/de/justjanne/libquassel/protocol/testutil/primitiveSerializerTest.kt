@@ -19,12 +19,18 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.io.use
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
+import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import org.hamcrest.Matcher
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.jupiter.api.Assertions.assertEquals
 import java.nio.ByteBuffer
 
-inline fun <reified T : Any?> qtSerializerTest(
+inline fun <reified T : Any?> primitiveSerializerTest(
   type: QtType,
   value: T,
   encoded: ByteBuffer? = null,
@@ -32,26 +38,35 @@ inline fun <reified T : Any?> qtSerializerTest(
   featureSets: List<FeatureSet> = listOf(FeatureSet.none(), FeatureSet.all()),
   deserializeFeatureSet: FeatureSet? = FeatureSet.all(),
   serializeFeatureSet: FeatureSet? = FeatureSet.all(),
-) {
-  if (encoded != null) {
-    if (deserializeFeatureSet != null) {
-      if (matcher != null) {
-        testDeserialize(type.serializer<T>(), matcher(value), encoded.rewind(), deserializeFeatureSet)
-      } else {
-        testDeserialize(type.serializer(), value, encoded.rewind(), deserializeFeatureSet)
-      }
-    }
-    if (serializeFeatureSet != null) {
-      testSerialize(type.serializer(), value, encoded.rewind(), serializeFeatureSet)
-    }
-  }
-  for (featureSet in featureSets) {
-    testPrimitiveSerializerDirect(type.serializer(), value, featureSet, matcher?.invoke(value))
-    testQtSerializerVariant(type, value, featureSet, matcher?.invoke(value))
-  }
-}
+) = primitiveSerializerTest(
+  type.serializer(),
+  value,
+  encoded,
+  matcher,
+  featureSets,
+  deserializeFeatureSet,
+  serializeFeatureSet
+)
 
-inline fun <reified T : Any?> qtSerializerTest(
+inline fun <reified T : Any?> primitiveSerializerTest(
+  type: QuasselType,
+  value: T,
+  encoded: ByteBuffer? = null,
+  noinline matcher: ((T) -> Matcher<T>)? = null,
+  featureSets: List<FeatureSet> = listOf(FeatureSet.none(), FeatureSet.all()),
+  deserializeFeatureSet: FeatureSet? = FeatureSet.all(),
+  serializeFeatureSet: FeatureSet? = FeatureSet.all(),
+) = primitiveSerializerTest(
+  type.serializer(),
+  value,
+  encoded,
+  matcher,
+  featureSets,
+  deserializeFeatureSet,
+  serializeFeatureSet
+)
+
+inline fun <reified T : Any?> primitiveSerializerTest(
   serializer: PrimitiveSerializer<T>,
   value: T,
   encoded: ByteBuffer? = null,
@@ -62,14 +77,19 @@ inline fun <reified T : Any?> qtSerializerTest(
 ) {
   if (encoded != null) {
     if (deserializeFeatureSet != null) {
+      val after = serializer.deserialize(encoded.rewind(), deserializeFeatureSet)
+      assertEquals(0, encoded.remaining())
       if (matcher != null) {
-        testDeserialize(serializer, matcher(value), encoded.rewind(), deserializeFeatureSet)
+        assertThat(after, matcher(value))
       } else {
-        testDeserialize(serializer, value, encoded.rewind(), deserializeFeatureSet)
+        assertEquals(value, after)
       }
     }
     if (serializeFeatureSet != null) {
-      testSerialize(serializer, value, encoded.rewind(), serializeFeatureSet)
+      val after = ChainedByteBuffer().use {
+        serializer.serialize(it, value, serializeFeatureSet)
+      }
+      assertThat(after, ByteBufferMatcher(encoded.rewind()))
     }
   }
   for (featureSet in featureSets) {

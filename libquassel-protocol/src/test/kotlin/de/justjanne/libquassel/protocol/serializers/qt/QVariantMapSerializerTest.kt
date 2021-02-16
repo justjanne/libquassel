@@ -21,7 +21,7 @@ package de.justjanne.libquassel.protocol.serializers.qt
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.MapMatcher
-import de.justjanne.libquassel.protocol.testutil.qtSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.qVariant
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -37,14 +37,14 @@ class QVariantMapSerializerTest {
   }
 
   @Test
-  fun testEmpty() = qtSerializerTest(
+  fun testEmpty() = primitiveSerializerTest(
     QVariantMapSerializer,
     mapOf(),
     byteBufferOf(0, 0, 0, 0)
   )
 
   @Test
-  fun testNormal() = qtSerializerTest(
+  fun testNormal() = primitiveSerializerTest(
     QVariantMapSerializer,
     mapOf(
       "Username" to qVariant("AzureDiamond", QtType.QString),
@@ -156,7 +156,7 @@ class QVariantMapSerializerTest {
   )
 
   @Test
-  fun testNullKey() = qtSerializerTest(
+  fun testNullKey() = primitiveSerializerTest(
     QVariantMapSerializer,
     mapOf(
       "" to qVariant<String?>(null, QtType.QString)

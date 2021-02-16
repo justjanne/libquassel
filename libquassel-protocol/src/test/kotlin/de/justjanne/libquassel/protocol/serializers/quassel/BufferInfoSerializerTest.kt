@@ -26,7 +26,7 @@ import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -40,7 +40,7 @@ class BufferInfoSerializerTest {
   }
 
   @Test
-  fun testBaseCase() = quasselSerializerTest(
+  fun testBaseCase() = primitiveSerializerTest(
     BufferInfoSerializer,
     BufferInfo(
       BufferId(-1),
@@ -72,7 +72,7 @@ class BufferInfoSerializerTest {
   )
 
   @Test
-  fun testNormal() = quasselSerializerTest(
+  fun testNormal() = primitiveSerializerTest(
     BufferInfoSerializer,
     BufferInfo(
       BufferId.MAX_VALUE,

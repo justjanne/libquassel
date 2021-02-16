@@ -21,7 +21,7 @@ package de.justjanne.libquassel.protocol.serializers.qt
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.TemporalMatcher
-import de.justjanne.libquassel.protocol.testutil.qtSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.threeten.bp.LocalTime
@@ -36,7 +36,7 @@ class QTimeSerializerTest {
   }
 
   @Test
-  fun testEpoch() = qtSerializerTest(
+  fun testEpoch() = primitiveSerializerTest(
     QTimeSerializer,
     LocalTime
       .of(0, 0),
@@ -45,7 +45,7 @@ class QTimeSerializerTest {
   )
 
   @Test
-  fun testNormalCase() = qtSerializerTest(
+  fun testNormalCase() = primitiveSerializerTest(
     QTimeSerializer,
     LocalTime
       .of(20, 25),

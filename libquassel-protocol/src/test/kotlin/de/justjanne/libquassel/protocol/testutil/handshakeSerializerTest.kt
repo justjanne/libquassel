@@ -19,34 +19,53 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.io.use
 import de.justjanne.libquassel.protocol.models.HandshakeMessage
-import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
+import de.justjanne.libquassel.protocol.serializers.HandshakeMessageSerializer
+import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import org.hamcrest.Matcher
+import org.hamcrest.MatcherAssert.assertThat
 import java.nio.ByteBuffer
+import kotlin.test.assertEquals
 
-fun <T : HandshakeMessage> handshakeSerializerTest(
-  serializer: HandshakeSerializer<T>,
+inline fun <reified T : HandshakeMessage> handshakeSerializerTest(
   value: T,
   encoded: ByteBuffer? = null,
-  matcher: ((T) -> Matcher<T>)? = null,
+  noinline matcher: ((T?) -> Matcher<T?>)? = null,
   featureSets: List<FeatureSet> = listOf(FeatureSet.none(), FeatureSet.all()),
   deserializeFeatureSet: FeatureSet? = FeatureSet.all(),
   serializeFeatureSet: FeatureSet? = FeatureSet.all(),
 ) {
   if (encoded != null) {
     if (deserializeFeatureSet != null) {
+      val after = HandshakeMessageSerializer.deserialize(encoded, deserializeFeatureSet) as? T
       if (matcher != null) {
-        testDeserialize(serializer, matcher(value), encoded.rewind(), deserializeFeatureSet)
+        assertThat(after, matcher(value))
       } else {
-        testDeserialize(serializer, value, encoded.rewind(), deserializeFeatureSet)
+        assertEquals(after, value)
       }
     }
     if (serializeFeatureSet != null) {
-      testSerialize(serializer, value, encoded.rewind(), serializeFeatureSet)
+      assertThat(
+        ChainedByteBuffer().use {
+          HandshakeMessageSerializer.serialize(it, value, serializeFeatureSet)
+        },
+        ByteBufferMatcher(encoded.rewind())
+      )
     }
   }
   for (featureSet in featureSets) {
-    testHandshakeSerializerDirect(serializer, value)
-    testHandshakeSerializerEncoded(serializer, value, featureSet)
+    val after = HandshakeMessageSerializer.deserialize(
+      ChainedByteBuffer().use {
+        HandshakeMessageSerializer.serialize(it, value, featureSet)
+      },
+      featureSet
+    ) as? T
+    if (matcher != null) {
+      assertThat(after, matcher(value))
+    } else {
+      assertEquals(value, after)
+    }
   }
 }

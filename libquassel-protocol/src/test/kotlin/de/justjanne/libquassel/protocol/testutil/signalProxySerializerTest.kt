@@ -19,34 +19,53 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.io.use
 import de.justjanne.libquassel.protocol.models.SignalProxyMessage
-import de.justjanne.libquassel.protocol.serializers.SignalProxySerializer
+import de.justjanne.libquassel.protocol.serializers.SignalProxyMessageSerializer
+import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import org.hamcrest.Matcher
+import org.hamcrest.MatcherAssert.assertThat
 import java.nio.ByteBuffer
+import kotlin.test.assertEquals
 
-fun <T : SignalProxyMessage> signalProxySerializerTest(
-  serializer: SignalProxySerializer<T>,
+inline fun <reified T : SignalProxyMessage> signalProxySerializerTest(
   value: T,
   encoded: ByteBuffer? = null,
-  matcher: ((T) -> Matcher<T>)? = null,
+  noinline matcher: ((T?) -> Matcher<T?>)? = null,
   featureSets: List<FeatureSet> = listOf(FeatureSet.none(), FeatureSet.all()),
   deserializeFeatureSet: FeatureSet? = FeatureSet.all(),
   serializeFeatureSet: FeatureSet? = FeatureSet.all(),
 ) {
   if (encoded != null) {
     if (deserializeFeatureSet != null) {
+      val after = SignalProxyMessageSerializer.deserialize(encoded, deserializeFeatureSet) as? T
       if (matcher != null) {
-        testDeserialize(serializer, matcher(value), encoded.rewind(), deserializeFeatureSet)
+        assertThat(after, matcher(value))
       } else {
-        testDeserialize(serializer, value, encoded.rewind(), deserializeFeatureSet)
+        assertEquals(after, value)
       }
     }
     if (serializeFeatureSet != null) {
-      testSerialize(serializer, value, encoded.rewind(), serializeFeatureSet)
+      assertThat(
+        ChainedByteBuffer().use {
+          SignalProxyMessageSerializer.serialize(it, value, serializeFeatureSet)
+        },
+        ByteBufferMatcher(encoded.rewind())
+      )
     }
   }
   for (featureSet in featureSets) {
-    testSignalProxySerializerDirect(serializer, value)
-    testSignalProxySerializerEncoded(serializer, value, featureSet)
+    val after = SignalProxyMessageSerializer.deserialize(
+      ChainedByteBuffer().use {
+        SignalProxyMessageSerializer.serialize(it, value, featureSet)
+      },
+      featureSet
+    ) as? T
+    if (matcher != null) {
+      assertThat(after, matcher(value))
+    } else {
+      assertEquals(value, after)
+    }
   }
 }

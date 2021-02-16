@@ -21,7 +21,7 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -35,28 +35,28 @@ class NetworkIdSerializerTest {
   }
 
   @Test
-  fun testZero() = quasselSerializerTest(
+  fun testZero() = primitiveSerializerTest(
     NetworkIdSerializer,
     NetworkId(0),
     byteBufferOf(0, 0, 0, 0)
   )
 
   @Test
-  fun testMinimal() = quasselSerializerTest(
+  fun testMinimal() = primitiveSerializerTest(
     NetworkIdSerializer,
     NetworkId.MIN_VALUE,
     byteBufferOf(-128, 0, 0, 0)
   )
 
   @Test
-  fun testMaximal() = quasselSerializerTest(
+  fun testMaximal() = primitiveSerializerTest(
     NetworkIdSerializer,
     NetworkId.MAX_VALUE,
     byteBufferOf(127, -1, -1, -1)
   )
 
   @Test
-  fun testAllOnes() = quasselSerializerTest(
+  fun testAllOnes() = primitiveSerializerTest(
     NetworkIdSerializer,
     NetworkId(0.inv()),
     byteBufferOf(-1, -1, -1, -1)

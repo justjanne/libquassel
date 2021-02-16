@@ -21,7 +21,7 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -35,7 +35,7 @@ class PeerPtrSerializerTest {
   }
 
   @Test
-  fun testZero() = quasselSerializerTest(
+  fun testZero() = primitiveSerializerTest(
     PeerPtrSerializer,
     0uL,
     byteBufferOf(0, 0, 0, 0, 0, 0, 0, 0),
@@ -43,7 +43,7 @@ class PeerPtrSerializerTest {
   )
 
   @Test
-  fun testMinimal() = quasselSerializerTest(
+  fun testMinimal() = primitiveSerializerTest(
     PeerPtrSerializer,
     ULong.MIN_VALUE,
     byteBufferOf(0, 0, 0, 0, 0, 0, 0, 0),
@@ -51,7 +51,7 @@ class PeerPtrSerializerTest {
   )
 
   @Test
-  fun testMaximal() = quasselSerializerTest(
+  fun testMaximal() = primitiveSerializerTest(
     PeerPtrSerializer,
     ULong.MAX_VALUE,
     byteBufferOf(-1, -1, -1, -1, -1, -1, -1, -1),
@@ -59,7 +59,7 @@ class PeerPtrSerializerTest {
   )
 
   @Test
-  fun testAllOnes() = quasselSerializerTest(
+  fun testAllOnes() = primitiveSerializerTest(
     PeerPtrSerializer,
     0uL.inv(),
     byteBufferOf(-1, -1, -1, -1, -1, -1, -1, -1),

@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Test
 class ClientInitSerializerTest {
   @Test
   fun testSimple() = handshakeSerializerTest(
-    ClientInitSerializer,
     HandshakeMessage.ClientInit(
       clientVersion = "Quasseldroid test",
       buildDate = "Never",
@@ -68,7 +67,6 @@ class ClientInitSerializerTest {
 
   @Test
   fun testRealistic() = handshakeSerializerTest(
-    ClientInitSerializer,
     HandshakeMessage.ClientInit(
       clientVersion = "Quasseldroid <a href=\"https://git.kuschku.de/justJanne/QuasselDroid-ng/commit/" +
         "b622ad63056b6054b06e09f8e1f1ef2b0c3aaf9a\">v1.3.3</a>",

@@ -22,7 +22,7 @@ import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.models.ids.MsgId
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -36,7 +36,7 @@ class MsgIdSerializerTest {
   }
 
   @Test
-  fun testZero() = quasselSerializerTest(
+  fun testZero() = primitiveSerializerTest(
     MsgIdSerializer,
     MsgId(0),
     byteBufferOf(0, 0, 0, 0, 0, 0, 0, 0),
@@ -44,7 +44,7 @@ class MsgIdSerializerTest {
   )
 
   @Test
-  fun testMinimal() = quasselSerializerTest(
+  fun testMinimal() = primitiveSerializerTest(
     MsgIdSerializer,
     MsgId.MIN_VALUE,
     byteBufferOf(-128, 0, 0, 0, 0, 0, 0, 0),
@@ -52,7 +52,7 @@ class MsgIdSerializerTest {
   )
 
   @Test
-  fun testMaximal() = quasselSerializerTest(
+  fun testMaximal() = primitiveSerializerTest(
     MsgIdSerializer,
     MsgId.MAX_VALUE,
     byteBufferOf(127, -1, -1, -1, -1, -1, -1, -1),
@@ -60,7 +60,7 @@ class MsgIdSerializerTest {
   )
 
   @Test
-  fun testAllOnes() = quasselSerializerTest(
+  fun testAllOnes() = primitiveSerializerTest(
     MsgIdSerializer,
     MsgId(0.inv()),
     byteBufferOf(-1, -1, -1, -1, -1, -1, -1, -1),

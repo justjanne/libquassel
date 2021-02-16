@@ -32,7 +32,7 @@ import de.justjanne.libquassel.protocol.models.ids.MsgId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.threeten.bp.Instant
@@ -47,7 +47,7 @@ class MessageSerializerTest {
   }
 
   @Test
-  fun testEmpty() = quasselSerializerTest(
+  fun testEmpty() = primitiveSerializerTest(
     MessageSerializer,
     Message(
       MsgId(-1),
@@ -102,7 +102,7 @@ class MessageSerializerTest {
   )
 
   @Test
-  fun testBaseCase() = quasselSerializerTest(
+  fun testBaseCase() = primitiveSerializerTest(
     MessageSerializer,
     Message(
       MsgId(-1),
@@ -168,7 +168,7 @@ class MessageSerializerTest {
   )
 
   @Test
-  fun testNormal() = quasselSerializerTest(
+  fun testNormal() = primitiveSerializerTest(
     MessageSerializer,
     Message(
       MsgId(Int.MAX_VALUE.toLong()),
@@ -261,7 +261,7 @@ class MessageSerializerTest {
   )
 
   @Test
-  fun testExtreme() = quasselSerializerTest(
+  fun testExtreme() = primitiveSerializerTest(
     MessageSerializer,
     Message(
       MsgId.MAX_VALUE,

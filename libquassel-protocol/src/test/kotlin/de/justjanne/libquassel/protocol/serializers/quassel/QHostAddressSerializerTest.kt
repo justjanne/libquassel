@@ -20,7 +20,7 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
-import de.justjanne.libquassel.protocol.testutil.quasselSerializerTest
+import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.net.Inet4Address
@@ -37,7 +37,7 @@ class QHostAddressSerializerTest {
   }
 
   @Test
-  fun testIpv4() = quasselSerializerTest(
+  fun testIpv4() = primitiveSerializerTest(
     QHostAddressSerializer,
     Inet4Address.getByAddress(
       byteArrayOf(
@@ -51,7 +51,7 @@ class QHostAddressSerializerTest {
   )
 
   @Test
-  fun testIpv6() = quasselSerializerTest(
+  fun testIpv6() = primitiveSerializerTest(
     QHostAddressSerializer,
     Inet6Address.getByAddress(
       ubyteArrayOf(

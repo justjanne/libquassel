@@ -19,8 +19,13 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.io.use
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
+import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import org.hamcrest.Matcher
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.jupiter.api.Assertions.assertEquals
 import java.nio.ByteBuffer
 
 fun <T : Any?> serializerTest(
@@ -33,14 +38,19 @@ fun <T : Any?> serializerTest(
 ) {
   if (encoded != null) {
     if (deserializeFeatureSet != null) {
+      val after = serializer.deserialize(encoded.rewind(), deserializeFeatureSet)
+      assertEquals(0, encoded.remaining())
       if (matcher != null) {
-        testDeserialize(serializer, matcher(value), encoded.rewind(), deserializeFeatureSet)
+        assertThat(after, matcher(value))
       } else {
-        testDeserialize(serializer, value, encoded.rewind(), deserializeFeatureSet)
+        assertEquals(value, after)
       }
     }
     if (serializeFeatureSet != null) {
-      testSerialize(serializer, value, encoded.rewind(), serializeFeatureSet)
+      val after = ChainedByteBuffer().use {
+        serializer.serialize(it, value, serializeFeatureSet)
+      }
+      assertThat(after, ByteBufferMatcher(encoded.rewind()))
     }
   }
 }
