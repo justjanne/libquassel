@@ -10,6 +10,7 @@
 
 package de.justjanne.libquassel.protocol.io
 
+import de.justjanne.libquassel.protocol.util.withFlip
 import java.nio.ByteBuffer
 import java.util.LinkedList
 
@@ -192,6 +193,6 @@ class ChainedByteBuffer(
       index < buffer.bufferList.size
 
     override fun next(): ByteBuffer =
-      buffer.bufferList[index++].duplicate().flip()
+      buffer.bufferList[index++].duplicate().withFlip()
   }
 }

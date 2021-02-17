@@ -25,6 +25,7 @@ import de.justjanne.libquassel.protocol.testutil.matchers.BomMatcherString
 import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import de.justjanne.libquassel.protocol.testutil.testPrimitiveSerializerDirect
 import de.justjanne.libquassel.protocol.testutil.testPrimitiveSerializerVariant
+import de.justjanne.libquassel.protocol.util.withRewind
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -50,12 +51,12 @@ class StringSerializerTest {
         val bufferUtf8 = StringSerializerUtf8.serializeRaw(it)
         testPrimitiveSerializerDirect(ByteBufferSerializer, bufferUtf8, matcher = ByteBufferMatcher(bufferUtf8))
         testPrimitiveSerializerVariant(QtType.QByteArray, bufferUtf8, matcher = ByteBufferMatcher(bufferUtf8))
-        assertEquals(it, StringSerializerUtf8.deserializeRaw(bufferUtf8.rewind()))
+        assertEquals(it, StringSerializerUtf8.deserializeRaw(bufferUtf8.withRewind()))
 
         val bufferUtf16 = StringSerializerUtf16.serializeRaw(it)
         testPrimitiveSerializerDirect(ByteBufferSerializer, bufferUtf16, matcher = ByteBufferMatcher(bufferUtf16))
         testPrimitiveSerializerVariant(QtType.QByteArray, bufferUtf16, matcher = ByteBufferMatcher(bufferUtf16))
-        assertThat(StringSerializerUtf16.deserializeRaw(bufferUtf16.rewind()), BomMatcherString(it))
+        assertThat(StringSerializerUtf16.deserializeRaw(bufferUtf16.withRewind()), BomMatcherString(it))
       }
     }
   }
@@ -80,7 +81,7 @@ class StringSerializerTest {
     val bufferAscii = StringSerializerAscii.serializeRaw(data)
     testPrimitiveSerializerDirect(ByteBufferSerializer, bufferAscii, matcher = ByteBufferMatcher(bufferAscii))
     testPrimitiveSerializerVariant(QtType.QByteArray, bufferAscii, matcher = ByteBufferMatcher(bufferAscii))
-    assertEquals(data, StringSerializerAscii.deserializeRaw(bufferAscii.rewind()))
+    assertEquals(data, StringSerializerAscii.deserializeRaw(bufferAscii.withRewind()))
 
     testUtf(data)
   }
@@ -1314,7 +1315,7 @@ class StringSerializerTest {
     val bufferAscii = StringSerializerAscii.serializeRaw(data)
     testPrimitiveSerializerDirect(ByteBufferSerializer, bufferAscii, matcher = ByteBufferMatcher(bufferAscii))
     testPrimitiveSerializerVariant(QtType.QByteArray, bufferAscii, matcher = ByteBufferMatcher(bufferAscii))
-    assertEquals(data, StringSerializerAscii.deserializeRaw(bufferAscii.rewind()))
+    assertEquals(data, StringSerializerAscii.deserializeRaw(bufferAscii.withRewind()))
   }
 
   private fun testUtf(data: String) {
@@ -1323,7 +1324,7 @@ class StringSerializerTest {
     val bufferUtf8 = StringSerializerUtf8.serializeRaw(data)
     testPrimitiveSerializerDirect(ByteBufferSerializer, bufferUtf8, matcher = ByteBufferMatcher(bufferUtf8))
     testPrimitiveSerializerVariant(QtType.QByteArray, bufferUtf8, matcher = ByteBufferMatcher(bufferUtf8))
-    assertEquals(data, StringSerializerUtf8.deserializeRaw(bufferUtf8.rewind()))
+    assertEquals(data, StringSerializerUtf8.deserializeRaw(bufferUtf8.withRewind()))
 
     // testPrimitiveSerializerDirect(StringSerializerUtf16, data, matcher = BomMatcherString(data))
     // testPrimitiveSerializerVariant(StringSerializerUtf16, data, matcher = BomMatcherString(data))

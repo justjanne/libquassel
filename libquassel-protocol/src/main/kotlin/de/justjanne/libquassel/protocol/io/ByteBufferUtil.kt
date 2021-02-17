@@ -10,6 +10,7 @@
 
 package de.justjanne.libquassel.protocol.io
 
+import de.justjanne.libquassel.protocol.util.withFlip
 import java.nio.ByteBuffer
 
 /**
@@ -44,7 +45,7 @@ fun copyData(from: ByteBuffer, to: ByteBuffer, desiredAmount: Int) {
 fun copyData(from: ByteBuffer, desiredAmount: Int): ByteBuffer {
   val to = ByteBuffer.allocate(minOf(from.remaining(), desiredAmount))
   copyData(from, to, desiredAmount)
-  return to.flip()
+  return to.withFlip()
 }
 
 /**

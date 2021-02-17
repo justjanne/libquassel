@@ -20,6 +20,7 @@ package de.justjanne.libquassel.protocol.testutil.matchers
 
 import de.justjanne.libquassel.protocol.io.contentToString
 import de.justjanne.libquassel.protocol.io.isEmpty
+import de.justjanne.libquassel.protocol.util.withRewind
 import org.hamcrest.BaseMatcher
 import org.hamcrest.Description
 import java.nio.ByteBuffer
@@ -40,7 +41,7 @@ class ByteBufferMatcher(buffer: ByteBuffer?) : BaseMatcher<ByteBuffer>() {
 
   override fun describeMismatch(item: Any?, description: Description?) {
     description?.appendText("was ")
-    description?.appendText((item as? ByteBuffer)?.rewind()?.contentToString())
+    description?.appendText((item as? ByteBuffer)?.withRewind()?.contentToString())
   }
 
   override fun matches(item: Any?): Boolean {
@@ -50,6 +51,6 @@ class ByteBufferMatcher(buffer: ByteBuffer?) : BaseMatcher<ByteBuffer>() {
       return true
     }
 
-    return actual?.rewind()?.contentToString() == expected?.rewind()?.contentToString()
+    return actual?.withRewind()?.contentToString() == expected?.withRewind()?.contentToString()
   }
 }

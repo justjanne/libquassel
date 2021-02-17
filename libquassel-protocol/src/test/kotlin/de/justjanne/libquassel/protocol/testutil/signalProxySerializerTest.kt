@@ -23,6 +23,7 @@ import de.justjanne.libquassel.protocol.io.useChainedByteBuffer
 import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.serializers.SignalProxyMessageSerializer
 import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
+import de.justjanne.libquassel.protocol.util.withRewind
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
 import java.nio.ByteBuffer
@@ -50,7 +51,7 @@ inline fun <reified T : SignalProxyMessage> signalProxySerializerTest(
         useChainedByteBuffer {
           SignalProxyMessageSerializer.serialize(it, value, serializeFeatureSet)
         },
-        ByteBufferMatcher(encoded.rewind())
+        ByteBufferMatcher(encoded.withRewind())
       )
     }
   }

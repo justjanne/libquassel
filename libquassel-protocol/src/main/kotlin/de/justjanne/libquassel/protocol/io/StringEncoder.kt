@@ -10,6 +10,8 @@
 
 package de.justjanne.libquassel.protocol.io
 
+import de.justjanne.libquassel.protocol.util.withClear
+import de.justjanne.libquassel.protocol.util.withFlip
 import java.nio.ByteBuffer
 import java.nio.CharBuffer
 import java.nio.charset.Charset
@@ -24,7 +26,7 @@ class StringEncoder(charset: Charset) {
 
   private fun charBuffer(length: Int): CharBuffer {
     if (length < 1024) {
-      return charBuffer.clear()
+      return charBuffer.withClear()
     } else {
       return CharBuffer.allocate(length)
     }
@@ -83,7 +85,7 @@ class StringEncoder(charset: Charset) {
       }
     }
     source.limit(oldlimit)
-    return charBuffer.flip()
+    return charBuffer.withFlip()
   }
 
   /**

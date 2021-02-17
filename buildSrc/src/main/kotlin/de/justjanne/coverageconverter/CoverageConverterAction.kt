@@ -35,7 +35,7 @@ internal class CoverageConverterAction(
       file.delete()
     }
     val source = CoverageConverterPlugin::class.java.getResourceAsStream("/coverageconverter/$name")
-    file.writeBytes(source.readAllBytes())
+    file.writeBytes(source.readBytes())
     return file
   }
 

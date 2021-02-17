@@ -22,6 +22,7 @@ import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.useChainedByteBuffer
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
+import de.justjanne.libquassel.protocol.util.withRewind
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -37,7 +38,7 @@ fun <T : Any?> serializerTest(
 ) {
   if (encoded != null) {
     if (deserializeFeatureSet != null) {
-      val after = serializer.deserialize(encoded.rewind(), deserializeFeatureSet)
+      val after = serializer.deserialize(encoded.withRewind(), deserializeFeatureSet)
       assertEquals(0, encoded.remaining())
       if (matcher != null) {
         assertThat(after, matcher(value))
@@ -49,7 +50,7 @@ fun <T : Any?> serializerTest(
       val after = useChainedByteBuffer {
         serializer.serialize(it, value, serializeFeatureSet)
       }
-      assertThat(after, ByteBufferMatcher(encoded.rewind()))
+      assertThat(after, ByteBufferMatcher(encoded.withRewind()))
     }
   }
 }
