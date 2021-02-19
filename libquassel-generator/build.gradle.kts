@@ -8,12 +8,12 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-plugins {
-  id("com.vanniktech.maven.publish")
-  id("com.google.devtools.ksp") version "1.4.30-1.0.0-alpha02"
+repositories {
+  google()
 }
 
 dependencies {
-  api(project(":libquassel-protocol"))
-  ksp(project(":libquassel-generator"))
+  implementation("com.google.devtools.ksp:symbol-processing-api:1.4.30-1.0.0-alpha02")
+  implementation(project(":libquassel-annotations"))
+  implementation("com.squareup", "kotlinpoet", "1.7.2")
 }

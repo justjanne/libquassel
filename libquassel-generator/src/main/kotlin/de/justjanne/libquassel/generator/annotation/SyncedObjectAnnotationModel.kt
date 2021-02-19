@@ -8,12 +8,8 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-plugins {
-  id("com.vanniktech.maven.publish")
-  id("com.google.devtools.ksp") version "1.4.30-1.0.0-alpha02"
-}
+package de.justjanne.libquassel.generator.annotation
 
-dependencies {
-  api(project(":libquassel-protocol"))
-  ksp(project(":libquassel-generator"))
-}
+data class SyncedObjectAnnotationModel(
+  val name: String?
+)

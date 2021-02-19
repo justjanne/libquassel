@@ -30,6 +30,7 @@ allprojects {
   apply(plugin = "org.jetbrains.dokka")
   repositories {
     mavenCentral()
+    google()
     exclusiveContent {
       forRepository {
         maven {

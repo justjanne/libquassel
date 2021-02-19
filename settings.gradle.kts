@@ -14,5 +14,13 @@ include(
   ":libquassel-annotations",
   ":libquassel-protocol",
   ":libquassel-state",
+  ":libquassel-generator",
   ":libquassel-client"
 )
+
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    google()
+  }
+}
