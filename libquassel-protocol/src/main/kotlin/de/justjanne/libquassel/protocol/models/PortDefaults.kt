@@ -8,11 +8,11 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-rootProject.name = "libquassel"
+package de.justjanne.libquassel.protocol.models
 
-include(
-  ":libquassel-annotations",
-  ":libquassel-protocol",
-  ":libquassel-state",
-  ":libquassel-client"
-)
+enum class PortDefaults(
+  val port: UInt
+) {
+  PORT_PLAINTEXT(6667u),
+  PORT_SSL(6697u)
+}

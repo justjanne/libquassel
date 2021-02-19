@@ -8,11 +8,10 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-rootProject.name = "libquassel"
+package de.justjanne.libquassel.annotations
 
-include(
-  ":libquassel-annotations",
-  ":libquassel-protocol",
-  ":libquassel-state",
-  ":libquassel-client"
+@Retention(AnnotationRetention.SOURCE)
+annotation class SyncedCall(
+  val name: String = "",
+  val target: ProtocolSide
 )

@@ -8,11 +8,10 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-rootProject.name = "libquassel"
+plugins {
+  id("com.vanniktech.maven.publish")
+}
 
-include(
-  ":libquassel-annotations",
-  ":libquassel-protocol",
-  ":libquassel-state",
-  ":libquassel-client"
-)
+dependencies {
+  api(project(":libquassel-protocol"))
+}

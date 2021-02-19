@@ -33,6 +33,7 @@ import de.justjanne.libquassel.protocol.serializers.qt.UByteSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UIntSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.ULongSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UShortSerializer
+import de.justjanne.libquassel.protocol.serializers.qt.UuidSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.VoidSerializer
 
 /**
@@ -119,6 +120,12 @@ enum class QtType(
    * See [kotlin.Double]
    */
   Double(6, DoubleSerializer),
+
+  /**
+   * 128-bit UUID
+   * See [java.util.UUID]
+   */
+  Uuid(30, UuidSerializer),
 
   /**
    * Date in the gregorian calender as julian date

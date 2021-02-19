@@ -8,11 +8,11 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-rootProject.name = "libquassel"
+package de.justjanne.libquassel.protocol.models
 
-include(
-  ":libquassel-annotations",
-  ":libquassel-protocol",
-  ":libquassel-state",
-  ":libquassel-client"
-)
+import java.util.UUID
+
+/**
+ * Simple alias for a generic TransferIdList type
+ */
+typealias TransferIdList = List<UUID>

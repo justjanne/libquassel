@@ -20,8 +20,13 @@ import de.justjanne.libquassel.protocol.serializers.quassel.IdentityIdSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.MessageSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.MsgIdSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.NetworkIdSerializer
+import de.justjanne.libquassel.protocol.serializers.quassel.NetworkInfoSerializer
+import de.justjanne.libquassel.protocol.serializers.quassel.NetworkServerSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.PeerPtrSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.QHostAddressSerializer
+import de.justjanne.libquassel.protocol.serializers.quassel.TransferDirectionSerializer
+import de.justjanne.libquassel.protocol.serializers.quassel.TransferIdListSerializer
+import de.justjanne.libquassel.protocol.serializers.quassel.TransferStatusSerializer
 
 /**
  * Supported quassel types for serialization
@@ -42,79 +47,94 @@ enum class QuasselType(
   val qtType: QtType = QtType.UserType
 ) {
   /**
-   * Type for [de.justjanne.libquassel.protocol.types.BufferId]
+   * Type for [de.justjanne.libquassel.protocol.models.BufferId]
    */
   BufferId("BufferId", BufferIdSerializer),
 
   /**
-   * Type for [de.justjanne.libquassel.protocol.types.BufferInfo]
+   * Type for [de.justjanne.libquassel.protocol.models.BufferInfo]
    */
   BufferInfo("BufferInfo", BufferInfoSerializer),
 
   /**
-   * Type for [de.justjanne.libquassel.protocol.types.DccIpDetectionMode]
+   * Type for [de.justjanne.libquassel.protocol.models.DccIpDetectionMode]
    */
   DccConfigIpDetectionMode("DccConfig::IpDetectionMode", DccIpDetectionModeSerializer),
 
   /**
-   * Type for [de.justjanne.libquassel.protocol.types.DccPortSelectionMode]
+   * Type for [de.justjanne.libquassel.protocol.models.DccPortSelectionMode]
    */
   DccConfigPortSelectionMode("DccConfig::PortSelectionMode", DccPortSelectionModeSerializer),
 
   /**
    * Type for IrcUser objects
-   * Serialized as [QVariantMap]
+   * Serialized as [de.justjanne.libquassel.protocol.variant.QVariantMap]
    */
   IrcUser("IrcUser"),
 
   /**
    * Type for IrcChannel objects
-   * Serialized as [QVariantMap]
+   * Serialized as [de.justjanne.libquassel.protocol.variant.QVariantMap]
    */
   IrcChannel("IrcChannel"),
 
   /**
    * Type for Identity objects
-   * Serialized as [QVariantMap]
+   * Serialized as [de.justjanne.libquassel.protocol.variant.QVariantMap]
    */
   Identity("Identity"),
 
   /**
-   * Type for [de.justjanne.libquassel.protocol.types.IdentityId]
+   * Type for [de.justjanne.libquassel.protocol.models.IdentityId]
    */
   IdentityId("IdentityId", IdentityIdSerializer),
 
   /**
-   * Type for [de.justjanne.libquassel.protocol.types.Message]
+   * Type for [de.justjanne.libquassel.protocol.models.Message]
    */
   Message("Message", MessageSerializer),
 
   /**
-   * Type for [de.justjanne.libquassel.protocol.types.MsgId]
+   * Type for [de.justjanne.libquassel.protocol.models.MsgId]
    */
   MsgId("MsgId", MsgIdSerializer),
 
   /**
-   * Type for [de.justjanne.libquassel.protocol.types.NetworkId]
+   * Type for [de.justjanne.libquassel.protocol.models.NetworkId]
    */
   NetworkId("NetworkId", NetworkIdSerializer),
 
   /**
    * Type for NetworkInfo objects
-   * Serialized as [QVariantMap]
+   * Serialized as [de.justjanne.libquassel.protocol.variant.QVariantMap]
    */
-  NetworkInfo("NetworkInfo"),
+  NetworkInfo("NetworkInfo", NetworkInfoSerializer),
 
   /**
    * Type for NetworkServer objects
-   * Serialized as [QVariantMap]
+   * Serialized as [de.justjanne.libquassel.protocol.variant.QVariantMap]
    */
-  NetworkServer("Network::Server"),
+  NetworkServer("Network::Server", NetworkServerSerializer),
 
   /**
    * Type for [java.net.InetAddress]
    */
   QHostAddress("QHostAddress", QHostAddressSerializer),
+
+  /**
+   * Type for [de.justjanne.libquassel.protocol.models.TransferDirection]
+   */
+  TransferDirection("Transfer::Direction", TransferDirectionSerializer),
+
+  /**
+   * Type for [de.justjanne.libquassel.protocol.models.TransferIdList]
+   */
+  TransferIdList("Transfer::TransferIdList", TransferIdListSerializer),
+
+  /**
+   * Type for [de.justjanne.libquassel.protocol.models.TransferStatus]
+   */
+  TransferStatus("Transfer::Status", TransferStatusSerializer),
 
   /**
    * Serialization type for PeerPtr.

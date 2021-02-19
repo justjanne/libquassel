@@ -8,11 +8,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-rootProject.name = "libquassel"
+package de.justjanne.libquassel.protocol.models
 
-include(
-  ":libquassel-annotations",
-  ":libquassel-protocol",
-  ":libquassel-state",
-  ":libquassel-client"
+data class Alias(
+  val name: String?,
+  val expansion: String?
 )
