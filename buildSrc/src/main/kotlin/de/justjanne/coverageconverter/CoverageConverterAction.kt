@@ -10,6 +10,13 @@
 
 package de.justjanne.coverageconverter
 
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import de.justjanne.coverageconverter.convertCounter
+import de.justjanne.coverageconverter.jacoco.CounterTypeDto
+import de.justjanne.coverageconverter.jacoco.ReportDto
 import org.gradle.api.Action
 import org.gradle.api.Task
 import org.gradle.testing.jacoco.tasks.JacocoReport
@@ -29,44 +36,37 @@ internal class CoverageConverterAction(
     return null
   }
 
-  private fun createPythonScript(name: String, temporaryDir: File): File {
-    val file = File(temporaryDir, name)
-    if (file.exists()) {
-      file.delete()
-    }
-    val source = CoverageConverterPlugin::class.java.getResourceAsStream("/coverageconverter/$name")
-    file.writeBytes(source.readBytes())
-    return file
-  }
-
   override fun execute(task: Task) {
-    val cover2coverScript = createPythonScript("cover2cover.py", task.temporaryDir)
-    val source2filenameScript = createPythonScript("source2filename.py", task.temporaryDir)
-
-    fun cover2cover(reportFile: File, outputFile: File, sourceDirectories: Iterable<File>) {
-      task.project.exec {
-        commandLine("python3")
-        args(cover2coverScript.absolutePath)
-        args(reportFile.absolutePath)
-        args(sourceDirectories.map(File::getAbsolutePath))
-        standardOutput = outputFile.outputStream()
-      }
+    fun printTotal(data: ReportDto) {
+      val instructionRate = convertCounter(data.counters, CounterTypeDto.INSTRUCTION).rate
+      val instructionMissed = convertCounter(data.counters, CounterTypeDto.INSTRUCTION).missed
+      val branchRate = convertCounter(data.counters, CounterTypeDto.BRANCH).rate
+      val branchMissed = convertCounter(data.counters, CounterTypeDto.BRANCH).missed
+      println("[JacocoPrinter] Instructions  $instructionRate  (Missed $instructionMissed)")
+      println("[JacocoPrinter] Branches      $branchRate  (Missed $branchMissed)")
     }
 
-    fun source2filename(reportFile: File) {
-      task.project.exec {
-        commandLine("python3")
-        args(source2filenameScript.absolutePath)
-        args(reportFile.absolutePath)
+    fun convertFile(input: File, output: File) {
+      val mapper = XmlMapper(
+        JacksonXmlModule().apply {
+          setDefaultUseWrapper(false)
+        }
+      ).apply {
+        enable(SerializationFeature.INDENT_OUTPUT)
+        enable(SerializationFeature.WRAP_ROOT_VALUE)
+        registerModule(KotlinModule(strictNullChecks = true))
       }
+      val data = mapper.readValue(input, ReportDto::class.java)
+      val result = convertReport(data)
+      printTotal(data)
+      mapper.writeValue(output, result)
     }
 
     jacocoReportTask.reports.forEach {
       if (it.isEnabled && it.destination.extension == "xml") {
         val outputFile = findOutputFile(it.destination)
         if (outputFile != null) {
-          cover2cover(it.destination, outputFile, jacocoReportTask.sourceDirectories)
-          source2filename(outputFile)
+          convertFile(it.destination, outputFile)
         }
       }
     }

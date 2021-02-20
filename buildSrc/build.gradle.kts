@@ -22,7 +22,8 @@ repositories {
 }
 
 dependencies {
-  implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30")
+  implementation("org.jetbrains.kotlin", "kotlin-gradle-plugin", "1.4.30")
+  implementation("de.justjanne", "jacoco-cobertura-converter", "1.0.0")
   implementation(gradleApi())
   implementation(localGroovy())
 }
