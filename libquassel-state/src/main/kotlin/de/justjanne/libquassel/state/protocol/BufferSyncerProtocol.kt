@@ -17,6 +17,7 @@ import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.MsgId
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
+import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.qVariant
 
 @SyncedObject("BufferSyncer")
@@ -236,4 +237,10 @@ interface BufferSyncerProtocol : SyncableProtocol {
       "requestPurgeBufferIds"
     )
   }
+
+  @SyncedCall(target = ProtocolSide.CLIENT)
+  override fun update(properties: QVariantMap) = super.update(properties)
+
+  @SyncedCall(target = ProtocolSide.CORE)
+  override fun requestUpdate(properties: QVariantMap) = super.requestUpdate(properties)
 }

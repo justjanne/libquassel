@@ -14,6 +14,7 @@ import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.annotations.SyncedCall
 import de.justjanne.libquassel.annotations.SyncedObject
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.qVariant
 
 @SyncedObject(name = "IgnoreListManager")
@@ -153,4 +154,10 @@ interface IgnoreListManagerProtocol : SyncableProtocol {
       qVariant(ignoreRule, QtType.QString),
     )
   }
+
+  @SyncedCall(target = ProtocolSide.CLIENT)
+  override fun update(properties: QVariantMap) = super.update(properties)
+
+  @SyncedCall(target = ProtocolSide.CORE)
+  override fun requestUpdate(properties: QVariantMap) = super.requestUpdate(properties)
 }

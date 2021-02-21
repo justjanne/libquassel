@@ -84,4 +84,10 @@ interface BufferViewManagerProtocol : SyncableProtocol {
       qVariant(bufferViewConfigId, QtType.Int),
     )
   }
+
+  @SyncedCall(target = ProtocolSide.CLIENT)
+  override fun update(properties: QVariantMap) = super.update(properties)
+
+  @SyncedCall(target = ProtocolSide.CORE)
+  override fun requestUpdate(properties: QVariantMap) = super.requestUpdate(properties)
 }

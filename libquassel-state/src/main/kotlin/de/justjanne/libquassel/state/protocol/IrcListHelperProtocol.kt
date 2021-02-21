@@ -83,10 +83,4 @@ interface IrcListHelperProtocol : SyncableProtocol {
       qVariant(netId, QuasselType.NetworkId),
     )
   }
-
-  @SyncedCall(target = ProtocolSide.CLIENT)
-  override fun update(properties: QVariantMap) = super.update(properties)
-
-  @SyncedCall(target = ProtocolSide.CORE)
-  override fun requestUpdate(properties: QVariantMap) = super.requestUpdate(properties)
 }
