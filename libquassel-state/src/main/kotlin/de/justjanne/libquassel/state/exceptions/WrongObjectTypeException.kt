@@ -8,8 +8,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.generator.annotation
+package de.justjanne.libquassel.state.exceptions
 
-data class SyncedObjectAnnotationModel(
-  val name: String?
-)
+data class WrongObjectTypeException(
+  val obj: Any?,
+  val type: String
+) : Exception()

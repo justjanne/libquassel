@@ -8,11 +8,10 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.generator.model
+package de.justjanne.libquassel.generator.util.kotlinpoet
 
-import com.google.devtools.ksp.symbol.KSType
+import com.squareup.kotlinpoet.CodeBlock
 
-data class SyncedParameterModel(
-  val name: String?,
-  val type: KSType
-)
+inline fun CodeBlock.Builder.buildWhen(name: String, vararg args: Any?, f: WhenBlockBuilder.() -> Unit) {
+  this.add(WhenBlockBuilder(name, args).apply(f).build())
+}

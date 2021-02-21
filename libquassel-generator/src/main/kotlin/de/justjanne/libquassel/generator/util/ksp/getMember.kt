@@ -30,7 +30,7 @@ internal inline fun <reified T> KSAnnotation.getMember(name: String): T? {
     is KSType ->
       when {
         T::class.java != ClassName::class.java -> null
-        else -> argValue.toClassName() as T
+        else -> argValue.asTypeName() as T
       }
     else -> null
   }

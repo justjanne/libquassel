@@ -107,6 +107,8 @@ sealed class QVariant<T> {
   internal inline fun <reified U> withType(): QVariant<U>? =
     withType(U::class.java)
 
+  fun type(): Class<*>? = data?.let { it::class.java }
+
   internal fun serialize(buffer: ChainedByteBuffer, featureSet: FeatureSet) =
     serializer.serialize(buffer, data, featureSet)
 }
@@ -129,6 +131,17 @@ inline fun <reified T> qVariant(data: T, type: QuasselType): QVariant<T> =
  */
 inline fun <reified T> QVariant_?.into(): T? =
   this?.withType<T>()?.data
+
+/**
+ * Extract the content of a QVariant in a type-safe manner
+ * @return value of the QVariant
+ * @throws if the value could not be coerced into the given type
+ */
+inline fun <reified T> QVariant_?.intoOrThrow(): T =
+  this?.withType<T>()?.data ?: throw WrongVariantTypeException(
+    T::class.java.canonicalName,
+    this?.type()?.canonicalName ?: "null"
+  )
 
 /**
  * Extract the content of a QVariant in a type-safe manner

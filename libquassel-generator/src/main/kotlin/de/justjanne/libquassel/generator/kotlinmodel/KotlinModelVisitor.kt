@@ -8,10 +8,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.generator.model
+package de.justjanne.libquassel.generator.kotlinmodel
 
-data class SyncedObjectModel(
-  val name: String,
-  val rpcName: String?,
-  val methods: List<SyncedCallModel>
-)
+interface KotlinModelVisitor<D, R> {
+  fun visitFileModel(model: KotlinModel.FileModel, data: D): R
+  fun visitFunctionModel(model: KotlinModel.FunctionModel, data: D): R
+}

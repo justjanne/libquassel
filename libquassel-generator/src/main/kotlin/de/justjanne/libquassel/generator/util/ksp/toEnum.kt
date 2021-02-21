@@ -12,9 +12,10 @@ package de.justjanne.libquassel.generator.util
 
 import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.asClassName
 
 internal inline fun <reified T : Enum<T>> KSType.toEnum(): T? {
-  return toClassName().toEnum(T::class.java)
+  return asClassName().toEnum(T::class.java)
 }
 
 internal inline fun <reified T : Enum<T>> ClassName.toEnum(): T? {
@@ -22,7 +23,7 @@ internal inline fun <reified T : Enum<T>> ClassName.toEnum(): T? {
 }
 
 internal fun <T : Enum<T>> ClassName.toEnum(clazz: Class<T>): T? {
-  val enumClassName = clazz.toClassName()
+  val enumClassName = clazz.asClassName()
   return clazz.enumConstants.find {
     this.canonicalName == enumClassName.nestedClass(it.name).canonicalName
   }

@@ -8,13 +8,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.generator.model
+package de.justjanne.libquassel.protocol.variant
 
-import de.justjanne.libquassel.annotations.ProtocolSide
-
-data class SyncedCallModel(
-  val name: String,
-  val rpcName: String?,
-  val side: ProtocolSide?,
-  val parameters: List<SyncedParameterModel>
-)
+data class WrongVariantTypeException(
+  val expected: String,
+  val actual: String?
+) : Exception("Could not coerce QVariant of type $actual into $expected")

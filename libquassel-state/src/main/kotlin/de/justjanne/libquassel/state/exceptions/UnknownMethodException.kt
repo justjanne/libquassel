@@ -8,11 +8,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.generator.annotation
+package de.justjanne.libquassel.state.exceptions
 
-import de.justjanne.libquassel.annotations.ProtocolSide
-
-data class SyncedCallAnnotationModel(
-  val name: String?,
-  val target: ProtocolSide?
-)
+data class UnknownMethodException(
+  val className: String,
+  val methodName: String
+) : Exception()
