@@ -10,6 +10,7 @@
 
 plugins {
   id("com.vanniktech.maven.publish")
+  id("com.google.devtools.ksp") version "1.4.30-1.0.0-alpha02"
 }
 
 dependencies {
@@ -17,4 +18,5 @@ dependencies {
   val kotlinBitflagsVersion: String by project
   api("de.justjanne", "kotlin-bitflags", kotlinBitflagsVersion)
   api(project(":libquassel-annotations"))
+  ksp(project(":libquassel-generator"))
 }

@@ -8,18 +8,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-rootProject.name = "libquassel"
+package de.justjanne.libquassel.protocol.exceptions
 
-include(
-  ":libquassel-annotations",
-  ":libquassel-protocol",
-  ":libquassel-generator",
-  ":libquassel-client"
-)
-
-pluginManagement {
-  repositories {
-    gradlePluginPortal()
-    google()
-  }
-}
+data class WrongObjectTypeException(
+  val obj: Any?,
+  val type: String
+) : Exception()

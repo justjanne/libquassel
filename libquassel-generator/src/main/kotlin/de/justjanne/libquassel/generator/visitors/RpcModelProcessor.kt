@@ -125,15 +125,15 @@ class RpcModelProcessor : RpcModelVisitor<ProtocolSide, KotlinModel?> {
 
   companion object {
     private val TYPENAME_INVOKER = ClassName(
-      "de.justjanne.libquassel.state.invoker",
+      "de.justjanne.libquassel.protocol.syncables.invoker",
       "Invoker"
     )
     private val TYPENAME_UNKNOWN_METHOD_EXCEPTION = ClassName(
-      "de.justjanne.libquassel.state.exceptions",
+      "de.justjanne.libquassel.protocol.exceptions",
       "UnknownMethodException"
     )
     private val TYPENAME_WRONG_OBJECT_TYPE_EXCEPTION = ClassName(
-      "de.justjanne.libquassel.state.exceptions",
+      "de.justjanne.libquassel.protocol.exceptions",
       "WrongObjectTypeException"
     )
     private val TYPENAME_QVARIANTLIST = ClassName(
