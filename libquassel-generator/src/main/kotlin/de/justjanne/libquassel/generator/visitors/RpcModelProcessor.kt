@@ -97,27 +97,29 @@ class RpcModelProcessor : RpcModelVisitor<ProtocolSide, KotlinModel?> {
     )
   }
 
-  override fun visitFunctionModel(model: RpcModel.FunctionModel, data: ProtocolSide) = KotlinModel.FunctionModel(
-    model.source,
-    buildCodeBlock {
-      if (model.parameters.isEmpty()) {
-        addStatement("on.${model.name}()")
-      } else {
-        addStatement("on.${model.name}(")
-        withIndent {
-          val lastIndex = model.parameters.size - 1
-          for ((i, parameter) in model.parameters.withIndex()) {
-            val suffix = if (i != lastIndex) "," else ""
-            addStatement(
-              "${parameter.name} = params[$i].intoOrThrow<%T>()$suffix",
-              parameter.type
-            )
+  override fun visitFunctionModel(model: RpcModel.FunctionModel, data: ProtocolSide) =
+    if (model.side != data) null
+    else KotlinModel.FunctionModel(
+      model.source,
+      buildCodeBlock {
+        if (model.parameters.isEmpty()) {
+          addStatement("on.${model.name}()")
+        } else {
+          addStatement("on.${model.name}(")
+          withIndent {
+            val lastIndex = model.parameters.size - 1
+            for ((i, parameter) in model.parameters.withIndex()) {
+              val suffix = if (i != lastIndex) "," else ""
+              addStatement(
+                "${parameter.name} = params[$i].intoOrThrow<%T>()$suffix",
+                parameter.type
+              )
+            }
           }
+          addStatement(")")
         }
-        addStatement(")")
       }
-    }
-  )
+    )
 
   override fun visitParameterModel(model: RpcModel.ParameterModel, data: ProtocolSide): KotlinModel? = null
 
