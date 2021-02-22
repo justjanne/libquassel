@@ -42,19 +42,25 @@ class RpcModelProcessor : RpcModelVisitor<ProtocolSide, KotlinModel?> {
           TYPENAME_QVARIANT_INTOORTHROW.packageName,
           TYPENAME_QVARIANT_INTOORTHROW.simpleName
         )
+        .addAnnotation(TYPENAME_GENERATED)
         .addType(
           TypeSpec.objectBuilder(name.simpleName)
             .addSuperinterface(TYPENAME_INVOKER.parameterizedBy(model.name))
+            .addAnnotation(TYPENAME_GENERATED)
             .addProperty(
               PropertySpec.builder(
                 "className",
                 String::class.asTypeName(),
                 KModifier.OVERRIDE
-              ).initializer("\"${model.rpcName}\"").build()
+              )
+                .initializer("\"${model.rpcName}\"")
+                .addAnnotation(TYPENAME_GENERATED)
+                .build()
             )
             .addFunction(
               FunSpec.builder("invoke")
                 .addModifiers(KModifier.OVERRIDE, KModifier.OPERATOR)
+                .addAnnotation(TYPENAME_GENERATED)
                 .addParameter(
                   ParameterSpec.builder(
                     "on",
@@ -143,6 +149,10 @@ class RpcModelProcessor : RpcModelVisitor<ProtocolSide, KotlinModel?> {
     private val TYPENAME_QVARIANT_INTOORTHROW = ClassName(
       "de.justjanne.libquassel.protocol.variant",
       "intoOrThrow"
+    )
+    private val TYPENAME_GENERATED = ClassName(
+      "de.justjanne.libquassel.annotations",
+      "Generated"
     )
     private val TYPENAME_ANY = ANY.copy(nullable = true)
 
