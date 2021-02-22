@@ -16,9 +16,11 @@ import de.justjanne.libquassel.protocol.models.Command
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.syncables.stubs.AliasManagerStub
+import de.justjanne.libquassel.protocol.util.expansion.Expansion
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
+import kotlin.math.exp
 
 class AliasManager constructor(
   session: Session
@@ -90,9 +92,28 @@ class AliasManager constructor(
   fun expand(
     expansion: String,
     bufferInfo: BufferInfo,
-    msg: String,
+    arguments: String,
     previousCommands: MutableList<Command>
   ) {
+    /*
+    val params = arguments.split(' ')
+    expansion.split(';')
+      .map(String::trimStart)
+      .map(Expansion.Companion::parse)
+      .map {
+        it.map {
+          when (it) {
+            is Expansion.Constant -> TODO()
+            is Expansion.Parameter -> TODO()
+            is Expansion.ParameterRange ->
+              params.subList(it.from, it.to ?: params.size)
+                .joinToString(" ")
+            is Expansion.Text ->
+              it.value
+          }
+        }
+      }
+    */
   }
 
   fun copy() = AliasManager(session).also {
