@@ -16,11 +16,9 @@ import de.justjanne.libquassel.protocol.models.Command
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.syncables.stubs.AliasManagerStub
-import de.justjanne.libquassel.protocol.util.expansion.Expansion
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlin.math.exp
 
 class AliasManager constructor(
   session: Session
