@@ -25,9 +25,6 @@ interface CoreInfoStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setCoreData",
-      /**
-       * Construct a QVariant from a QVariantMap
-       */
       qVariant(data, QtType.QVariantMap),
     )
   }

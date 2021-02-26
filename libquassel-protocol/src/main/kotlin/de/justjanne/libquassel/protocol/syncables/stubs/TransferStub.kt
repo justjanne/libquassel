@@ -30,9 +30,6 @@ interface TransferStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "accept",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(savePath, QtType.QString)
     )
   }
@@ -42,9 +39,6 @@ interface TransferStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestAccepted",
-      /**
-       * Construct a QVariant from a ULong
-       */
       qVariant(peer, QtType.ULong)
     )
   }
@@ -62,9 +56,6 @@ interface TransferStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestRejected",
-      /**
-       * Construct a QVariant from a ULong
-       */
       qVariant(peer, QtType.ULong)
     )
   }
@@ -92,9 +83,6 @@ interface TransferStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAddress",
-      /**
-       * Construct a QVariant from a InetAddress
-       */
       qVariant(address, QuasselType.QHostAddress)
     )
   }
@@ -104,9 +92,6 @@ interface TransferStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setPort",
-      /**
-       * Construct a QVariant from a UShort
-       */
       qVariant(port, QtType.UShort)
     )
   }
@@ -116,9 +101,6 @@ interface TransferStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setFileName",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(fileName, QtType.QString)
     )
   }
@@ -128,9 +110,6 @@ interface TransferStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setFileSize",
-      /**
-       * Construct a QVariant from a ULong
-       */
       qVariant(fileSize, QtType.ULong)
     )
   }
@@ -140,9 +119,6 @@ interface TransferStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setNick",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(nick, QtType.QString)
     )
   }
@@ -152,9 +128,6 @@ interface TransferStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setError",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(errorString, QtType.QString)
     )
   }
@@ -165,9 +138,6 @@ interface TransferStub : SyncableStub {
       target = ProtocolSide.CLIENT,
       "dataReceived",
       qVariant(peer, QuasselType.PeerPtr),
-      /**
-       * Construct a QVariant from a ByteBuffer
-       */
       qVariant(data, QtType.QByteArray)
     )
   }

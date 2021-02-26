@@ -25,9 +25,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetAutoWhoDelay",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(delay, QtType.Int)
     )
   }
@@ -37,9 +34,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoWhoDelay",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(delay, QtType.Int)
     )
   }
@@ -49,9 +43,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetAutoWhoEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool)
     )
   }
@@ -61,9 +52,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoWhoEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool)
     )
   }
@@ -73,9 +61,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetAutoWhoInterval",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(interval, QtType.Int)
     )
   }
@@ -85,9 +70,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoWhoInterval",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(interval, QtType.Int)
     )
   }
@@ -97,9 +79,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetAutoWhoNickLimit",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(limit, QtType.Int)
     )
   }
@@ -109,9 +88,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "setAutoWhoNickLimit",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(limit, QtType.Int)
     )
   }
@@ -121,9 +97,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetMaxPingCount",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(count, QtType.Int)
     )
   }
@@ -133,9 +106,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "setMaxPingCount",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(count, QtType.Int)
     )
   }
@@ -145,9 +115,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetPingInterval",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(interval, QtType.Int)
     )
   }
@@ -157,9 +124,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "setPingInterval",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(interval, QtType.Int)
     )
   }
@@ -169,9 +133,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetPingTimeoutEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool)
     )
   }
@@ -181,9 +142,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "setPingTimeoutEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool)
     )
   }
@@ -193,9 +151,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetStandardCtcp",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool)
     )
   }
@@ -205,9 +160,6 @@ interface NetworkConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "setStandardCtcp",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool)
     )
   }

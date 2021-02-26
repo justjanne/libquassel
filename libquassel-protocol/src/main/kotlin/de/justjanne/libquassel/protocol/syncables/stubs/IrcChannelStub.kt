@@ -26,29 +26,17 @@ interface IrcChannelStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "addChannelMode",
-      /**
-       * Construct a QVariant from a Char
-       */
       qVariant(mode, QtType.QChar),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(value, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun addUserMode(nick: String?, mode: String? = null) {
+  fun addUserMode(nick: String, mode: String? = null) {
     sync(
       target = ProtocolSide.CLIENT,
       "addUserMode",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(nick, QtType.QString),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(mode, QtType.QString),
     )
   }
@@ -58,25 +46,16 @@ interface IrcChannelStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "joinIrcUsers",
-      /**
-       * Construct a QVariant from a QStringList
-       */
       qVariant(nicks, QtType.QStringList),
-      /**
-       * Construct a QVariant from a QStringList
-       */
       qVariant(modes, QtType.QStringList),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun part(nick: String?) {
+  fun part(nick: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "part",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(nick, QtType.QString),
     )
   }
@@ -86,29 +65,17 @@ interface IrcChannelStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "removeChannelMode",
-      /**
-       * Construct a QVariant from a Char
-       */
       qVariant(mode, QtType.QChar),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(value, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun removeUserMode(nick: String?, mode: String? = null) {
+  fun removeUserMode(nick: String, mode: String? = null) {
     sync(
       target = ProtocolSide.CLIENT,
       "removeUserMode",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(nick, QtType.QString),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(mode, QtType.QString),
     )
   }
@@ -118,49 +85,34 @@ interface IrcChannelStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setEncrypted",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(encrypted, QtType.Bool),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setPassword(password: String?) {
+  fun setPassword(password: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setPassword",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(password, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setTopic(topic: String?) {
+  fun setTopic(topic: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setTopic",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(topic, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setUserModes(nick: String?, modes: String? = null) {
+  fun setUserModes(nick: String, modes: String? = null) {
     sync(
       target = ProtocolSide.CLIENT,
       "setUserModes",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(nick, QtType.QString),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(modes, QtType.QString),
     )
   }

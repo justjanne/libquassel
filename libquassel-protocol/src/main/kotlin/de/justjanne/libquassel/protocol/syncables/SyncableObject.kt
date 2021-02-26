@@ -38,11 +38,6 @@ abstract class SyncableObject(
     }
   }
 
-  override fun init() {
-    initialized = true
-  }
-
-  override fun deinit() {
-    initialized = false
-  }
+  override fun init() = Unit
+  override fun deinit() = Unit
 }

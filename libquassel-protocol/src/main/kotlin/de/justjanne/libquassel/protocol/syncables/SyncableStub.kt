@@ -45,9 +45,6 @@ interface SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "update",
-      /**
-       * Construct a QVariant from a QVariantMap
-       */
       qVariant(properties, QtType.QVariantMap)
     )
   }
@@ -56,9 +53,6 @@ interface SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestUpdate",
-      /**
-       * Construct a QVariant from a QVariantMap
-       */
       qVariant(properties, QtType.QVariantMap)
     )
   }

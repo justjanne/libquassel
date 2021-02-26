@@ -33,25 +33,10 @@ interface BacklogManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestBacklog",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(bufferId, QuasselType.BufferId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(first, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(last, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(limit, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(additional, QtType.Int),
     )
   }
@@ -69,33 +54,12 @@ interface BacklogManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestBacklogFiltered",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(bufferId, QuasselType.BufferId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(first, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(last, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(limit, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(additional, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(type, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(flags, QtType.Int),
     )
   }
@@ -110,21 +74,9 @@ interface BacklogManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestBacklogAll",
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(first, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(last, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(limit, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(additional, QtType.Int),
     )
   }
@@ -141,29 +93,11 @@ interface BacklogManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestBacklogAll",
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(first, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(last, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(limit, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(additional, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(type, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(flags, QtType.Int),
     )
   }
@@ -179,25 +113,10 @@ interface BacklogManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "receiveBacklog",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(bufferId, QuasselType.BufferId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(first, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(last, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(limit, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(additional, QtType.Int),
     )
   }
@@ -215,33 +134,12 @@ interface BacklogManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "receiveBacklogFiltered",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(bufferId, QuasselType.BufferId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(first, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(last, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(limit, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(additional, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(type, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(flags, QtType.Int),
     )
   }
@@ -256,21 +154,9 @@ interface BacklogManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "receiveBacklogAll",
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(first, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(last, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(limit, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(additional, QtType.Int),
     )
   }
@@ -287,29 +173,11 @@ interface BacklogManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "receiveBacklogAllFiltered",
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(first, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a MsgId
-       */
       qVariant(last, QuasselType.MsgId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(limit, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(additional, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(type, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(flags, QtType.Int),
     )
   }

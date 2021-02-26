@@ -28,13 +28,7 @@ interface IrcListHelperStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestChannelList",
-      /**
-       * Construct a QVariant from a Message
-       */
       qVariant(netId, QuasselType.NetworkId),
-      /**
-       * Construct a QVariant from a QStringList
-       */
       qVariant(channelFilters, QtType.QStringList),
     )
     return emptyList()
@@ -45,17 +39,8 @@ interface IrcListHelperStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "receiveChannelList",
-      /**
-       * Construct a QVariant from a Message
-       */
       qVariant(netId, QuasselType.NetworkId),
-      /**
-       * Construct a QVariant from a QStringList
-       */
       qVariant(channelFilters, QtType.QStringList),
-      /**
-       * Construct a QVariant from a QVariantList
-       */
       qVariant(channels, QtType.QVariantList),
     )
   }
@@ -65,9 +50,6 @@ interface IrcListHelperStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "reportError",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(error, QtType.QString),
     )
   }
@@ -77,9 +59,6 @@ interface IrcListHelperStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "reportFinishedList",
-      /**
-       * Construct a QVariant from a Message
-       */
       qVariant(netId, QuasselType.NetworkId),
     )
   }

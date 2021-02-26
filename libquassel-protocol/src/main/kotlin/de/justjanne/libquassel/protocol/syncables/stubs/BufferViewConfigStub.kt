@@ -28,13 +28,7 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "addBuffer",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(buffer, QuasselType.BufferId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(pos, QtType.Int),
     )
   }
@@ -44,13 +38,7 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestAddBuffer",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(buffer, QuasselType.BufferId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(pos, QtType.Int),
     )
   }
@@ -60,13 +48,7 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "moveBuffer",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(buffer, QuasselType.BufferId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(pos, QtType.Int),
     )
   }
@@ -76,13 +58,7 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestMoveBuffer",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(buffer, QuasselType.BufferId),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(pos, QtType.Int),
     )
   }
@@ -92,9 +68,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "removeBuffer",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(buffer, QuasselType.BufferId),
     )
   }
@@ -104,9 +77,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestRemoveBuffer",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(buffer, QuasselType.BufferId),
     )
   }
@@ -116,9 +86,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "removeBufferPermanently",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(buffer, QuasselType.BufferId),
     )
   }
@@ -128,9 +95,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestRemoveBufferPermanently",
-      /**
-       * Construct a QVariant from a BufferId
-       */
       qVariant(buffer, QuasselType.BufferId),
     )
   }
@@ -140,9 +104,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setBufferViewName",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(value, QtType.QString),
     )
   }
@@ -152,9 +113,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetBufferViewName",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(value, QtType.QString),
     )
   }
@@ -164,9 +122,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAddNewBuffersAutomatically",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(value, QtType.Bool),
     )
   }
@@ -176,9 +131,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAllowedBufferTypes",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(value, QtType.Int),
     )
   }
@@ -188,9 +140,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setDisableDecoration",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(value, QtType.Bool),
     )
   }
@@ -200,9 +149,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setHideInactiveBuffers",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(value, QtType.Bool),
     )
   }
@@ -212,9 +158,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setHideInactiveNetworks",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(value, QtType.Bool),
     )
   }
@@ -224,9 +167,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setMinimumActivity",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(value, QtType.Int),
     )
   }
@@ -236,9 +176,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setNetworkId",
-      /**
-       * Construct a QVariant from a Message
-       */
       qVariant(value, QuasselType.NetworkId),
     )
   }
@@ -248,9 +185,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setShowSearch",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(value, QtType.Bool),
     )
   }
@@ -260,9 +194,6 @@ interface BufferViewConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setSortAlphabetically",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(value, QtType.Bool),
     )
   }

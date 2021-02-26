@@ -15,7 +15,6 @@ import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.syncables.stubs.IdentityStub
-import de.justjanne.libquassel.protocol.syncables.stubs.NetworkStub
 import de.justjanne.libquassel.protocol.syncables.stubs.RpcHandlerStub
 import de.justjanne.libquassel.protocol.variant.QVariantList
 
@@ -24,8 +23,11 @@ interface Session : RpcHandlerStub {
 
   val objectRepository: ObjectRepository
 
-  fun network(id: NetworkId): NetworkStub
+  fun network(id: NetworkId): Network?
   fun identity(id: IdentityId): IdentityStub
+
+  fun synchronize(it: SyncableObject)
+  fun stopSynchronize(it: SyncableObject)
 
   fun sync(
     target: ProtocolSide,

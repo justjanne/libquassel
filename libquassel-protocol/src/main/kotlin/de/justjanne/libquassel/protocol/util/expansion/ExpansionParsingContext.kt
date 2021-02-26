@@ -17,38 +17,38 @@ internal class ExpansionParsingContext(
   text: String
 ) : ParsingContext<Expansion>(text) {
   override val matchers: List<Supplier<Expansion?>> = listOf(
-    match("\$channelname", "\$channel") {
-      Expansion.Constant(Expansion.ConstantField.CHANNEL)
+    match("\$channelname", "\$channel") { source ->
+      Expansion.Constant(Expansion.ConstantField.CHANNEL, source)
     },
-    match("\$currentnick", "\$nick") {
-      Expansion.Constant(Expansion.ConstantField.NICK)
+    match("\$currentnick", "\$nick") { source ->
+      Expansion.Constant(Expansion.ConstantField.NICK, source)
     },
-    match("\$network") {
-      Expansion.Constant(Expansion.ConstantField.NETWORK)
+    match("\$network") { source ->
+      Expansion.Constant(Expansion.ConstantField.NETWORK, source)
     },
-    match("\$0") {
-      Expansion.Parameter(0, null)
+    match("\$0") { source ->
+      Expansion.Parameter(0, null, source)
     },
-    match("""\$(\d+)\.\.(\d+)""".toRegex()) { (_, from, to) ->
-      Expansion.ParameterRange(from.toInt(), to.toInt())
+    match("""\$(\d+)\.\.(\d+)""".toRegex()) { source, (_, from, to) ->
+      Expansion.ParameterRange(from.toInt(), to.toInt(), source)
     },
-    match("""\$(\d+)\.\.""".toRegex()) { (_, from) ->
-      Expansion.ParameterRange(from.toInt(), null)
+    match("""\$(\d+)\.\.""".toRegex()) { source, (_, from) ->
+      Expansion.ParameterRange(from.toInt(), null, source)
     },
-    match("""\$(\d+):hostname""".toRegex()) { (_, value) ->
-      Expansion.Parameter(value.toInt(), Expansion.ParameterField.HOSTNAME)
+    match("""\$(\d+):hostname""".toRegex()) { source, (_, value) ->
+      Expansion.Parameter(value.toInt(), Expansion.ParameterField.HOSTNAME, source)
     },
-    match("""\$(\d+):identd""".toRegex()) { (_, value) ->
-      Expansion.Parameter(value.toInt(), Expansion.ParameterField.VERIFIED_IDENT)
+    match("""\$(\d+):identd""".toRegex()) { source, (_, value) ->
+      Expansion.Parameter(value.toInt(), Expansion.ParameterField.VERIFIED_IDENT, source)
     },
-    match("""\$(\d+):ident""".toRegex()) { (_, value) ->
-      Expansion.Parameter(value.toInt(), Expansion.ParameterField.IDENT)
+    match("""\$(\d+):ident""".toRegex()) { source, (_, value) ->
+      Expansion.Parameter(value.toInt(), Expansion.ParameterField.IDENT, source)
     },
-    match("""\$(\d+):account""".toRegex()) { (_, value) ->
-      Expansion.Parameter(value.toInt(), Expansion.ParameterField.ACCOUNT)
+    match("""\$(\d+):account""".toRegex()) { source, (_, value) ->
+      Expansion.Parameter(value.toInt(), Expansion.ParameterField.ACCOUNT, source)
     },
-    match("""\$(\d+)""".toRegex()) { (_, value) ->
-      Expansion.Parameter(value.toInt(), null)
+    match("""\$(\d+)""".toRegex()) { source, (_, value) ->
+      Expansion.Parameter(value.toInt(), null, source)
     },
     Supplier {
       val end = text.indexOf('$', startIndex = position).let {

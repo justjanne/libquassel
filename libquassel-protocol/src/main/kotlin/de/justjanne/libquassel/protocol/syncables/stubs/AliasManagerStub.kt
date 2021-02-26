@@ -25,13 +25,7 @@ interface AliasManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "addAlias",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(name, QtType.QString),
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(expansion, QtType.QString)
     )
   }

@@ -15,10 +15,14 @@ import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.Command
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.syncables.state.AliasManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.AliasManagerStub
+import de.justjanne.libquassel.protocol.util.expansion.Expansion
+import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class AliasManager constructor(
   session: Session
@@ -32,8 +36,8 @@ class AliasManager constructor(
   }
 
   private fun initAliases(): QVariantMap = mapOf(
-    "names" to qVariant(aliases.map(Alias::name), QtType.QStringList),
-    "expansions" to qVariant(aliases.map(Alias::expansion), QtType.QStringList)
+    "names" to qVariant(aliases().map(Alias::name), QtType.QStringList),
+    "expansions" to qVariant(aliases().map(Alias::expansion), QtType.QStringList)
   )
 
   private fun initSetAliases(aliases: QVariantMap) {
@@ -44,7 +48,9 @@ class AliasManager constructor(
       "Sizes do not match: names=${names.size}, expansions=${expansions.size}"
     }
 
-    this.aliases = names.zip(expansions, ::Alias)
+    state.update {
+      copy(aliases = names.zip(expansions, ::Alias))
+    }
   }
 
   override fun addAlias(name: String, expansion: String) {
@@ -52,13 +58,17 @@ class AliasManager constructor(
       return
     }
 
-    aliases += Alias(name, expansion)
+    state.update {
+      copy(aliases = aliases + Alias(name, expansion))
+    }
     super.addAlias(name, expansion)
   }
 
-  fun indexOf(name: String?) = aliases.map(Alias::name).indexOf(name)
+  fun aliases() = state.value.aliases
 
-  fun contains(name: String?) = aliases.map(Alias::name).contains(name)
+  fun indexOf(name: String?) = aliases().map(Alias::name).indexOf(name)
+
+  fun contains(name: String?) = aliases().map(Alias::name).contains(name)
 
   fun processInput(
     info: BufferInfo,
@@ -78,7 +88,7 @@ class AliasManager constructor(
       // pure text. To ensure this won’t be unescaped twice it’s sent with /SAY.
       previousCommands.add(Command(info, "/SAY $arguments"))
     } else {
-      val found = aliases.firstOrNull { it.name.equals(command, true) }
+      val found = aliases().firstOrNull { it.name.equals(command, true) }
       if (found != null) {
         expand(found.expansion ?: "", info, arguments, previousCommands)
       } else {
@@ -93,32 +103,57 @@ class AliasManager constructor(
     arguments: String,
     previousCommands: MutableList<Command>
   ) {
-    /*
+    val network = session.network(bufferInfo.networkId)
     val params = arguments.split(' ')
-    expansion.split(';')
-      .map(String::trimStart)
-      .map(Expansion.Companion::parse)
-      .map {
-        it.map {
-          when (it) {
-            is Expansion.Constant -> TODO()
-            is Expansion.Parameter -> TODO()
-            is Expansion.ParameterRange ->
-              params.subList(it.from, it.to ?: params.size)
-                .joinToString(" ")
-            is Expansion.Text ->
-              it.value
-          }
-        }
-      }
-    */
+    previousCommands.add(
+      Command(
+        bufferInfo,
+        expansion.split(';')
+          .map(String::trimStart)
+          .map(Expansion.Companion::parse)
+          .map {
+            it.map {
+              when (it) {
+                is Expansion.Constant -> when (it.field) {
+                  Expansion.ConstantField.CHANNEL ->
+                    bufferInfo.bufferName
+                  Expansion.ConstantField.NICK ->
+                    network?.myNick()
+                  Expansion.ConstantField.NETWORK ->
+                    network?.networkName()
+                }
+                is Expansion.Parameter -> when (it.field) {
+                  Expansion.ParameterField.HOSTNAME ->
+                    network?.ircUser(params[it.index])?.host() ?: "*"
+                  Expansion.ParameterField.VERIFIED_IDENT ->
+                    params.getOrNull(it.index)?.let { param ->
+                      network?.ircUser(param)?.verifiedUser() ?: "*"
+                    }
+                  Expansion.ParameterField.IDENT ->
+                    params.getOrNull(it.index)?.let { param ->
+                      network?.ircUser(param)?.user() ?: "*"
+                    }
+                  Expansion.ParameterField.ACCOUNT ->
+                    params.getOrNull(it.index)?.let { param ->
+                      network?.ircUser(param)?.account() ?: "*"
+                    }
+                  null -> params.getOrNull(it.index) ?: it.source
+                }
+                is Expansion.ParameterRange ->
+                  params.subList(it.from, it.to ?: params.size)
+                    .joinToString(" ")
+                is Expansion.Text ->
+                  it.source
+              } ?: it.source
+            }
+          }.joinToString(";")
+      )
+    )
   }
 
-  fun copy() = AliasManager(session).also {
-    it.fromVariantMap(toVariantMap())
-  }
-
-  var aliases = listOf<Alias>()
+  private val state = MutableStateFlow(
+    AliasManagerState()
+  )
 
   companion object {
     private fun determineMessageCommand(message: String) = when {

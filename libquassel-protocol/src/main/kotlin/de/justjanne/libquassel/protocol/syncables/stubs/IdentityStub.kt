@@ -28,9 +28,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoAwayEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool),
     )
   }
@@ -40,9 +37,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoAwayReason",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(reason, QtType.QString),
     )
   }
@@ -52,9 +46,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoAwayReasonEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool),
     )
   }
@@ -64,9 +55,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoAwayTime",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(time, QtType.Int),
     )
   }
@@ -76,9 +64,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAwayNick",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(awayNick, QtType.QString),
     )
   }
@@ -88,9 +73,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAwayNickEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool),
     )
   }
@@ -100,9 +82,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAwayReason",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(awayReason, QtType.QString),
     )
   }
@@ -112,9 +91,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAwayReasonEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool),
     )
   }
@@ -124,9 +100,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setDetachAwayEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool),
     )
   }
@@ -136,9 +109,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setDetachAwayReason",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(reason, QtType.QString),
     )
   }
@@ -148,9 +118,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setDetachAwayReasonEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool),
     )
   }
@@ -160,9 +127,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setId",
-      /**
-       * Construct a QVariant from a IdentityId
-       */
       qVariant(id, QuasselType.IdentityId),
     )
   }
@@ -172,9 +136,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setIdent",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(ident, QtType.QString),
     )
   }
@@ -184,9 +145,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setIdentityName",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(name, QtType.QString),
     )
   }
@@ -196,9 +154,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setKickReason",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(reason, QtType.QString),
     )
   }
@@ -208,9 +163,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setNicks",
-      /**
-       * Construct a QVariant from a QStringList
-       */
       qVariant(nicks, QtType.QStringList),
     )
   }
@@ -220,9 +172,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setPartReason",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(reason, QtType.QString),
     )
   }
@@ -232,9 +181,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setQuitReason",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(reason, QtType.QString),
     )
   }
@@ -244,9 +190,6 @@ interface IdentityStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setRealName",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(realName, QtType.QString),
     )
   }

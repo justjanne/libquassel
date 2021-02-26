@@ -29,9 +29,6 @@ interface DccConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setDccEnabled",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(enabled, QtType.Bool),
     )
   }
@@ -41,9 +38,6 @@ interface DccConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setOutgoingIp",
-      /**
-       * Construct a QVariant from a InetAddress
-       */
       qVariant(outgoingIp, QuasselType.QHostAddress),
     )
   }
@@ -53,9 +47,6 @@ interface DccConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setIpDetectionMode",
-      /**
-       * Construct a QVariant from a DccIpDetectionMode
-       */
       qVariant(ipDetectionMode, QuasselType.DccConfigIpDetectionMode),
     )
   }
@@ -65,9 +56,6 @@ interface DccConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setPortSelectionMode",
-      /**
-       * Construct a QVariant from a DccPortSelectionMode
-       */
       qVariant(portSelectionMode, QuasselType.DccConfigPortSelectionMode),
     )
   }
@@ -77,9 +65,6 @@ interface DccConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setMinPort",
-      /**
-       * Construct a QVariant from a UShort
-       */
       qVariant(port, QtType.UShort),
     )
   }
@@ -89,9 +74,6 @@ interface DccConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setMaxPort",
-      /**
-       * Construct a QVariant from a UShort
-       */
       qVariant(port, QtType.UShort),
     )
   }
@@ -101,9 +83,6 @@ interface DccConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setChunkSize",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(chunkSize, QtType.Int),
     )
   }
@@ -113,9 +92,6 @@ interface DccConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setSendTimeout",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(timeout, QtType.Int),
     )
   }
@@ -125,9 +101,6 @@ interface DccConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setUsePassiveDcc",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(use, QtType.Bool),
     )
   }
@@ -137,9 +110,6 @@ interface DccConfigStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setUseFastSend",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(use, QtType.Bool),
     )
   }

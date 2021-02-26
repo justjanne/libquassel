@@ -31,9 +31,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setNetworkName",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(networkName, QtType.QString),
     )
   }
@@ -43,9 +40,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setCurrentServer",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(currentServer, QtType.QString),
     )
   }
@@ -55,9 +49,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setMyNick",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(myNick, QtType.QString),
     )
   }
@@ -67,9 +58,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setLatency",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(latency, QtType.Int),
     )
   }
@@ -79,9 +67,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setCodecForServer",
-      /**
-       * Construct a QVariant from a ByteBuffer
-       */
       qVariant(codecForServer, QtType.QByteArray),
     )
   }
@@ -91,9 +76,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setCodecForEncoding",
-      /**
-       * Construct a QVariant from a ByteBuffer
-       */
       qVariant(codecForEncoding, QtType.QByteArray),
     )
   }
@@ -103,9 +85,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setCodecForDecoding",
-      /**
-       * Construct a QVariant from a ByteBuffer
-       */
       qVariant(codecForDecoding, QtType.QByteArray),
     )
   }
@@ -115,9 +94,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setIdentity",
-      /**
-       * Construct a QVariant from a IdentityId
-       */
       qVariant(identityId, QuasselType.IdentityId),
     )
   }
@@ -127,9 +103,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setConnected",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isConnected, QtType.Bool),
     )
   }
@@ -139,9 +112,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setConnectionState",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(connectionState, QtType.Int),
     )
   }
@@ -151,9 +121,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setUseRandomServer",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(useRandomServer, QtType.Bool),
     )
   }
@@ -163,9 +130,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setPerform",
-      /**
-       * Construct a QVariant from a QStringList
-       */
       qVariant(perform, QtType.QStringList),
     )
   }
@@ -175,9 +139,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setSkipCaps",
-      /**
-       * Construct a QVariant from a QStringList
-       */
       qVariant(skipCaps, QtType.QStringList),
     )
   }
@@ -187,9 +148,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setUseAutoIdentify",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(useAutoIdentify, QtType.Bool),
     )
   }
@@ -199,9 +157,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoIdentifyService",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(autoIdentifyService, QtType.QString),
     )
   }
@@ -211,9 +166,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoIdentifyPassword",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(autoIdentifyPassword, QtType.QString),
     )
   }
@@ -223,9 +175,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setUseSasl",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(useSasl, QtType.Bool),
     )
   }
@@ -235,9 +184,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setSaslAccount",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(saslAccount, QtType.QString),
     )
   }
@@ -247,9 +193,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setSaslPassword",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(saslPassword, QtType.QString),
     )
   }
@@ -259,9 +202,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setUseAutoReconnect",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(useAutoReconnect, QtType.Bool),
     )
   }
@@ -271,9 +211,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoReconnectInterval",
-      /**
-       * Construct a QVariant from a UInt
-       */
       qVariant(autoReconnectInterval, QtType.UInt),
     )
   }
@@ -283,9 +220,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAutoReconnectRetries",
-      /**
-       * Construct a QVariant from a UShort
-       */
       qVariant(autoReconnectRetries, QtType.UShort),
     )
   }
@@ -295,9 +229,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setUnlimitedReconnectRetries",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(unlimitedReconnectRetries, QtType.Bool),
     )
   }
@@ -307,9 +238,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setRejoinChannels",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(rejoinChannels, QtType.Bool),
     )
   }
@@ -319,9 +247,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setUseCustomMessageRate",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(useCustomMessageRate, QtType.Bool),
     )
   }
@@ -331,9 +256,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setMessageRateBurstSize",
-      /**
-       * Construct a QVariant from a UInt
-       */
       qVariant(messageRateBurstSize, QtType.UInt),
     )
   }
@@ -343,9 +265,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setMessageRateDelay",
-      /**
-       * Construct a QVariant from a UInt
-       */
       qVariant(messageRateDelay, QtType.UInt),
     )
   }
@@ -355,9 +274,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setUnlimitedMessageRate",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(unlimitedMessageRate, QtType.Bool),
     )
   }
@@ -367,9 +283,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setServerList",
-      /**
-       * Construct a QVariant from a QVariantList
-       */
       qVariant(serverList, QtType.QVariantList),
     )
   }
@@ -379,13 +292,7 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "addSupport",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(param, QtType.QString),
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(value, QtType.QString),
     )
   }
@@ -395,9 +302,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "removeSupport",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(param, QtType.QString)
     )
   }
@@ -407,38 +311,26 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "addCap",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(capability, QtType.QString),
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(value, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun acknowledgeCap(param: String) {
+  fun acknowledgeCap(capability: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "acknowledgeCap",
-      /**
-       * Construct a QVariant from a String
-       */
-      qVariant(param, QtType.QString)
+      qVariant(capability, QtType.QString)
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun removeCap(param: String) {
+  fun removeCap(capability: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "removeCap",
-      /**
-       * Construct a QVariant from a String
-       */
-      qVariant(param, QtType.QString)
+      qVariant(capability, QtType.QString)
     )
   }
 
@@ -455,9 +347,6 @@ interface NetworkStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "addIrcUser",
-      /**
-       * Construct a QVariant from a String
-       */
       qVariant(hostmask, QtType.QString),
     )
   }

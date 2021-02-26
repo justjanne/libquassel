@@ -38,12 +38,12 @@ internal abstract class ParsingContext<T>(
   @Generated
   protected inline fun match(
     vararg patterns: String,
-    crossinline function: () -> Expansion
+    crossinline function: (String) -> Expansion
   ) = Supplier {
     for (pattern in patterns) {
       if (text.startsWith(pattern, startIndex = position)) {
         position += pattern.length
-        return@Supplier function()
+        return@Supplier function(pattern)
       }
     }
     return@Supplier null
@@ -52,13 +52,13 @@ internal abstract class ParsingContext<T>(
   @Generated
   protected inline fun match(
     vararg patterns: Regex,
-    crossinline function: (List<String>) -> Expansion
+    crossinline function: (String, List<String>) -> Expansion
   ) = Supplier {
     for (pattern in patterns) {
       val match = pattern.find(text, startIndex = position)
       if (match != null && match.range.first == position) {
         position = match.range.last + 1
-        return@Supplier function(match.groupValues)
+        return@Supplier function(match.value, match.groupValues)
       }
     }
     return@Supplier null

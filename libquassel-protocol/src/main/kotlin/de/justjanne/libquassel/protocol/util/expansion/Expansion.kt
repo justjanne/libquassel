@@ -14,6 +14,8 @@ package de.justjanne.libquassel.protocol.util.expansion
  * Model for a command expansion
  */
 sealed class Expansion {
+  abstract val source: String
+
   /**
    * Model for raw text
    */
@@ -21,7 +23,7 @@ sealed class Expansion {
     /**
      * Text to insert
      */
-    val value: String
+    override val source: String
   ) : Expansion()
 
   /**
@@ -36,7 +38,11 @@ sealed class Expansion {
      * Index of the last included parameter.
      * If null, this means all parameters after the start should be included
      */
-    val to: Int?
+    val to: Int?,
+    /**
+     * Original value that was parsed and replaced
+     */
+    override val source: String
   ) : Expansion()
 
   /**
@@ -57,7 +63,11 @@ sealed class Expansion {
      * [ParameterField.VERIFIED_IDENT], it’ll look up the ident of justjanne
      * in the current context, try to verify it, and set it to * otherwise.
      */
-    val field: ParameterField?
+    val field: ParameterField?,
+    /**
+     * Original value that was parsed and replaced
+     */
+    override val source: String
   ) : Expansion()
 
   /**
@@ -67,7 +77,11 @@ sealed class Expansion {
     /**
      * Type of constant to be inserted
      */
-    val field: ConstantField
+    val field: ConstantField,
+    /**
+     * Original value that was parsed and replaced
+     */
+    override val source: String
   ) : Expansion()
 
   /**

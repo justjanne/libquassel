@@ -26,9 +26,6 @@ interface CertManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setSslCert",
-      /**
-       * Construct a QVariant from a ByteBuffer
-       */
       qVariant(encoded, QtType.QByteArray),
     )
   }
@@ -38,9 +35,6 @@ interface CertManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setSslKey",
-      /**
-       * Construct a QVariant from a ByteBuffer
-       */
       qVariant(encoded, QtType.QByteArray),
     )
   }

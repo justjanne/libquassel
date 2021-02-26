@@ -26,9 +26,6 @@ interface BufferViewManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "addBufferViewConfig",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(bufferViewConfigId, QtType.Int),
     )
   }
@@ -43,9 +40,6 @@ interface BufferViewManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestCreateBufferView",
-      /**
-       * Construct a QVariant from a QVariantMap
-       */
       qVariant(properties, QtType.QVariantMap),
     )
   }
@@ -55,9 +49,6 @@ interface BufferViewManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestCreateBufferViews",
-      /**
-       * Construct a QVariant from a QVariantList
-       */
       qVariant(properties, QtType.QVariantList),
     )
   }
@@ -67,9 +58,6 @@ interface BufferViewManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "deleteBufferViewConfig",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(bufferViewConfigId, QtType.Int),
     )
   }
@@ -79,9 +67,6 @@ interface BufferViewManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestDeleteBufferView",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(bufferViewConfigId, QtType.Int),
     )
   }

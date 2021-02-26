@@ -33,33 +33,12 @@ interface IgnoreListManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "addIgnoreListItem",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(type, QtType.Int),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(ignoreRule, QtType.QString),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isRegEx, QtType.Bool),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(strictness, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(scope, QtType.Int),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(scopeRule, QtType.QString),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isActive, QtType.Bool),
     )
   }
@@ -69,9 +48,6 @@ interface IgnoreListManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "removeIgnoreListItem",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(ignoreRule, QtType.QString),
     )
   }
@@ -89,33 +65,12 @@ interface IgnoreListManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "requestAddIgnoreListItem",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(type, QtType.Int),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(ignoreRule, QtType.QString),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isRegEx, QtType.Bool),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(strictness, QtType.Int),
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(scope, QtType.Int),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(scopeRule, QtType.QString),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isActive, QtType.Bool),
     )
   }
@@ -125,9 +80,6 @@ interface IgnoreListManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestRemoveIgnoreListItem",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(ignoreRule, QtType.QString),
     )
   }
@@ -137,9 +89,6 @@ interface IgnoreListManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestToggleIgnoreRule",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(ignoreRule, QtType.QString),
     )
   }
@@ -149,9 +98,6 @@ interface IgnoreListManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "requestToggleIgnoreRule",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(ignoreRule, QtType.QString),
     )
   }

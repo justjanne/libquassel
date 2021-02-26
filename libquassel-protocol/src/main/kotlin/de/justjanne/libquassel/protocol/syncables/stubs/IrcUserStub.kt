@@ -23,37 +23,28 @@ import org.threeten.bp.temporal.Temporal
 interface IrcUserStub : SyncableStub {
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun addUserModes(modes: String?) {
+  fun addUserModes(modes: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "addUserModes",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(modes, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun joinChannel(channelname: String?) {
+  fun joinChannel(channelname: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "joinChannel",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(channelname, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun partChannel(channelname: String?) {
+  fun partChannel(channelname: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "partChannel",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(channelname, QtType.QString),
     )
   }
@@ -67,25 +58,19 @@ interface IrcUserStub : SyncableStub {
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun removeUserModes(modes: String?) {
+  fun removeUserModes(modes: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "removeUserModes",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(modes, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setAccount(account: String?) {
+  fun setAccount(account: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setAccount",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(account, QtType.QString),
     )
   }
@@ -95,21 +80,15 @@ interface IrcUserStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setAway",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(away, QtType.Bool),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setAwayMessage(awayMessage: String?) {
+  fun setAwayMessage(awayMessage: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setAwayMessage",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(awayMessage, QtType.QString),
     )
   }
@@ -119,21 +98,15 @@ interface IrcUserStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setEncrypted",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(encrypted, QtType.Bool),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setHost(host: String?) {
+  fun setHost(host: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setHost",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(host, QtType.QString),
     )
   }
@@ -143,21 +116,15 @@ interface IrcUserStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setIdleTime",
-      /**
-       * Construct a QVariant from a Temporal object
-       */
       qVariant(idleTime, QtType.QDateTime),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setIrcOperator(ircOperator: String?) {
+  fun setIrcOperator(ircOperator: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setIrcOperator",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(ircOperator, QtType.QString),
     )
   }
@@ -167,9 +134,6 @@ interface IrcUserStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setLastAwayMessage",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(lastAwayMessage, QtType.Int),
     )
   }
@@ -178,10 +142,7 @@ interface IrcUserStub : SyncableStub {
   fun setLastAwayMessageTime(lastAwayMessageTime: Temporal) {
     sync(
       target = ProtocolSide.CLIENT,
-      "setLastAwayMessageTIme",
-      /**
-       * Construct a QVariant from a Temporal object
-       */
+      "setLastAwayMessageTime",
       qVariant(lastAwayMessageTime, QtType.QDateTime),
     )
   }
@@ -191,105 +152,78 @@ interface IrcUserStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setLoginTime",
-      /**
-       * Construct a QVariant from a Temporal object
-       */
       qVariant(loginTime, QtType.QDateTime),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setNick(nick: String?) {
+  fun setNick(nick: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setNick",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(nick, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setRealName(realName: String?) {
+  fun setRealName(realName: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setRealName",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(realName, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setServer(server: String?) {
+  fun setServer(server: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setServer",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(server, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setSuserHost(suserHost: String?) {
+  fun setSuserHost(suserHost: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setSuserHost",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(suserHost, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setUser(user: String?) {
+  fun setUser(user: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setUser",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(user, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setUserModes(modes: String?) {
+  fun setUserModes(modes: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setUserModes",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(modes, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setWhoisServiceReply(whoisServiceReply: String?) {
+  fun setWhoisServiceReply(whoisServiceReply: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "setWhoisServiceReply",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(whoisServiceReply, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun updateHostmask(mask: String?) {
+  fun updateHostmask(mask: String) {
     sync(
       target = ProtocolSide.CLIENT,
       "updateHostmask",
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(mask, QtType.QString),
     )
   }

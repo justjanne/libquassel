@@ -25,9 +25,6 @@ interface HighlightRuleManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestRemoveHighlightRule",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(highlightRule, QtType.Int),
     )
   }
@@ -37,9 +34,6 @@ interface HighlightRuleManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "removeHighlightRule",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(highlightRule, QtType.Int),
     )
   }
@@ -49,9 +43,6 @@ interface HighlightRuleManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestToggleHighlightRule",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(highlightRule, QtType.Int),
     )
   }
@@ -61,9 +52,6 @@ interface HighlightRuleManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "toggleHighlightRule",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(highlightRule, QtType.Int),
     )
   }
@@ -82,37 +70,13 @@ interface HighlightRuleManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestToggleHighlightRule",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(id, QtType.Int),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(name, QtType.QString),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isRegEx, QtType.Bool),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isCaseSensitive, QtType.Bool),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isEnabled, QtType.Bool),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isInverse, QtType.Bool),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(sender, QtType.QString),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(chanName, QtType.QString),
     )
   }
@@ -131,37 +95,13 @@ interface HighlightRuleManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "addHighlightRule",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(id, QtType.Int),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(name, QtType.QString),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isRegEx, QtType.Bool),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isCaseSensitive, QtType.Bool),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isEnabled, QtType.Bool),
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(isInverse, QtType.Bool),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(sender, QtType.QString),
-      /**
-       * Construct a QVariant from a String?
-       */
       qVariant(chanName, QtType.QString),
     )
   }
@@ -171,9 +111,6 @@ interface HighlightRuleManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetHighlightNick",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(highlightNick, QtType.Int),
     )
   }
@@ -183,9 +120,6 @@ interface HighlightRuleManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setHighlightNick",
-      /**
-       * Construct a QVariant from a Int
-       */
       qVariant(highlightNick, QtType.Int),
     )
   }
@@ -195,9 +129,6 @@ interface HighlightRuleManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CORE,
       "requestSetNicksCaseSensitive",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(nicksCaseSensitive, QtType.Bool),
     )
   }
@@ -207,9 +138,6 @@ interface HighlightRuleManagerStub : SyncableStub {
     sync(
       target = ProtocolSide.CLIENT,
       "setNicksCaseSensitive",
-      /**
-       * Construct a QVariant from a Boolean
-       */
       qVariant(nicksCaseSensitive, QtType.Bool),
     )
   }
