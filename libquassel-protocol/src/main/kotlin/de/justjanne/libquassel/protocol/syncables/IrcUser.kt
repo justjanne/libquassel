@@ -21,6 +21,7 @@ import de.justjanne.libquassel.protocol.variant.indexed
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.Temporal
 
@@ -34,7 +35,7 @@ class IrcUser(
   }
 
   private fun updateObjectName() {
-    renameObject("${network().id}/${nick()}")
+    renameObject(state().identifier())
   }
 
   override fun fromVariantMap(properties: QVariantMap) =
@@ -234,7 +235,7 @@ class IrcUser(
   }
 
   fun joinChannel(channel: IrcChannel, skipChannelJoin: Boolean = false) {
-    if (state.value.channels.contains(channel.name())) {
+    if (state().channels.contains(channel.name())) {
       return
     }
 
@@ -280,32 +281,36 @@ class IrcUser(
     super.quit()
   }
 
-  fun network() = state.value.network
-  fun nick() = state.value.nick
-  fun user() = state.value.user
-  fun verifiedUser() = user().let {
-    if (it.startsWith("~")) null
-    else it
-  }
-  fun host() = state.value.host
-  fun realName() = state.value.realName
-  fun account() = state.value.account
-  fun hostMask() = "${nick()}!${user()}@${host()}"
-  fun isAway() = state.value.away
-  fun awayMessage() = state.value.awayMessage
-  fun server() = state.value.server
-  fun idleTime() = state.value.idleTime
+  fun network() = state().network
+  fun nick() = state().nick
+  fun user() = state().user
+  fun verifiedUser() = state().verifiedUser()
+  fun host() = state().host
+  fun realName() = state().realName
+  fun account() = state().account
+  fun hostMask() = state().hostMask()
+  fun isAway() = state().away
+  fun awayMessage() = state().awayMessage
+  fun server() = state().server
+  fun idleTime() = state().idleTime
 
-  fun loginTime() = state.value.loginTime
-  fun ircOperator() = state.value.ircOperator
-  fun lastAwayMessageTime() = state.value.lastAwayMessageTime
-  fun whoisServiceReply() = state.value.whoisServiceReply
-  fun suserHost() = state.value.suserHost
-  fun encrypted() = state.value.encrypted
-  fun userModes() = state.value.userModes
-  fun channels() = state.value.channels
+  fun loginTime() = state().loginTime
+  fun ircOperator() = state().ircOperator
+  fun lastAwayMessageTime() = state().lastAwayMessageTime
+  fun whoisServiceReply() = state().whoisServiceReply
+  fun suserHost() = state().suserHost
+  fun encrypted() = state().encrypted
+  fun userModes() = state().userModes
+  fun channels() = state().channels
 
-  private val state = MutableStateFlow(
+  @Suppress("NOTHING_TO_INLINE")
+  inline fun state() = flow().value
+
+  @Suppress("NOTHING_TO_INLINE")
+  inline fun flow(): StateFlow<IrcUserState> = state
+
+  @PublishedApi
+  internal val state = MutableStateFlow(
     IrcUserState(
       network = network,
       nick = HostmaskHelper.nick(hostmask),

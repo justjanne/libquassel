@@ -17,9 +17,13 @@ import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.syncables.IrcChannel
 import de.justjanne.libquassel.protocol.syncables.IrcUser
+import de.justjanne.libquassel.protocol.util.irc.IrcCapability
+import de.justjanne.libquassel.protocol.util.irc.IrcCaseMapper
+import de.justjanne.libquassel.protocol.util.irc.IrcISupport
+import java.util.Locale
 
 data class NetworkState(
-  val id: NetworkId,
+  val networkId: NetworkId,
   val identity: IdentityId = IdentityId(-1),
   val myNick: String? = "",
   val latency: Int = 0,
@@ -57,4 +61,37 @@ data class NetworkState(
   val codecForServer: String = "UTF_8",
   val codecForEncoding: String = "UTF_8",
   val codecForDecoding: String = "UTF_8"
-)
+) {
+  fun identifier() = "${networkId.id}"
+
+  fun caseMapper() = IrcCaseMapper[supportValue(IrcISupport.CASEMAPPING)]
+  fun supports(key: String) = supports.containsKey(key.toUpperCase(Locale.ROOT))
+  fun supportValue(key: String) = supports[key.toUpperCase(Locale.ROOT)]
+
+  fun capAvailable(capability: String) = caps.containsKey(capability.toLowerCase(Locale.ROOT))
+  fun capEnabled(capability: String) = capsEnabled.contains(capability.toLowerCase(Locale.ROOT))
+  fun capValue(capability: String) = caps[capability.toLowerCase(Locale.ROOT)] ?: ""
+
+  fun isSaslSupportLikely(mechanism: String): Boolean {
+    if (!capAvailable(IrcCapability.SASL)) {
+      return false
+    }
+    val capValue = capValue(IrcCapability.SASL)
+    return (capValue.isBlank() || capValue.contains(mechanism, ignoreCase = true))
+  }
+
+  fun ircUser(nickName: String) = ircUsers[caseMapper().toLowerCase(nickName)]
+  fun ircChannel(name: String) = ircChannels[caseMapper().toLowerCase(name)]
+
+  fun me() = myNick?.let(::ircUser)
+
+  fun isMe(user: IrcUser): Boolean {
+    return caseMapper().equalsIgnoreCase(user.nick(), myNick)
+  }
+
+  fun channelModeType(mode: Char): ChannelModeType? {
+    return channelModes.entries.find {
+      it.value.contains(mode)
+    }?.key
+  }
+}

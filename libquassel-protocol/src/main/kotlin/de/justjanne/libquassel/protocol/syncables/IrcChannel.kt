@@ -23,6 +23,7 @@ import de.justjanne.libquassel.protocol.variant.indexed
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class IrcChannel(
   name: String,
@@ -61,9 +62,9 @@ class IrcChannel(
       "topic" to qVariant(topic(), QtType.QString),
       "password" to qVariant(password(), QtType.QString),
       "encrypted" to qVariant(isEncrypted(), QtType.Bool),
-      "ChanModes" to qVariant(state.value.channelModes.toVariantMap(), QtType.QVariantMap),
+      "ChanModes" to qVariant(state().channelModes.toVariantMap(), QtType.QVariantMap),
       "UserModes" to qVariant(
-        state.value.userModes.mapValues { (_, value) ->
+        state().userModes.mapValues { (_, value) ->
           qVariant(value.joinToString(), QtType.QString)
         },
         QtType.QVariantMap
@@ -71,47 +72,22 @@ class IrcChannel(
     )
   }
 
-  fun network() = state.value.network
-  fun name() = state.value.name
-  fun topic() = state.value.topic
-  fun password() = state.value.password
-  fun isEncrypted() = state.value.encrypted
-  fun ircUsers() = session.network(network())?.let { network ->
-    state.value.userModes.keys.mapNotNull(network::ircUser)
-  }.orEmpty()
+  fun network() = state().network
+  fun name() = state().name
+  fun topic() = state().topic
+  fun password() = state().password
+  fun isEncrypted() = state().encrypted
+  fun ircUsers() = state().ircUsers(session.network(network())?.state())
 
-  fun userCount() = state.value.userModes.size
-  fun userModes(nick: String) = state.value.userModes[nick]
-  fun hasMode(mode: Char) = when (session.network(network())?.channelModeType(mode)) {
-    ChannelModeType.A_CHANMODE ->
-      state.value.channelModes.a.contains(mode)
-    ChannelModeType.B_CHANMODE ->
-      state.value.channelModes.b.contains(mode)
-    ChannelModeType.C_CHANMODE ->
-      state.value.channelModes.c.contains(mode)
-    ChannelModeType.D_CHANMODE ->
-      state.value.channelModes.d.contains(mode)
-    else ->
-      false
-  }
+  fun userCount() = state().userModes.size
+  fun userModes(nick: String) = state().userModes[nick]
+  fun hasMode(mode: Char) = state().hasMode(session.network(network())?.state(), mode)
 
-  fun modeValue(mode: Char) = when (session.network(network())?.channelModeType(mode)) {
-    ChannelModeType.B_CHANMODE ->
-      state.value.channelModes.b[mode] ?: ""
-    ChannelModeType.C_CHANMODE ->
-      state.value.channelModes.c[mode] ?: ""
-    else ->
-      ""
-  }
+  fun modeValue(mode: Char) = state().modeValue(session.network(network())?.state(), mode)
 
-  fun modeValues(mode: Char) = when (session.network(network())?.channelModeType(mode)) {
-    ChannelModeType.A_CHANMODE ->
-      state.value.channelModes.a[mode].orEmpty()
-    else ->
-      emptySet()
-  }
+  fun modeValues(mode: Char) = state().modeValues(session.network(network())?.state(), mode)
 
-  fun channelModeString() = state.value.channelModes.modeString()
+  fun channelModeString() = state().channelModeString()
 
   override fun setTopic(topic: String) {
     state.update {
@@ -146,7 +122,7 @@ class IrcChannel(
   private fun joinIrcUsers(map: Map<String, Set<Char>>) {
     val network = session.network(network())
 
-    val newNicks = map.keys - state.value.userModes.keys
+    val newNicks = map.keys - state().userModes.keys
     state.update {
       copy(
         userModes = userModes + map.mapValues { (key, value) ->
@@ -173,8 +149,8 @@ class IrcChannel(
 
     if (partingUser != null) {
       partingUser.partChannel(name())
-      if (network.isMe(partingUser) || state.value.userModes.isEmpty()) {
-        for (nickname in state.value.userModes.keys.toList()) {
+      if (network.isMe(partingUser) || state().userModes.isEmpty()) {
+        for (nickname in state().userModes.keys.toList()) {
           network.ircUser(nickname)?.partChannel(this)
         }
         state.update {
@@ -289,7 +265,14 @@ class IrcChannel(
     super.removeChannelMode(mode, value)
   }
 
-  private val state = MutableStateFlow(
+  @Suppress("NOTHING_TO_INLINE")
+  inline fun state() = flow().value
+
+  @Suppress("NOTHING_TO_INLINE")
+  inline fun flow(): StateFlow<IrcChannelState> = state
+
+  @PublishedApi
+  internal val state = MutableStateFlow(
     IrcChannelState(
       network = network,
       name = name

@@ -24,8 +24,7 @@ import de.justjanne.libquassel.protocol.syncables.state.NetworkState
 import de.justjanne.libquassel.protocol.syncables.stubs.NetworkStub
 import de.justjanne.libquassel.protocol.util.indices
 import de.justjanne.libquassel.protocol.util.irc.HostmaskHelper
-import de.justjanne.libquassel.protocol.util.irc.IrcCapability
-import de.justjanne.libquassel.protocol.util.irc.IrcCaseMapper
+import de.justjanne.libquassel.protocol.util.irc.IrcISupport
 import de.justjanne.libquassel.protocol.util.transpose
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantList
@@ -33,16 +32,15 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.nio.ByteBuffer
-import java.util.Locale
 
 class Network constructor(
   networkId: NetworkId,
   session: Session
 ) : SyncableObject(session, "Network"), NetworkStub {
   override fun init() {
-    renameObject("${networkId().id}")
-    super.init()
+    renameObject(state().identifier())
   }
 
   override fun fromVariantMap(properties: QVariantMap) {
@@ -233,83 +231,70 @@ class Network constructor(
     )
   )
 
-  fun me() = ircUser(myNick() ?: "")
+  fun networkId() = state().networkId
+  fun networkName() = state().networkName
+  fun isConnected() = state().connected
+  fun connectionState() = state().connectionState
+  fun currentServer() = state().currentServer
+  fun myNick() = state().myNick
+  fun latency() = state().latency
+  fun identity() = state().identity
+  fun nicks() = state().ircUsers.keys
+  fun channels() = state().ircChannels.keys
+  fun caps() = state().caps
+  fun capsEnabled() = state().capsEnabled
 
-  fun networkId() = state.value.id
-  fun networkName() = state.value.networkName
-  fun isConnected() = state.value.connected
-  fun connectionState() = state.value.connectionState
-  fun currentServer() = state.value.currentServer
-  fun myNick() = state.value.myNick
-  fun latency() = state.value.latency
-  fun identity() = state.value.identity
-  fun nicks() = state.value.ircUsers.keys
-  fun channels() = state.value.ircChannels.keys
-  fun caps() = state.value.caps
-  fun capsEnabled() = state.value.capsEnabled
-  fun serverList() = state.value.serverList
-  fun useRandomServer() = state.value.useRandomServer
-  fun perform() = state.value.perform
-  fun useAutoIdentify() = state.value.useAutoIdentify
-  fun autoIdentifyService() = state.value.autoIdentifyService
-  fun autoIdentifyPassword() = state.value.autoIdentifyPassword
-  fun useSasl() = state.value.useSasl
-  fun saslAccount() = state.value.saslAccount
-  fun saslPassword() = state.value.saslPassword
-  fun useAutoReconnect() = state.value.useAutoReconnect
-  fun autoReconnectInterval() = state.value.autoReconnectInterval
-  fun autoReconnectRetries() = state.value.autoReconnectRetries
-  fun unlimitedReconnectRetries() = state.value.unlimitedReconnectRetries
-  fun rejoinChannels() = state.value.rejoinChannels
-  fun useCustomMessageRate() = state.value.useCustomMessageRate
-  fun messageRateBurstSize() = state.value.messageRateBurstSize
-  fun messageRateDelay() = state.value.messageRateDelay
-  fun unlimitedMessageRate() = state.value.unlimitedMessageRate
-  fun prefixes() = state.value.prefixes
-  fun prefixModes() = state.value.prefixModes
-  fun channelModes() = state.value.channelModes
-  fun supports() = state.value.supports
-  fun supports(key: String) =
-    state.value.supports.containsKey(key.toUpperCase(Locale.ROOT))
+  fun serverList() = state().serverList
+  fun useRandomServer() = state().useRandomServer
+  fun perform() = state().perform
 
-  fun supportValue(key: String) =
-    state.value.supports[key.toUpperCase(Locale.ROOT)]
+  fun useAutoIdentify() = state().useAutoIdentify
+  fun autoIdentifyService() = state().autoIdentifyService
+  fun autoIdentifyPassword() = state().autoIdentifyPassword
 
-  fun capAvailable(capability: String) =
-    state.value.caps.containsKey(capability.toLowerCase(Locale.ROOT))
+  fun useSasl() = state().useSasl
+  fun saslAccount() = state().saslAccount
+  fun saslPassword() = state().saslPassword
 
-  fun capEnabled(capability: String) =
-    state.value.capsEnabled.contains(capability.toLowerCase(Locale.ROOT))
+  fun useAutoReconnect() = state().useAutoReconnect
+  fun autoReconnectInterval() = state().autoReconnectInterval
+  fun autoReconnectRetries() = state().autoReconnectRetries
+  fun unlimitedReconnectRetries() = state().unlimitedReconnectRetries
+  fun rejoinChannels() = state().rejoinChannels
 
-  fun capValue(capability: String) =
-    state.value.caps[capability.toLowerCase(Locale.ROOT)] ?: ""
+  fun useCustomMessageRate() = state().useCustomMessageRate
+  fun messageRateBurstSize() = state().messageRateBurstSize
+  fun messageRateDelay() = state().messageRateDelay
+  fun unlimitedMessageRate() = state().unlimitedMessageRate
 
-  fun skipCaps() = state.value.skipCaps
+  fun prefixes() = state().prefixes
+  fun prefixModes() = state().prefixModes
+  fun channelModes() = state().channelModes
 
-  fun isSaslSupportLikely(mechanism: String): Boolean {
-    if (!capAvailable(IrcCapability.SASL)) {
-      return false
-    }
-    val capValue = capValue(IrcCapability.SASL)
-    return (capValue.isBlank() || capValue.contains(mechanism, ignoreCase = true))
-  }
+  fun supports() = state().supports
+  fun supports(key: String) = state().supports(key)
+  fun supportValue(key: String) = state().supportValue(key)
 
-  fun ircUser(nickName: String) =
-    state.value.ircUsers[caseMapper().toLowerCase(nickName)]
+  fun capAvailable(capability: String) = state().capAvailable(capability)
+  fun capEnabled(capability: String) = state().capEnabled(capability)
+  fun capValue(capability: String) = state().capValue(capability)
+  fun skipCaps() = state().skipCaps
 
-  fun ircUsers() = state.value.ircUsers.values
-  fun ircUserCount() = state.value.ircUsers.size
-  fun ircChannel(name: String) =
-    state.value.ircChannels[caseMapper().toLowerCase(name)]
+  fun isSaslSupportLikely(mechanism: String) = state().isSaslSupportLikely(mechanism)
 
-  fun ircChannels() = state.value.ircChannels.values
-  fun ircChannelCount() = state.value.ircChannels.size
+  fun ircUser(nickName: String) = state().ircUser(nickName)
+  fun ircUsers() = state().ircUsers.values
+  fun ircUserCount() = state().ircUsers.size
 
-  fun codecForServer() = state.value.codecForServer
-  fun codecForEncoding() = state.value.codecForEncoding
-  fun codecForDecoding() = state.value.codecForDecoding
+  fun ircChannel(name: String) = state().ircChannel(name)
+  fun ircChannels() = state().ircChannels.values
+  fun ircChannelCount() = state().ircChannels.size
 
-  fun caseMapper() = IrcCaseMapper[supportValue("CASEMAPPING")]
+  fun codecForServer() = state().codecForServer
+  fun codecForEncoding() = state().codecForEncoding
+  fun codecForDecoding() = state().codecForDecoding
+
+  fun caseMapper() = state().caseMapper()
 
   fun networkInfo() = NetworkInfo(
     networkName = networkName(),
@@ -405,15 +390,10 @@ class Network constructor(
     }
   }
 
-  fun isMe(user: IrcUser): Boolean {
-    return caseMapper().equalsIgnoreCase(user.nick(), myNick())
-  }
+  fun me() = state().me()
+  fun isMe(user: IrcUser) = state().isMe(user)
 
-  fun channelModeType(mode: Char): ChannelModeType? {
-    return channelModes().entries.find {
-      it.value.contains(mode)
-    }?.key
-  }
+  fun channelModeType(mode: Char) = state().channelModeType(mode)
 
   override fun addSupport(param: String, value: String) {
     state.update {
@@ -477,7 +457,7 @@ class Network constructor(
   fun ircUserNickChanged(old: String, new: String) {
     val oldNick = caseMapper().toLowerCase(old)
     val newNick = caseMapper().toLowerCase(new)
-    val user = state.value.ircUsers[oldNick]
+    val user = state().ircUsers[oldNick]
     if (user != null) {
       state.update {
         copy(ircUsers = ircUsers - oldNick + Pair(newNick, user))
@@ -488,7 +468,7 @@ class Network constructor(
   private fun determineChannelModeTypes(): Map<ChannelModeType, Set<Char>> {
     return ChannelModeType.values()
       .zip(
-        supportValue("CHANMODES")
+        supportValue(IrcISupport.CHANMODES)
           ?.split(',', limit = ChannelModeType.values().size)
           ?.map(String::toSet)
           .orEmpty()
@@ -500,7 +480,7 @@ class Network constructor(
     val defaultPrefixes = listOf('~', '&', '@', '%', '+')
     val defaultPrefixModes = listOf('q', 'a', 'o', 'h', 'v')
 
-    val prefix = supportValue("PREFIX")
+    val prefix = supportValue(IrcISupport.PREFIX)
       ?: return Pair(defaultPrefixes, defaultPrefixModes)
 
     if (prefix.startsWith("(") && prefix.contains(")")) {
@@ -743,9 +723,16 @@ class Network constructor(
     super.setCodecForDecoding(codecForDecoding)
   }
 
-  private val state = MutableStateFlow(
+  @Suppress("NOTHING_TO_INLINE")
+  inline fun state() = flow().value
+
+  @Suppress("NOTHING_TO_INLINE")
+  inline fun flow(): StateFlow<NetworkState> = state
+
+  @PublishedApi
+  internal val state = MutableStateFlow(
     NetworkState(
-      id = networkId
+      networkId = networkId
     )
   )
 }
