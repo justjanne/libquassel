@@ -11,11 +11,11 @@
 package de.justjanne.libquassel.protocol.models
 
 enum class HighlightNickType(
-  val value: UByte,
+  val value: Int,
 ) {
-  NoNick(0x00u),
-  CurrentNick(0x01u),
-  AllNicks(0x02u);
+  NoNick(0),
+  CurrentNick(1),
+  AllNicks(2);
 
   companion object {
     private val values = enumValues<HighlightNickType>()
@@ -24,6 +24,6 @@ enum class HighlightNickType(
     /**
      * Obtain from underlying representation
      */
-    fun of(value: UByte): HighlightNickType? = values[value]
+    fun of(value: Int): HighlightNickType? = values[value]
   }
 }

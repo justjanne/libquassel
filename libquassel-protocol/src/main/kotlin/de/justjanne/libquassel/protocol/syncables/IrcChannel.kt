@@ -23,7 +23,6 @@ import de.justjanne.libquassel.protocol.variant.indexed
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 class IrcChannel(
   name: String,
@@ -269,7 +268,7 @@ class IrcChannel(
   inline fun state() = flow().value
 
   @Suppress("NOTHING_TO_INLINE")
-  inline fun flow(): StateFlow<IrcChannelState> = state
+  inline fun flow() = state
 
   @PublishedApi
   internal val state = MutableStateFlow(

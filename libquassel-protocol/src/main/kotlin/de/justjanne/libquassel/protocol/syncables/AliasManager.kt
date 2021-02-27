@@ -22,28 +22,25 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 class AliasManager constructor(
   session: Session
 ) : SyncableObject(session, "AliasManager"), AliasManagerStub {
   override fun toVariantMap(): QVariantMap = mapOf(
-    "Aliases" to qVariant(initAliases(), QtType.QVariantMap)
+    "Aliases" to qVariant(
+      mapOf(
+        "names" to qVariant(aliases().map(Alias::name), QtType.QStringList),
+        "expansions" to qVariant(aliases().map(Alias::expansion), QtType.QStringList)
+      ),
+      QtType.QVariantMap
+    )
   )
 
   override fun fromVariantMap(properties: QVariantMap) {
-    initSetAliases(properties["Aliases"].into<QVariantMap>().orEmpty())
-  }
+    val aliases = properties["Aliases"].into<QVariantMap>().orEmpty()
 
-  private fun initAliases(): QVariantMap = mapOf(
-    "names" to qVariant(aliases().map(Alias::name), QtType.QStringList),
-    "expansions" to qVariant(aliases().map(Alias::expansion), QtType.QStringList)
-  )
-
-  private fun initSetAliases(aliases: QVariantMap) {
     val names = aliases["names"].into<QStringList>().orEmpty()
     val expansions = aliases["expansions"].into<List<String>>().orEmpty()
-
     require(names.size == expansions.size) {
       "Sizes do not match: names=${names.size}, expansions=${expansions.size}"
     }
@@ -107,7 +104,7 @@ class AliasManager constructor(
   inline fun state() = flow().value
 
   @Suppress("NOTHING_TO_INLINE")
-  inline fun flow(): StateFlow<AliasManagerState> = state
+  inline fun flow() = state
 
   @PublishedApi
   internal val state = MutableStateFlow(

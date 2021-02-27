@@ -17,6 +17,8 @@ dependencies {
   api("org.threeten", "threetenbp", "1.4.0")
   val kotlinBitflagsVersion: String by project
   api("de.justjanne", "kotlin-bitflags", kotlinBitflagsVersion)
+  val bouncyCastleVersion: String by project
+  implementation("org.bouncycastle", "bcpkix-jdk15on", bouncyCastleVersion)
   api(project(":libquassel-annotations"))
   ksp(project(":libquassel-generator"))
 }

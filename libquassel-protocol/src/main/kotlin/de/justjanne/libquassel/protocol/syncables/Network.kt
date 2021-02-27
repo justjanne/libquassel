@@ -32,7 +32,6 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import java.nio.ByteBuffer
 
 class Network constructor(
@@ -727,7 +726,7 @@ class Network constructor(
   inline fun state() = flow().value
 
   @Suppress("NOTHING_TO_INLINE")
-  inline fun flow(): StateFlow<NetworkState> = state
+  inline fun flow() = state
 
   @PublishedApi
   internal val state = MutableStateFlow(
