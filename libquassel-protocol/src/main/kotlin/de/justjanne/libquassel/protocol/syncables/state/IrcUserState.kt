@@ -33,12 +33,12 @@ data class IrcUserState(
   val channels: Set<String> = emptySet(),
   val userModes: Set<Char> = emptySet()
 ) {
-  fun identifier() = "${network.id}/${nick}"
+  fun identifier() = "${network.id}/$nick"
 
   fun verifiedUser() = user.let {
     if (it.startsWith("~")) null
     else it
   }
 
-  fun hostMask() = "${nick}!${user}@${host}"
+  fun hostMask() = "$nick!$user@$host"
 }
