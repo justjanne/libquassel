@@ -1,6 +1,7 @@
 <component name="CopyrightManager">
   <copyright>
-    <option name="notice" value="libquassel&#10;Copyright (c) &amp;#36;today.year Janne Mareike Koschinski&#10;Copyright (c) &amp;#36;today.year The Quassel Project&#10;&#10;This Source Code Form is subject to the terms of the Mozilla Public License,&#10;v. 2.0. If a copy of the MPL was not distributed with this file, You can&#10;obtain one at https://mozilla.org/MPL/2.0/." />
+    <option name="allowReplaceRegexp" value="Janne Mareike Koschinski" />
+    <option name="notice" value="libquassel&#10;Copyright (c) &amp;#36;today.year Janne Mareike Koschinski&#10;&#10;This Source Code Form is subject to the terms of the Mozilla Public License,&#10;v. 2.0. If a copy of the MPL was not distributed with this file, You can&#10;obtain one at https://mozilla.org/MPL/2.0/." />
     <option name="myName" value="libquassel" />
   </copyright>
 </component>
