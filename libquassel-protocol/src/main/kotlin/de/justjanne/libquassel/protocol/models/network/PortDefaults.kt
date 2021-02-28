@@ -8,11 +8,11 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.models.network
 
-import java.util.UUID
-
-/**
- * Simple alias for a generic TransferIdList type
- */
-typealias TransferIdList = List<UUID>
+enum class PortDefaults(
+  val port: UInt
+) {
+  PORT_PLAINTEXT(6667u),
+  PORT_SSL(6697u)
+}

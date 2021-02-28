@@ -18,7 +18,7 @@
  */
 package de.justjanne.libquassel.protocol.serializers.quassel
 
-import de.justjanne.libquassel.protocol.models.DccPortSelectionMode
+import de.justjanne.libquassel.protocol.models.dcc.DccPortSelectionMode
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest

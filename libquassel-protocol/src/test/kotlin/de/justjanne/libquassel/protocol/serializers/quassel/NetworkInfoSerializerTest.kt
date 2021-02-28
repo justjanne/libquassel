@@ -18,8 +18,8 @@
  */
 package de.justjanne.libquassel.protocol.serializers.quassel
 
-import de.justjanne.libquassel.protocol.models.NetworkInfo
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.models.network.NetworkInfo
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest

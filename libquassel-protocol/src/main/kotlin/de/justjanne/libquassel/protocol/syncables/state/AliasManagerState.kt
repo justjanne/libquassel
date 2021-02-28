@@ -10,9 +10,9 @@
 
 package de.justjanne.libquassel.protocol.syncables.state
 
-import de.justjanne.libquassel.protocol.models.Alias
 import de.justjanne.libquassel.protocol.models.BufferInfo
-import de.justjanne.libquassel.protocol.models.Command
+import de.justjanne.libquassel.protocol.models.alias.Alias
+import de.justjanne.libquassel.protocol.models.alias.Command
 import de.justjanne.libquassel.protocol.util.expansion.Expansion
 
 data class AliasManagerState(

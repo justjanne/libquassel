@@ -12,9 +12,9 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.models.NetworkProxy
-import de.justjanne.libquassel.protocol.models.NetworkServer
-import de.justjanne.libquassel.protocol.models.PortDefaults
+import de.justjanne.libquassel.protocol.models.network.NetworkProxy
+import de.justjanne.libquassel.protocol.models.network.NetworkServer
+import de.justjanne.libquassel.protocol.models.network.PortDefaults
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.QVariantMapSerializer

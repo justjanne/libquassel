@@ -15,9 +15,9 @@ import de.justjanne.bitflags.toBits
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.features.LegacyFeature
 import de.justjanne.libquassel.protocol.features.QuasselFeatureName
-import de.justjanne.libquassel.protocol.models.BackendInfoSerializer
 import de.justjanne.libquassel.protocol.models.HandshakeMessage
 import de.justjanne.libquassel.protocol.models.QStringList
+import de.justjanne.libquassel.protocol.models.setup.BackendInfoSerializer
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
 import de.justjanne.libquassel.protocol.variant.QVariantList

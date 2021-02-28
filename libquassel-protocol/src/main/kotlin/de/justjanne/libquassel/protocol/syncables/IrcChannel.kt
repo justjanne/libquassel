@@ -10,9 +10,9 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
-import de.justjanne.libquassel.protocol.models.ChannelModeType
-import de.justjanne.libquassel.protocol.models.ChannelModes
 import de.justjanne.libquassel.protocol.models.QStringList
+import de.justjanne.libquassel.protocol.models.network.ChannelModeType
+import de.justjanne.libquassel.protocol.models.network.ChannelModes
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.syncables.stubs.IrcChannelStub

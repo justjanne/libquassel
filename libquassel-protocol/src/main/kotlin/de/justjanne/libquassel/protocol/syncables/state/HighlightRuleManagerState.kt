@@ -10,12 +10,12 @@
 
 package de.justjanne.libquassel.protocol.syncables.state
 
-import de.justjanne.libquassel.protocol.models.HighlightNickType
-import de.justjanne.libquassel.protocol.models.HighlightRule
 import de.justjanne.libquassel.protocol.models.flags.MessageFlag
 import de.justjanne.libquassel.protocol.models.flags.MessageFlags
 import de.justjanne.libquassel.protocol.models.flags.MessageType
 import de.justjanne.libquassel.protocol.models.flags.MessageTypes
+import de.justjanne.libquassel.protocol.models.rules.HighlightNickType
+import de.justjanne.libquassel.protocol.models.rules.HighlightRule
 import de.justjanne.libquassel.protocol.util.expression.ExpressionMatch
 import de.justjanne.libquassel.protocol.util.irc.IrcFormatDeserializer
 

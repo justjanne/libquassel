@@ -18,7 +18,7 @@
  */
 package de.justjanne.libquassel.protocol.serializers.quassel
 
-import de.justjanne.libquassel.protocol.models.DccIpDetectionMode
+import de.justjanne.libquassel.protocol.models.dcc.DccIpDetectionMode
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest

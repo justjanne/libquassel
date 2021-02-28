@@ -13,8 +13,8 @@ package de.justjanne.libquassel.protocol.syncables.stubs
 import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.annotations.SyncedCall
 import de.justjanne.libquassel.annotations.SyncedObject
-import de.justjanne.libquassel.protocol.models.TransferDirection
-import de.justjanne.libquassel.protocol.models.TransferStatus
+import de.justjanne.libquassel.protocol.models.dcc.TransferDirection
+import de.justjanne.libquassel.protocol.models.dcc.TransferStatus
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.syncables.SyncableStub

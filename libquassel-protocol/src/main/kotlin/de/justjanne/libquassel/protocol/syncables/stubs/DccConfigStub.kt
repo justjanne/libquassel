@@ -13,8 +13,8 @@ package de.justjanne.libquassel.protocol.syncables.stubs
 import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.annotations.SyncedCall
 import de.justjanne.libquassel.annotations.SyncedObject
-import de.justjanne.libquassel.protocol.models.DccIpDetectionMode
-import de.justjanne.libquassel.protocol.models.DccPortSelectionMode
+import de.justjanne.libquassel.protocol.models.dcc.DccIpDetectionMode
+import de.justjanne.libquassel.protocol.models.dcc.DccPortSelectionMode
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.syncables.SyncableStub

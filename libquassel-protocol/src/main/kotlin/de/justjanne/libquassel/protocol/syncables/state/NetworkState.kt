@@ -10,11 +10,11 @@
 
 package de.justjanne.libquassel.protocol.syncables.state
 
-import de.justjanne.libquassel.protocol.models.ChannelModeType
-import de.justjanne.libquassel.protocol.models.ConnectionState
-import de.justjanne.libquassel.protocol.models.NetworkServer
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.models.network.ChannelModeType
+import de.justjanne.libquassel.protocol.models.network.ConnectionState
+import de.justjanne.libquassel.protocol.models.network.NetworkServer
 import de.justjanne.libquassel.protocol.syncables.IrcChannel
 import de.justjanne.libquassel.protocol.syncables.IrcUser
 import de.justjanne.libquassel.protocol.util.irc.IrcCapability

@@ -8,28 +8,25 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.models.network
 
-enum class ConnectionState(
-  /**
-   * Underlying representation
-   */
+enum class NetworkProxy(
   val value: Int,
 ) {
-  Disconnected(0),
-  Connecting(1),
-  Initializing(2),
-  Initialized(3),
-  Reconnecting(4),
-  Disconnecting(5);
+  DefaultProxy(0),
+  Socks5Proxy(1),
+  NoProxy(2),
+  HttpProxy(3),
+  HttpCachingProxy(4),
+  FtpCachingProxy(5);
 
   companion object {
-    private val values = enumValues<ConnectionState>()
-      .associateBy(ConnectionState::value)
+    private val values = enumValues<NetworkProxy>()
+      .associateBy(NetworkProxy::value)
 
     /**
      * Obtain from underlying representation
      */
-    fun of(value: Int): ConnectionState? = values[value]
+    fun of(value: Int): NetworkProxy? = values[value]
   }
 }

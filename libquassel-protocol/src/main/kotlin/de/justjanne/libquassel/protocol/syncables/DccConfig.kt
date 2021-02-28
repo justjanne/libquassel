@@ -10,8 +10,8 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
-import de.justjanne.libquassel.protocol.models.DccIpDetectionMode
-import de.justjanne.libquassel.protocol.models.DccPortSelectionMode
+import de.justjanne.libquassel.protocol.models.dcc.DccIpDetectionMode
+import de.justjanne.libquassel.protocol.models.dcc.DccPortSelectionMode
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.syncables.state.DccConfigState

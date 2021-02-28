@@ -8,8 +8,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.models.setup
 
+import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.util.collections.triples
 import de.justjanne.libquassel.protocol.variant.QVariantList

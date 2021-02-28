@@ -8,25 +8,21 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.models.dcc
 
-enum class NetworkProxy(
+enum class TransferDirection(
   val value: Int,
 ) {
-  DefaultProxy(0),
-  Socks5Proxy(1),
-  NoProxy(2),
-  HttpProxy(3),
-  HttpCachingProxy(4),
-  FtpCachingProxy(5);
+  Send(0),
+  Receive(1);
 
   companion object {
-    private val values = enumValues<NetworkProxy>()
-      .associateBy(NetworkProxy::value)
+    private val values = enumValues<TransferDirection>()
+      .associateBy(TransferDirection::value)
 
     /**
      * Obtain from underlying representation
      */
-    fun of(value: Int): NetworkProxy? = values[value]
+    fun of(value: Int): TransferDirection? = values[value]
   }
 }

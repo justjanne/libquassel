@@ -8,22 +8,27 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.models.dcc
 
-enum class HighlightNickType(
+enum class TransferStatus(
   val value: Int,
 ) {
-  NoNick(0),
-  CurrentNick(1),
-  AllNicks(2);
+  New(0),
+  Pending(1),
+  Connecting(2),
+  Transferring(3),
+  Paused(4),
+  Completed(5),
+  Failed(6),
+  Rejected(7);
 
   companion object {
-    private val values = enumValues<HighlightNickType>()
-      .associateBy(HighlightNickType::value)
+    private val values = enumValues<TransferStatus>()
+      .associateBy(TransferStatus::value)
 
     /**
      * Obtain from underlying representation
      */
-    fun of(value: Int): HighlightNickType? = values[value]
+    fun of(value: Int): TransferStatus? = values[value]
   }
 }

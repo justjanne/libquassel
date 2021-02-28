@@ -8,21 +8,28 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.models.network
 
-enum class TransferDirection(
+enum class ConnectionState(
+  /**
+   * Underlying representation
+   */
   val value: Int,
 ) {
-  Send(0),
-  Receive(1);
+  Disconnected(0),
+  Connecting(1),
+  Initializing(2),
+  Initialized(3),
+  Reconnecting(4),
+  Disconnecting(5);
 
   companion object {
-    private val values = enumValues<TransferDirection>()
-      .associateBy(TransferDirection::value)
+    private val values = enumValues<ConnectionState>()
+      .associateBy(ConnectionState::value)
 
     /**
      * Obtain from underlying representation
      */
-    fun of(value: Int): TransferDirection? = values[value]
+    fun of(value: Int): ConnectionState? = values[value]
   }
 }

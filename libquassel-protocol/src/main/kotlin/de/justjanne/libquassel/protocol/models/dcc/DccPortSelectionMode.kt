@@ -8,7 +8,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.models.dcc
 
 /**
  * Mode for selecting the port range for DCC

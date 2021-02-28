@@ -10,10 +10,10 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
-import de.justjanne.libquassel.protocol.models.Alias
 import de.justjanne.libquassel.protocol.models.BufferInfo
-import de.justjanne.libquassel.protocol.models.Command
 import de.justjanne.libquassel.protocol.models.QStringList
+import de.justjanne.libquassel.protocol.models.alias.Alias
+import de.justjanne.libquassel.protocol.models.alias.Command
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.syncables.state.AliasManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.AliasManagerStub

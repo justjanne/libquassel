@@ -12,6 +12,7 @@ package de.justjanne.libquassel.protocol.models
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.models.setup.BackendInfo
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 
 /**

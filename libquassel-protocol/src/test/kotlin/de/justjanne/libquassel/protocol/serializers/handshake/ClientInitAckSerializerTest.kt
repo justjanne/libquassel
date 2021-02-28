@@ -19,9 +19,9 @@
 package de.justjanne.libquassel.protocol.serializers.handshake
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.models.BackendInfo
 import de.justjanne.libquassel.protocol.models.HandshakeMessage
-import de.justjanne.libquassel.protocol.models.SetupEntry
+import de.justjanne.libquassel.protocol.models.setup.BackendInfo
+import de.justjanne.libquassel.protocol.models.setup.SetupEntry
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.handshakeSerializerTest

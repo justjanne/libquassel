@@ -13,9 +13,9 @@ package de.justjanne.libquassel.protocol.syncables.stubs
 import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.annotations.SyncedCall
 import de.justjanne.libquassel.annotations.SyncedObject
-import de.justjanne.libquassel.protocol.models.NetworkInfo
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
+import de.justjanne.libquassel.protocol.models.network.NetworkInfo
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.syncables.SyncableStub

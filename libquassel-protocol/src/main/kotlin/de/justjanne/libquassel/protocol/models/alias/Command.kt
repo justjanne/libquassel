@@ -8,9 +8,11 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.models.alias
 
-data class Alias(
-  val name: String?,
-  val expansion: String?
+import de.justjanne.libquassel.protocol.models.BufferInfo
+
+data class Command(
+  val buffer: BufferInfo,
+  val message: String
 )

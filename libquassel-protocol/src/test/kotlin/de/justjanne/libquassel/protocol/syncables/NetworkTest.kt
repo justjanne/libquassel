@@ -10,18 +10,12 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
-import de.justjanne.libquassel.protocol.models.NetworkServer
-import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
-import de.justjanne.libquassel.protocol.testutil.nextEnum
-import de.justjanne.libquassel.protocol.testutil.nextIrcChannel
-import de.justjanne.libquassel.protocol.testutil.nextIrcUser
-import de.justjanne.libquassel.protocol.testutil.nextString
+import de.justjanne.libquassel.protocol.testutil.nextNetwork
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
-import kotlin.random.nextUInt
 
 class NetworkTest {
   @Test
@@ -37,68 +31,3 @@ class NetworkTest {
     assertEquals(expected, actual)
   }
 }
-
-fun Random.nextNetwork(networkId: NetworkId) = NetworkState(
-  networkId = networkId,
-  identity = IdentityId(nextInt()),
-  myNick = nextString(),
-  latency = nextInt(),
-  networkName = nextString(),
-  currentServer = nextString(),
-  connected = nextBoolean(),
-  connectionState = nextEnum(),
-  ircUsers = List(nextInt(20)) {
-    nextIrcUser(networkId)
-  }.associateBy(IrcUser::nick),
-  ircChannels = List(nextInt(20)) {
-    nextIrcChannel(networkId)
-  }.associateBy(IrcChannel::name),
-  supports = List(nextInt(20)) {
-    nextString() to nextString()
-  }.toMap(),
-  caps = List(nextInt(20)) {
-    nextString() to nextString()
-  }.toMap(),
-  capsEnabled = List(nextInt(20)) {
-    nextString()
-  }.toSet(),
-  serverList = List(nextInt(20)) {
-    nextNetworkServer()
-  },
-  useRandomServer = nextBoolean(),
-  perform = List(nextInt(20)) {
-    nextString()
-  },
-  useAutoIdentify = nextBoolean(),
-  autoIdentifyService = nextString(),
-  autoIdentifyPassword = nextString(),
-  useSasl = nextBoolean(),
-  saslAccount = nextString(),
-  saslPassword = nextString(),
-  useAutoReconnect = nextBoolean(),
-  autoReconnectInterval = nextUInt(),
-  autoReconnectRetries = nextUInt(UShort.MAX_VALUE.toUInt()).toUShort(),
-  unlimitedReconnectRetries = nextBoolean(),
-  rejoinChannels = nextBoolean(),
-  useCustomMessageRate = nextBoolean(),
-  messageRateBurstSize = nextUInt(),
-  messageRateDelay = nextUInt(),
-  codecForServer = nextString(),
-  codecForEncoding = nextString(),
-  codecForDecoding = nextString()
-)
-
-fun Random.nextNetworkServer() = NetworkServer(
-  host = nextString(),
-  port = nextUInt(),
-  password = nextString(),
-  useSsl = nextBoolean(),
-  sslVerify = nextBoolean(),
-  sslVersion = nextInt(),
-  useProxy = nextBoolean(),
-  proxyType = nextEnum(),
-  proxyHost = nextString(),
-  proxyPort = nextUInt(),
-  proxyUser = nextString(),
-  proxyPass = nextString()
-)

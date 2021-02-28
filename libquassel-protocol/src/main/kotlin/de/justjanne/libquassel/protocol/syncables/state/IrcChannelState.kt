@@ -10,9 +10,9 @@
 
 package de.justjanne.libquassel.protocol.syncables.state
 
-import de.justjanne.libquassel.protocol.models.ChannelModeType
-import de.justjanne.libquassel.protocol.models.ChannelModes
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.models.network.ChannelModeType
+import de.justjanne.libquassel.protocol.models.network.ChannelModes
 
 data class IrcChannelState(
   val network: NetworkId,

@@ -10,11 +10,11 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
-import de.justjanne.libquassel.protocol.models.ConnectionState
-import de.justjanne.libquassel.protocol.models.NetworkInfo
-import de.justjanne.libquassel.protocol.models.NetworkServer
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
+import de.justjanne.libquassel.protocol.models.network.ConnectionState
+import de.justjanne.libquassel.protocol.models.network.NetworkInfo
+import de.justjanne.libquassel.protocol.models.network.NetworkServer
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8

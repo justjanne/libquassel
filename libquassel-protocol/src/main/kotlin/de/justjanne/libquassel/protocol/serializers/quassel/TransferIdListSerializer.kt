@@ -12,7 +12,7 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.models.TransferIdList
+import de.justjanne.libquassel.protocol.models.dcc.TransferIdList
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.IntSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.UuidSerializer

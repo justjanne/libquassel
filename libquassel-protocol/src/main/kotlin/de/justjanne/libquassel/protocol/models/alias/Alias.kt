@@ -8,11 +8,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.models.alias
 
-enum class PortDefaults(
-  val port: UInt
-) {
-  PORT_PLAINTEXT(6667u),
-  PORT_SSL(6697u)
-}
+data class Alias(
+  val name: String?,
+  val expansion: String?
+)

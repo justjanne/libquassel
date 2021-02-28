@@ -8,9 +8,11 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models
+package de.justjanne.libquassel.protocol.models.dcc
 
-data class Command(
-  val buffer: BufferInfo,
-  val message: String
-)
+import java.util.UUID
+
+/**
+ * Simple alias for a generic TransferIdList type
+ */
+typealias TransferIdList = List<UUID>

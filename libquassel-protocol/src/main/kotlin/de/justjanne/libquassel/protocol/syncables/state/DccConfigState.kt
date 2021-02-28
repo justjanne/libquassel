@@ -10,8 +10,8 @@
 
 package de.justjanne.libquassel.protocol.syncables.state
 
-import de.justjanne.libquassel.protocol.models.DccIpDetectionMode
-import de.justjanne.libquassel.protocol.models.DccPortSelectionMode
+import de.justjanne.libquassel.protocol.models.dcc.DccIpDetectionMode
+import de.justjanne.libquassel.protocol.models.dcc.DccPortSelectionMode
 import java.net.InetAddress
 
 data class DccConfigState(
