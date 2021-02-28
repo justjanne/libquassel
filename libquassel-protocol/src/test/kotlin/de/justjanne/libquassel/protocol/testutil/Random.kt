@@ -33,7 +33,7 @@ fun <T> Random.nextOf(vararg elements: T): T {
   return nextOf(elements.toList())
 }
 
-inline fun <reified T: Enum<T>> Random.nextEnum(): T {
+inline fun <reified T : Enum<T>> Random.nextEnum(): T {
   return nextOf(EnumSet.allOf(T::class.java).toList())
 }
 

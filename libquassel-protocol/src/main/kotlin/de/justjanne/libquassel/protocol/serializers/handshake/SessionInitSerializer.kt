@@ -44,9 +44,12 @@ object SessionInitSerializer : HandshakeSerializer<HandshakeMessage.SessionInit>
           },
           QtType.QVariantList
         ),
-        "Identities" to qVariant<QVariantList>(data.identities.map {
-          qVariant<QVariantMap>(it, QuasselType.Identity)
-        }, QtType.QVariantList),
+        "Identities" to qVariant<QVariantList>(
+          data.identities.map {
+            qVariant<QVariantMap>(it, QuasselType.Identity)
+          },
+          QtType.QVariantList
+        ),
       ),
       QtType.QVariantMap
     )

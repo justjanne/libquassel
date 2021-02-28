@@ -18,7 +18,7 @@ abstract class StatefulSyncableObject<T>(
   state: T
 ) : SyncableObject(session, className) {
   override fun toString(): String {
-    return "$className(objectName=${objectName}, state=${state()})"
+    return "$className(objectName=$objectName, state=${state()})"
   }
 
   override fun equals(other: Any?): Boolean {

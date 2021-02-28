@@ -19,7 +19,6 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.io.contentToString
 import de.justjanne.libquassel.protocol.io.useChainedByteBuffer
 import de.justjanne.libquassel.protocol.models.HandshakeMessage
 import de.justjanne.libquassel.protocol.serializers.HandshakeMessageSerializer
@@ -27,9 +26,7 @@ import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import de.justjanne.libquassel.protocol.util.withRewind
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import java.nio.ByteBuffer
 
 inline fun <reified T : HandshakeMessage> handshakeSerializerTest(

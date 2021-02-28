@@ -12,7 +12,6 @@ package de.justjanne.libquassel.protocol.serializers.qt
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.io.contentToString
 import de.justjanne.libquassel.protocol.io.copyData
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import java.nio.ByteBuffer

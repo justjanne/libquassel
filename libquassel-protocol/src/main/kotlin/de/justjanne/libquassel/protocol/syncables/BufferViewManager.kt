@@ -52,7 +52,8 @@ open class BufferViewManager(
     }
 
     val config = BufferViewConfig(
-      session, BufferViewConfigState(
+      session,
+      BufferViewConfigState(
         bufferViewId = bufferViewConfigId
       )
     )

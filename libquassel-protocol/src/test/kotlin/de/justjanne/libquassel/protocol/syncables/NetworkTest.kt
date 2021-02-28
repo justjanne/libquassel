@@ -62,11 +62,11 @@ fun Random.nextNetwork(networkId: NetworkId) = NetworkState(
   capsEnabled = List(nextInt(20)) {
     nextString()
   }.toSet(),
-  serverList =  List(nextInt(20)) {
+  serverList = List(nextInt(20)) {
     nextNetworkServer()
   },
   useRandomServer = nextBoolean(),
-  perform =  List(nextInt(20)) {
+  perform = List(nextInt(20)) {
     nextString()
   },
   useAutoIdentify = nextBoolean(),

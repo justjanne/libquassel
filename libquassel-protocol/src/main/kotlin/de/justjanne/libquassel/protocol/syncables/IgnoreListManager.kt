@@ -9,4 +9,3 @@
  */
 
 package de.justjanne.libquassel.protocol.syncables
-

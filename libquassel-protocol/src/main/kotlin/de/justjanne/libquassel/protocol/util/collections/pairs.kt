@@ -10,9 +10,6 @@
 
 package de.justjanne.libquassel.protocol.util.collections
 
-import org.bouncycastle.util.io.Streams
-import java.util.stream.Stream
-
 /**
  * Returns a partitioned list of pairs
  */

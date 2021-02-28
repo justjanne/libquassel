@@ -10,7 +10,6 @@
 
 package de.justjanne.libquassel.protocol.models.ids
 
-import de.justjanne.libquassel.annotations.Generated
 import java.io.Serializable
 
 /**

@@ -10,7 +10,6 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
-import de.justjanne.libquassel.protocol.models.ChannelModeType
 import de.justjanne.libquassel.protocol.models.ConnectionState
 import de.justjanne.libquassel.protocol.models.NetworkInfo
 import de.justjanne.libquassel.protocol.models.NetworkServer
@@ -23,16 +22,13 @@ import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
 import de.justjanne.libquassel.protocol.syncables.stubs.NetworkStub
-import de.justjanne.libquassel.protocol.util.collections.indices
-import de.justjanne.libquassel.protocol.util.irc.HostmaskHelper
-import de.justjanne.libquassel.protocol.util.irc.IrcISupport
 import de.justjanne.libquassel.protocol.util.collections.transpose
+import de.justjanne.libquassel.protocol.util.irc.HostmaskHelper
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 import java.nio.ByteBuffer
 
 open class Network(
@@ -322,7 +318,8 @@ open class Network(
     }
 
     val user = IrcUser(
-      session, IrcUserState(
+      session,
+      IrcUserState(
         network = networkId(),
         nick = nick,
         user = ident,
@@ -351,7 +348,8 @@ open class Network(
     }
 
     val channel = IrcChannel(
-      session, IrcChannelState(
+      session,
+      IrcChannelState(
         network = networkId(),
         name = name
       )

@@ -20,7 +20,6 @@ package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
-import de.justjanne.libquassel.protocol.io.contentToString
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
