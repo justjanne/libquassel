@@ -34,7 +34,7 @@ import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.nio.ByteBuffer
 
-class Network constructor(
+open class Network(
   networkId: NetworkId,
   session: Session
 ) : SyncableObject(session, "Network"), NetworkStub {

@@ -23,7 +23,7 @@ import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class AliasManager constructor(
+open class AliasManager(
   session: Session
 ) : SyncableObject(session, "AliasManager"), AliasManagerStub {
   override fun toVariantMap(): QVariantMap = mapOf(

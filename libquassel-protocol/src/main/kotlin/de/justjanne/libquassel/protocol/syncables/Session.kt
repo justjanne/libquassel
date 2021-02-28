@@ -14,17 +14,30 @@ import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
-import de.justjanne.libquassel.protocol.syncables.stubs.IdentityStub
+import de.justjanne.libquassel.protocol.syncables.stubs.BacklogManagerStub
+import de.justjanne.libquassel.protocol.syncables.stubs.IgnoreListManagerStub
+import de.justjanne.libquassel.protocol.syncables.stubs.IrcListHelperStub
 import de.justjanne.libquassel.protocol.syncables.stubs.RpcHandlerStub
 import de.justjanne.libquassel.protocol.variant.QVariantList
 
 interface Session : RpcHandlerStub {
   val protocolSide: ProtocolSide
-
   val objectRepository: ObjectRepository
 
   fun network(id: NetworkId): Network?
-  fun identity(id: IdentityId): IdentityStub
+  fun identity(id: IdentityId): Identity
+
+  fun aliasManager(): AliasManager
+  fun bufferSyncer(): BufferSyncer
+  fun backlogManager(): BacklogManagerStub
+  fun bufferViewManager(): BufferViewManager
+  fun ignoreListManager(): IgnoreListManagerStub
+  fun highlightRuleManager(): HighlightRuleManager
+  fun ircListHelper(): IrcListHelperStub
+
+  fun coreInfo(): CoreInfo
+  fun dccConfig(): DccConfig
+  fun networkConfig(): NetworkConfig
 
   fun synchronize(it: SyncableObject)
   fun stopSynchronize(it: SyncableObject)

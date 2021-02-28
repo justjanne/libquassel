@@ -14,14 +14,13 @@ package de.justjanne.libquassel.protocol.util
  * Returns a partitioned list of pairs
  */
 fun <T> Iterable<T>.pairs(): List<Pair<T, T>> {
-  zipWithNext()
   return pairs { a, b -> Pair(a, b) }
 }
 
 /**
  * Returns a partitioned list of pairs transformed with the given transformer
  */
-inline fun <T, R> Iterable<T>.pairs(transform: (a: T, b: T) -> R): List<R> {
+inline fun <T, R> Iterable<T>.pairs(crossinline transform: (a: T, b: T) -> R): List<R> {
   val iterator = iterator()
   val result = mutableListOf<R>()
   while (true) {

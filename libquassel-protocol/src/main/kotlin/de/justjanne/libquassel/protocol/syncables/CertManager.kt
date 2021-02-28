@@ -29,7 +29,7 @@ import java.security.PrivateKey
 import java.security.cert.Certificate
 import java.security.cert.CertificateFactory
 
-class CertManager(
+open class CertManager(
   identityId: IdentityId,
   session: Session
 ) : SyncableObject(session, "CertManager"), CertManagerStub {

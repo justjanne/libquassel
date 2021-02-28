@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.Temporal
 
-class IrcUser(
+open class IrcUser(
   hostmask: String,
   network: NetworkId,
   session: Session

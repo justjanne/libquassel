@@ -23,7 +23,7 @@ import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.threeten.bp.Instant
 
-class CoreInfo constructor(
+open class CoreInfo(
   session: Session
 ) : SyncableObject(session, "CoreInfo"), CoreInfoStub {
   override fun fromVariantMap(properties: QVariantMap) {

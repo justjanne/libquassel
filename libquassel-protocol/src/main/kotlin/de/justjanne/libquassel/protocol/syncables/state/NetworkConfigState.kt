@@ -9,3 +9,14 @@
  */
 
 package de.justjanne.libquassel.protocol.syncables.state
+
+data class NetworkConfigState(
+  val pingTimeoutEnabled: Boolean = true,
+  val pingInterval: Int = 30,
+  val maxPingCount: Int = 6,
+  val autoWhoEnabled: Boolean = true,
+  val autoWhoInterval: Int = 90,
+  val autoWhoNickLimit: Int = 200,
+  val autoWhoDelay: Int = 5,
+  val standardCtcp: Boolean = false
+)

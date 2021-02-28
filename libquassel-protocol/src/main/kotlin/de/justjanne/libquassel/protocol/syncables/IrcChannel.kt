@@ -24,7 +24,7 @@ import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class IrcChannel(
+open class IrcChannel(
   name: String,
   network: NetworkId,
   session: Session

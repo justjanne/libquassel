@@ -23,7 +23,7 @@ import de.justjanne.libquassel.protocol.variant.qVariant
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.net.InetAddress
 
-class DccConfig constructor(
+open class DccConfig(
   session: Session
 ) : SyncableObject(session, "DccConfig"), DccConfigStub {
   override fun init() {

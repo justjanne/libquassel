@@ -18,6 +18,7 @@ import de.justjanne.libquassel.protocol.models.ids.MsgId
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.syncables.SyncableStub
+import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.qVariant
 
 @SyncedObject("BacklogManager")
@@ -108,7 +109,8 @@ interface BacklogManagerStub : SyncableStub {
     first: MsgId = MsgId(-1),
     last: MsgId = MsgId(-1),
     limit: Int = -1,
-    additional: Int = 0
+    additional: Int = 0,
+    messages: QVariantList
   ) {
     sync(
       target = ProtocolSide.CLIENT,
@@ -118,6 +120,7 @@ interface BacklogManagerStub : SyncableStub {
       qVariant(last, QuasselType.MsgId),
       qVariant(limit, QtType.Int),
       qVariant(additional, QtType.Int),
+      qVariant(messages, QtType.QVariantList),
     )
   }
 
@@ -129,7 +132,8 @@ interface BacklogManagerStub : SyncableStub {
     limit: Int = -1,
     additional: Int = 0,
     type: Int = -1,
-    flags: Int = -1
+    flags: Int = -1,
+    messages: QVariantList
   ) {
     sync(
       target = ProtocolSide.CLIENT,
@@ -141,6 +145,7 @@ interface BacklogManagerStub : SyncableStub {
       qVariant(additional, QtType.Int),
       qVariant(type, QtType.Int),
       qVariant(flags, QtType.Int),
+      qVariant(messages, QtType.QVariantList),
     )
   }
 
@@ -149,7 +154,8 @@ interface BacklogManagerStub : SyncableStub {
     first: MsgId = MsgId(-1),
     last: MsgId = MsgId(-1),
     limit: Int = -1,
-    additional: Int = 0
+    additional: Int = 0,
+    messages: QVariantList
   ) {
     sync(
       target = ProtocolSide.CLIENT,
@@ -158,6 +164,7 @@ interface BacklogManagerStub : SyncableStub {
       qVariant(last, QuasselType.MsgId),
       qVariant(limit, QtType.Int),
       qVariant(additional, QtType.Int),
+      qVariant(messages, QtType.QVariantList),
     )
   }
 
@@ -168,7 +175,8 @@ interface BacklogManagerStub : SyncableStub {
     limit: Int = -1,
     additional: Int = 0,
     type: Int = -1,
-    flags: Int = -1
+    flags: Int = -1,
+    messages: QVariantList
   ) {
     sync(
       target = ProtocolSide.CLIENT,
@@ -179,6 +187,7 @@ interface BacklogManagerStub : SyncableStub {
       qVariant(additional, QtType.Int),
       qVariant(type, QtType.Int),
       qVariant(flags, QtType.Int),
+      qVariant(messages, QtType.QVariantList),
     )
   }
 }

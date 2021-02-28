@@ -9,3 +9,14 @@
  */
 
 package de.justjanne.libquassel.protocol.syncables
+
+import de.justjanne.libquassel.protocol.syncables.stubs.IrcListHelperStub
+import de.justjanne.libquassel.protocol.variant.QVariantMap
+import de.justjanne.libquassel.protocol.variant.QVariant_
+
+open class IrcListHelper(
+  session: Session
+) : SyncableObject(session, "IrcListHelper"), IrcListHelperStub {
+  override fun fromVariantMap(properties: QVariantMap) = Unit
+  override fun toVariantMap() = emptyMap<String, QVariant_>()
+}

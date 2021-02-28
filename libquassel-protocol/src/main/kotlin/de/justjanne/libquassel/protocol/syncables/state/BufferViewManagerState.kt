@@ -9,3 +9,13 @@
  */
 
 package de.justjanne.libquassel.protocol.syncables.state
+
+import de.justjanne.libquassel.protocol.syncables.BufferViewConfig
+
+data class BufferViewManagerState(
+  val bufferViewConfigs: Map<Int, BufferViewConfig> = emptyMap()
+) {
+  fun contains(bufferViewId: Int) = bufferViewConfigs.containsKey(bufferViewId)
+  fun bufferViewConfig(bufferViewId: Int) = bufferViewConfigs[bufferViewId]
+  fun bufferViewConfigs() = bufferViewConfigs.values
+}

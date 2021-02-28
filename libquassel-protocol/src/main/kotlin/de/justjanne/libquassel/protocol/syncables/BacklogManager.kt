@@ -9,3 +9,15 @@
  */
 
 package de.justjanne.libquassel.protocol.syncables
+
+import de.justjanne.libquassel.protocol.syncables.stubs.BacklogManagerStub
+import de.justjanne.libquassel.protocol.variant.QVariantMap
+import de.justjanne.libquassel.protocol.variant.QVariant_
+
+open class BacklogManager(
+  session: Session
+) : SyncableObject(session, "BacklogManager"), BacklogManagerStub {
+
+  override fun fromVariantMap(properties: QVariantMap) = Unit
+  override fun toVariantMap() = mapOf<String, QVariant_>()
+}

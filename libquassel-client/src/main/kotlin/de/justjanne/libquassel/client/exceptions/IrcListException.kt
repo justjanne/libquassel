@@ -8,4 +8,6 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables.state
+package de.justjanne.libquassel.client.exceptions
+
+class IrcListException(message: String) : Exception(message)
