@@ -13,7 +13,6 @@ package de.justjanne.libquassel.protocol.syncables
 import de.justjanne.libquassel.protocol.models.ChannelModeType
 import de.justjanne.libquassel.protocol.models.ChannelModes
 import de.justjanne.libquassel.protocol.models.QStringList
-import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.syncables.stubs.IrcChannelStub
@@ -22,14 +21,13 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.indexed
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 
 open class IrcChannel(
-  name: String,
-  network: NetworkId,
-  session: Session
-) : SyncableObject(session, "IrcChannel"), IrcChannelStub {
-  override fun init() {
+  session: Session? = null,
+  state: IrcChannelState
+) : StatefulSyncableObject<IrcChannelState>(session, "IrcChannel", state),
+  IrcChannelStub {
+  init {
     require(name().isNotEmpty()) {
       "IrcChannel: channelName is empty"
     }
@@ -76,15 +74,15 @@ open class IrcChannel(
   fun topic() = state().topic
   fun password() = state().password
   fun isEncrypted() = state().encrypted
-  fun ircUsers() = state().ircUsers(session.network(network())?.state())
+  fun ircUsers() = state().ircUsers(session?.network(network())?.state())
 
   fun userCount() = state().userModes.size
   fun userModes(nick: String) = state().userModes[nick]
-  fun hasMode(mode: Char) = state().hasMode(session.network(network())?.state(), mode)
+  fun hasMode(mode: Char) = state().hasMode(session?.network(network())?.state(), mode)
 
-  fun modeValue(mode: Char) = state().modeValue(session.network(network())?.state(), mode)
+  fun modeValue(mode: Char) = state().modeValue(session?.network(network())?.state(), mode)
 
-  fun modeValues(mode: Char) = state().modeValues(session.network(network())?.state(), mode)
+  fun modeValues(mode: Char) = state().modeValues(session?.network(network())?.state(), mode)
 
   fun channelModeString() = state().channelModeString()
 
@@ -119,7 +117,7 @@ open class IrcChannel(
   }
 
   private fun joinIrcUsers(map: Map<String, Set<Char>>) {
-    val network = session.network(network())
+    val network = session?.network(network())
 
     val newNicks = map.keys - state().userModes.keys
     state.update {
@@ -143,7 +141,7 @@ open class IrcChannel(
   )
 
   override fun part(nick: String) {
-    val network = session.network(network())
+    val network = session?.network(network())
     val partingUser = network?.ircUser(nick)
 
     if (partingUser != null) {
@@ -156,7 +154,7 @@ open class IrcChannel(
           copy(channelModes = ChannelModes())
         }
         network.removeIrcChannel(this)
-        session.stopSynchronize(this)
+        session?.stopSynchronize(this)
       }
     }
     super.part(nick)
@@ -199,7 +197,7 @@ open class IrcChannel(
   }
 
   override fun addChannelMode(mode: Char, value: String?) {
-    val network = session.network(network())
+    val network = session?.network(network())
     state.update {
       copy(
         channelModes = channelModes.run {
@@ -236,7 +234,7 @@ open class IrcChannel(
   }
 
   override fun removeChannelMode(mode: Char, value: String?) {
-    val network = session.network(network())
+    val network = session?.network(network())
     state.update {
       copy(
         channelModes = channelModes.run {
@@ -263,18 +261,4 @@ open class IrcChannel(
     }
     super.removeChannelMode(mode, value)
   }
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    IrcChannelState(
-      network = network,
-      name = name
-    )
-  )
 }

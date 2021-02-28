@@ -64,15 +64,15 @@ private val alphabet = charArrayOf(
 fun ByteBuffer.contentToString(): String {
   val position = position()
   val limit = limit()
-  var result = ""
+  val result = StringBuilder()
   while (hasRemaining()) {
     val byte = get()
     val upperNibble = byte.toInt() shr 4
     val lowerNibble = byte.toInt() % 16
-    result += alphabet[(upperNibble + 16) % 16]
-    result += alphabet[(lowerNibble + 16) % 16]
+    result.append(alphabet[(upperNibble + 16) % 16])
+    result.append(alphabet[(lowerNibble + 16) % 16])
   }
   limit(limit)
   position(position)
-  return result
+  return result.toString()
 }

@@ -19,6 +19,7 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.io.contentToString
 import de.justjanne.libquassel.protocol.io.useChainedByteBuffer
 import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.serializers.SignalProxyMessageSerializer
@@ -26,8 +27,8 @@ import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import de.justjanne.libquassel.protocol.util.withRewind
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.jupiter.api.Assertions.assertEquals
 import java.nio.ByteBuffer
-import kotlin.test.assertEquals
 
 inline fun <reified T : SignalProxyMessage> signalProxySerializerTest(
   value: T,
@@ -43,7 +44,7 @@ inline fun <reified T : SignalProxyMessage> signalProxySerializerTest(
       if (matcher != null) {
         assertThat(after, matcher(value))
       } else {
-        assertEquals(after, value)
+        assertEquals(value, after)
       }
     }
     if (serializeFeatureSet != null) {
@@ -59,11 +60,15 @@ inline fun <reified T : SignalProxyMessage> signalProxySerializerTest(
     val after = SignalProxyMessageSerializer.deserialize(
       useChainedByteBuffer {
         SignalProxyMessageSerializer.serialize(it, value, featureSet)
+        if (encoded == null) {
+          println(it.toBuffer().contentToString())
+        }
       },
       featureSet
-    ) as? T
+    )
+    assertEquals(T::class.java, after::class.java)
     if (matcher != null) {
-      assertThat(after, matcher(value))
+      assertThat(after as? T, matcher(value))
     } else {
       assertEquals(value, after)
     }

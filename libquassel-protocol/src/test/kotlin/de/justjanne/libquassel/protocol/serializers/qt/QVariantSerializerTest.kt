@@ -24,9 +24,11 @@ import de.justjanne.libquassel.protocol.serializers.NoSerializerForTypeException
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.variant.QVariant_
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
+@Tag("QtSerializerTest")
 class QVariantSerializerTest {
   @Test
   fun testIsRegistered() {

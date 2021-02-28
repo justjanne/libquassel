@@ -15,7 +15,7 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.QVariant_
 
 open class IrcListHelper(
-  session: Session
+  session: Session? = null
 ) : SyncableObject(session, "IrcListHelper"), IrcListHelperStub {
   override fun fromVariantMap(properties: QVariantMap) = Unit
   override fun toVariantMap() = emptyMap<String, QVariant_>()

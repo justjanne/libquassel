@@ -20,12 +20,13 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.QVariant_
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.threeten.bp.Instant
 
 open class CoreInfo(
-  session: Session
-) : SyncableObject(session, "CoreInfo"), CoreInfoStub {
+  session: Session? = null,
+  state: CoreInfoState = CoreInfoState()
+) : StatefulSyncableObject<CoreInfoState>(session, "CoreInfo", state),
+  CoreInfoStub {
   override fun fromVariantMap(properties: QVariantMap) {
     val coreData = properties["coreData"].into<QVariantMap>().orEmpty()
 
@@ -68,15 +69,4 @@ open class CoreInfo(
     fromVariantMap(data)
     super.setCoreData(data)
   }
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    CoreInfoState()
-  )
 }

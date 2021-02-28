@@ -21,11 +21,12 @@ import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 
 open class HighlightRuleManager(
-  session: Session
-) : SyncableObject(session, "HighlightRuleManager"), HighlightRuleManagerStub {
+  session: Session? = null,
+  state: HighlightRuleManagerState = HighlightRuleManagerState()
+) : StatefulSyncableObject<HighlightRuleManagerState>(session, "HighlightRuleManager", state),
+  HighlightRuleManagerStub {
   override fun fromVariantMap(properties: QVariantMap) {
     val highlightRules = properties["HighlightRuleList"].into<QVariantMap>().orEmpty()
 
@@ -200,15 +201,4 @@ open class HighlightRuleManager(
     }
     super.setNicksCaseSensitive(nicksCaseSensitive)
   }
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    HighlightRuleManagerState()
-  )
 }

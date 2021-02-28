@@ -30,6 +30,6 @@ object HeartBeatReplySerializer : SignalProxySerializer<SignalProxyMessage.Heart
   )
 
   override fun deserialize(data: QVariantList) = SignalProxyMessage.HeartBeatReply(
-    data[1].into(Instant.EPOCH)
+    data.getOrNull(1).into(Instant.EPOCH)
   )
 }

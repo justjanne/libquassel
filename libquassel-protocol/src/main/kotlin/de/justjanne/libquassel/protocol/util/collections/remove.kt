@@ -8,7 +8,6 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.util
+package de.justjanne.libquassel.protocol.util.collections
 
-@Suppress("NOTHING_TO_INLINE")
-inline fun <T> List<T>.remove(value: T): List<T> = this.filter { it != value }
+fun <T> List<T>.remove(value: T): List<T> = this.filter { it != value }

@@ -10,7 +10,6 @@
 
 package de.justjanne.coverageconverter
 
-import groovy.util.XmlSlurper
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
@@ -36,7 +35,7 @@ class CoverageConverterPlugin : Plugin<Project> {
         jacocoReportTask.dependsOn(testTask)
         if (extension.autoConfigureCoverage) {
           jacocoReportTask.sourceDirectories.from(fileTree("src/main/kotlin"))
-          jacocoReportTask.classDirectories.from(fileTree("build/classes"))
+          jacocoReportTask.classDirectories.from(fileTree("build/classes/kotlin/main"))
           jacocoReportTask.reports {
             xml.destination = File("${buildDir}/reports/jacoco/report.xml")
             html.isEnabled = true

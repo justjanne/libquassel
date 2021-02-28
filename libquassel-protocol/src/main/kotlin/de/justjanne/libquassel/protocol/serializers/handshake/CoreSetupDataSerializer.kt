@@ -39,14 +39,14 @@ object CoreSetupDataSerializer : HandshakeSerializer<HandshakeMessage.CoreSetupD
   )
 
   override fun deserialize(data: QVariantMap) =
-    data["SetupData"].into<QVariantMap>().let {
+    data["SetupData"].into<QVariantMap>().orEmpty().let {
       HandshakeMessage.CoreSetupData(
-        adminUser = it?.get("AdminUser").into(),
-        adminPassword = it?.get("AdminPasswd").into(),
-        backend = it?.get("Backend").into(),
-        setupData = it?.get("ConnectionProperties").into(),
-        authenticator = it?.get("Authenticator").into(),
-        authSetupData = it?.get("AuthProperties").into()
+        adminUser = it["AdminUser"].into(),
+        adminPassword = it["AdminPasswd"].into(),
+        backend = it["Backend"].into(),
+        setupData = it["ConnectionProperties"].into<QVariantMap>().orEmpty(),
+        authenticator = it["Authenticator"].into(),
+        authSetupData = it["AuthProperties"].into<QVariantMap>().orEmpty()
       )
     }
 }

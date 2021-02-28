@@ -20,23 +20,20 @@ interface SyncableStub {
   val className: String
   val objectName: String
   val initialized: Boolean
-  val session: Session
+  val session: Session?
 
   fun fromVariantMap(properties: QVariantMap)
   fun toVariantMap(): QVariantMap
 
-  fun init()
-  fun deinit()
-
   fun sync(target: ProtocolSide, function: String, vararg arg: QVariant_) {
     if (initialized) {
-      session.sync(target, className, objectName, function, arg.toList())
+      session?.sync(target, className, objectName, function, arg.toList())
     }
   }
 
   fun rpc(target: ProtocolSide, function: String, vararg arg: QVariant_) {
     if (initialized) {
-      session.rpc(target, function, arg.toList())
+      session?.rpc(target, function, arg.toList())
     }
   }
 

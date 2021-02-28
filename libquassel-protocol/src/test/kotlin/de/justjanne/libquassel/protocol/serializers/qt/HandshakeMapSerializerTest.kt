@@ -24,8 +24,10 @@ import de.justjanne.libquassel.protocol.testutil.matchers.MapMatcher
 import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import de.justjanne.libquassel.protocol.variant.qVariant
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
+@Tag("QtSerializerTest")
 class HandshakeMapSerializerTest {
   @Test
   fun testIsRegistered() {

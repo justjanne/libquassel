@@ -26,13 +26,13 @@ object InitRequestSerializer : SignalProxySerializer<SignalProxyMessage.InitRequ
   override val type: Int = 3
 
   override fun serialize(data: SignalProxyMessage.InitRequest) = listOf(
-    qVariant(InitDataSerializer.type, QtType.Int),
+    qVariant(type, QtType.Int),
     qVariant(StringSerializerUtf8.serializeRaw(data.className), QtType.QByteArray),
     qVariant(StringSerializerUtf8.serializeRaw(data.objectName), QtType.QByteArray),
   )
 
   override fun deserialize(data: QVariantList) = SignalProxyMessage.InitRequest(
-    StringSerializerUtf8.deserializeRaw(data[1].into<ByteBuffer>()),
-    StringSerializerUtf8.deserializeRaw(data[2].into<ByteBuffer>())
+    StringSerializerUtf8.deserializeRaw(data.getOrNull(1).into<ByteBuffer>()),
+    StringSerializerUtf8.deserializeRaw(data.getOrNull(2).into<ByteBuffer>())
   )
 }

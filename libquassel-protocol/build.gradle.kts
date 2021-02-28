@@ -9,6 +9,7 @@
  */
 
 plugins {
+  id("java-library")
   id("com.vanniktech.maven.publish")
   id("com.google.devtools.ksp") version "1.4.30-1.0.0-alpha02"
 }

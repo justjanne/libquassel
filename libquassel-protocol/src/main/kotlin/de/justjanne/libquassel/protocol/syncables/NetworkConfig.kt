@@ -17,12 +17,13 @@ import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 
 open class NetworkConfig(
-  session: Session
-) : SyncableObject(session, "NetworkConfig"), NetworkConfigStub {
-  override fun init() {
+  session: Session? = null,
+  state: NetworkConfigState = NetworkConfigState()
+) : StatefulSyncableObject<NetworkConfigState>(session, "NetworkConfig", state),
+  NetworkConfigStub {
+  init {
     renameObject("GlobalNetworkConfig")
   }
 
@@ -116,15 +117,4 @@ open class NetworkConfig(
     }
     super.setStandardCtcp(enabled)
   }
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    NetworkConfigState()
-  )
 }

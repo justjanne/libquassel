@@ -12,6 +12,7 @@ package de.justjanne.libquassel.protocol.syncables
 
 import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.syncables.state.BufferViewConfigState
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.BufferViewManagerStub
 import de.justjanne.libquassel.protocol.util.update
@@ -20,11 +21,12 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.QVariant_
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 
 open class BufferViewManager(
-  session: Session
-) : SyncableObject(session, "BufferViewManager"), BufferViewManagerStub {
+  session: Session? = null,
+  state: BufferViewManagerState = BufferViewManagerState()
+) : StatefulSyncableObject<BufferViewManagerState>(session, "BufferViewManager", state),
+  BufferViewManagerStub {
   override fun fromVariantMap(properties: QVariantMap) {
     properties["BufferViewIds"].into<QVariantList>()
       ?.mapNotNull<QVariant_, Int>(QVariant_::into)
@@ -49,8 +51,12 @@ open class BufferViewManager(
       return
     }
 
-    val config = BufferViewConfig(bufferViewConfigId, session)
-    session.synchronize(config)
+    val config = BufferViewConfig(
+      session, BufferViewConfigState(
+        bufferViewId = bufferViewConfigId
+      )
+    )
+    session?.synchronize(config)
     state.update {
       copy(bufferViewConfigs = bufferViewConfigs + Pair(bufferViewConfigId, config))
     }
@@ -63,15 +69,4 @@ open class BufferViewManager(
       bufferViewConfig.handleBuffer(info, unhide)
     }
   }
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    BufferViewManagerState()
-  )
 }

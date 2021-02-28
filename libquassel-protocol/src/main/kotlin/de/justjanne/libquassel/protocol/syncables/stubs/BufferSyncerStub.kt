@@ -140,12 +140,12 @@ interface BufferSyncerStub : SyncableStub {
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setBufferActivity(buffer: BufferId, count: Int) {
+  fun setBufferActivity(buffer: BufferId, types: Int) {
     sync(
       target = ProtocolSide.CLIENT,
       "setBufferActivity",
       qVariant(buffer, QuasselType.BufferId),
-      qVariant(count, QtType.Int),
+      qVariant(types, QtType.Int),
     )
   }
 

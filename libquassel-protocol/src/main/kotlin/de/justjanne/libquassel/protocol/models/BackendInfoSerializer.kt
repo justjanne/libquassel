@@ -11,7 +11,7 @@
 package de.justjanne.libquassel.protocol.models
 
 import de.justjanne.libquassel.protocol.models.types.QtType
-import de.justjanne.libquassel.protocol.util.triples
+import de.justjanne.libquassel.protocol.util.collections.triples
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.QVariant_

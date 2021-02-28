@@ -14,6 +14,7 @@ import de.justjanne.bitflags.of
 import de.justjanne.bitflags.toBits
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.io.contentToString
 import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.flags.BufferType
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer

@@ -10,7 +10,6 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
-import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
 import de.justjanne.libquassel.protocol.syncables.state.CertManagerState
@@ -19,7 +18,6 @@ import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.bouncycastle.cert.X509CertificateHolder
 import org.bouncycastle.openssl.PEMKeyPair
 import org.bouncycastle.openssl.PEMParser
@@ -30,9 +28,10 @@ import java.security.cert.Certificate
 import java.security.cert.CertificateFactory
 
 open class CertManager(
-  identityId: IdentityId,
-  session: Session
-) : SyncableObject(session, "CertManager"), CertManagerStub {
+  session: Session? = null,
+  state: CertManagerState
+) : StatefulSyncableObject<CertManagerState>(session, "CertManager", state),
+  CertManagerStub {
   override fun fromVariantMap(properties: QVariantMap) {
     val privateKeyPem = properties["sslKey"].into("")
     val certPem = properties["sslCert"].into("")
@@ -110,17 +109,4 @@ open class CertManager(
 
   fun certificate() = state().certificate
   fun certificatePem() = state().certificatePem
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    CertManagerState(
-      identityId = identityId
-    )
-  )
 }

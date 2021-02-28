@@ -33,9 +33,9 @@ object SyncSerializer : SignalProxySerializer<SignalProxyMessage.Sync> {
   ) + data.params
 
   override fun deserialize(data: QVariantList) = SignalProxyMessage.Sync(
-    StringSerializerUtf8.deserializeRaw(data[1].into<ByteBuffer>()),
-    StringSerializerUtf8.deserializeRaw(data[2].into<ByteBuffer>()),
-    StringSerializerUtf8.deserializeRaw(data[3].into<ByteBuffer>()),
+    StringSerializerUtf8.deserializeRaw(data.getOrNull(1).into<ByteBuffer>()),
+    StringSerializerUtf8.deserializeRaw(data.getOrNull(2).into<ByteBuffer>()),
+    StringSerializerUtf8.deserializeRaw(data.getOrNull(3).into<ByteBuffer>()),
     data.drop(4)
   )
 }

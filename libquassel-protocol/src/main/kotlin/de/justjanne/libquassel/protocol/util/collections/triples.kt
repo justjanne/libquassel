@@ -8,7 +8,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.util
+package de.justjanne.libquassel.protocol.util.collections
 
 /**
  * Returns a partitioned list of triples

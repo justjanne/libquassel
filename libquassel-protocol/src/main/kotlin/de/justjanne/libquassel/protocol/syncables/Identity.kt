@@ -20,12 +20,13 @@ import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 
 open class Identity(
-  session: Session
-) : SyncableObject(session, "Identity"), IdentityStub {
-  override fun init() {
+  session: Session? = null,
+  state: IdentityState = IdentityState()
+) : StatefulSyncableObject<IdentityState>(session, "Identity", state),
+  IdentityStub {
+  init {
     renameObject(state().identifier())
   }
 
@@ -53,6 +54,7 @@ open class Identity(
         quitReason = properties["quitReason"].into(quitReason),
       )
     }
+    renameObject(state().identifier())
   }
 
   override fun toVariantMap() = mapOf(
@@ -229,15 +231,4 @@ open class Identity(
     }
     super.setRealName(realName)
   }
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    IdentityState()
-  )
 }

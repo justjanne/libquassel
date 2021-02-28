@@ -13,7 +13,7 @@ package de.justjanne.libquassel.protocol.syncables
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
 
 abstract class SyncableObject(
-  override var session: Session,
+  override var session: Session?,
   override val className: String
 ) : SyncableStub {
   final override var objectName: String = ""
@@ -29,8 +29,8 @@ abstract class SyncableObject(
       objectName = newName
     } else if (oldName != newName) {
       objectName = newName
-      session.objectRepository.rename(this, newName)
-      session.objectRenamed(
+      session?.objectRepository?.rename(this, newName)
+      session?.objectRenamed(
         StringSerializerUtf8.serializeRaw(className),
         oldName,
         newName
@@ -38,6 +38,19 @@ abstract class SyncableObject(
     }
   }
 
-  override fun init() = Unit
-  override fun deinit() = Unit
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is SyncableObject) return false
+
+    if (className != other.className) return false
+    if (objectName != other.objectName) return false
+
+    return true
+  }
+
+  override fun hashCode(): Int {
+    var result = className.hashCode()
+    result = 31 * result + objectName.hashCode()
+    return result
+  }
 }

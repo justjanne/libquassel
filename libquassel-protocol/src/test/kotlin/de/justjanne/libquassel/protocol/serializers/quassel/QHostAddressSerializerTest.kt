@@ -22,11 +22,13 @@ import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import java.net.Inet4Address
 import java.net.Inet6Address
 import java.net.InetAddress
 
+@Tag("QuasselSerializerTest")
 class QHostAddressSerializerTest {
   @Test
   fun testIsRegistered() {

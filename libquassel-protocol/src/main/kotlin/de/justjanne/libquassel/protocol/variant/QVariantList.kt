@@ -10,7 +10,7 @@
 
 package de.justjanne.libquassel.protocol.variant
 
-import de.justjanne.libquassel.protocol.util.pairs
+import de.justjanne.libquassel.protocol.util.collections.pairs
 
 /**
  * Simple alias for a generic QVariantList type

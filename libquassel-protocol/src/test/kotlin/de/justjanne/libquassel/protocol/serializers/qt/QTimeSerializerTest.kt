@@ -23,9 +23,11 @@ import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.TemporalMatcher
 import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.threeten.bp.LocalTime
 
+@Tag("QtSerializerTest")
 class QTimeSerializerTest {
   @Test
   fun testIsRegistered() {

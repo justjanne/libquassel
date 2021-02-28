@@ -10,7 +10,6 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
-import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
 import de.justjanne.libquassel.protocol.syncables.stubs.IrcUserStub
@@ -20,20 +19,15 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.indexed
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.threeten.bp.Instant
 import org.threeten.bp.temporal.Temporal
 
 open class IrcUser(
-  hostmask: String,
-  network: NetworkId,
-  session: Session
-) : SyncableObject(session, "IrcUser"), IrcUserStub {
-  override fun init() {
-    updateObjectName()
-  }
-
-  private fun updateObjectName() {
+  session: Session? = null,
+  state: IrcUserState
+) : StatefulSyncableObject<IrcUserState>(session, "IrcUser", state),
+  IrcUserStub {
+  init {
     renameObject(state().identifier())
   }
 
@@ -49,7 +43,7 @@ open class IrcUser(
         realName = properties["realName"].indexed(index).into(realName),
         account = properties["account"].indexed(index).into(account),
         away = properties["away"].indexed(index).into(away),
-        awayMessage = properties["user"].indexed(index).into(awayMessage),
+        awayMessage = properties["awayMessage"].indexed(index).into(awayMessage),
         idleTime = properties["idleTime"].indexed(index).into(idleTime),
         loginTime = properties["loginTime"].indexed(index).into(loginTime),
         server = properties["server"].indexed(index).into(server),
@@ -65,6 +59,7 @@ open class IrcUser(
         userModes = properties["userModes"].indexed(index).into(userModes),
       )
     }
+    renameObject(state().identifier())
   }
 
   override fun toVariantMap() = mapOf(
@@ -85,8 +80,8 @@ open class IrcUser(
     "suserHost" to qVariant(suserHost(), QtType.QString),
     "encrypted" to qVariant(encrypted(), QtType.Bool),
 
-    "channels" to qVariant(channels(), QtType.QStringList),
-    "userModes" to qVariant(userModes(), QtType.QString)
+    "channels" to qVariant(channels().toList(), QtType.QStringList),
+    "userModes" to qVariant(userModes().joinToString(), QtType.QString)
   )
 
   override fun updateHostmask(mask: String) {
@@ -126,12 +121,12 @@ open class IrcUser(
   }
 
   override fun setNick(nick: String) {
-    val network = session.network(network())
+    val network = session?.network(network())
     network?.ircUserNickChanged(nick(), nick)
     state.update {
       copy(nick = nick)
     }
-    updateObjectName()
+    renameObject(state().identifier())
     super.setNick(nick)
   }
 
@@ -248,13 +243,13 @@ open class IrcUser(
   }
 
   override fun joinChannel(channelname: String) {
-    val network = session.network(network()) ?: return
+    val network = session?.network(network()) ?: return
     val channel = network.newIrcChannel(channelname)
     joinChannel(channel)
   }
 
   fun partChannel(channel: IrcChannel) {
-    val network = session.network(network())
+    val network = session?.network(network())
 
     state.update {
       copy(channels = channels - channel.name())
@@ -267,7 +262,7 @@ open class IrcUser(
   }
 
   override fun quit() {
-    val network = session.network(network())
+    val network = session?.network(network())
     for (channel in channels()) {
       network?.ircChannel(channel)
         ?.part(nick())
@@ -276,7 +271,7 @@ open class IrcUser(
       copy(channels = emptySet())
     }
     network?.removeIrcUser(this)
-    session.stopSynchronize(this)
+    session?.stopSynchronize(this)
     super.quit()
   }
 
@@ -301,20 +296,4 @@ open class IrcUser(
   fun encrypted() = state().encrypted
   fun userModes() = state().userModes
   fun channels() = state().channels
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    IrcUserState(
-      network = network,
-      nick = HostmaskHelper.nick(hostmask),
-      user = HostmaskHelper.user(hostmask),
-      host = HostmaskHelper.host(hostmask)
-    )
-  )
 }

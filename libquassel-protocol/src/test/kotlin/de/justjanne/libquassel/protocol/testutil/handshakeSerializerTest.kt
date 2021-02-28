@@ -19,6 +19,7 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.io.contentToString
 import de.justjanne.libquassel.protocol.io.useChainedByteBuffer
 import de.justjanne.libquassel.protocol.models.HandshakeMessage
 import de.justjanne.libquassel.protocol.serializers.HandshakeMessageSerializer
@@ -26,8 +27,10 @@ import de.justjanne.libquassel.protocol.testutil.matchers.ByteBufferMatcher
 import de.justjanne.libquassel.protocol.util.withRewind
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import java.nio.ByteBuffer
-import kotlin.test.assertEquals
 
 inline fun <reified T : HandshakeMessage> handshakeSerializerTest(
   value: T,
@@ -43,7 +46,7 @@ inline fun <reified T : HandshakeMessage> handshakeSerializerTest(
       if (matcher != null) {
         assertThat(after, matcher(value))
       } else {
-        assertEquals(after, value)
+        assertEquals(value, after)
       }
     }
     if (serializeFeatureSet != null) {
@@ -61,9 +64,10 @@ inline fun <reified T : HandshakeMessage> handshakeSerializerTest(
         HandshakeMessageSerializer.serialize(it, value, featureSet)
       },
       featureSet
-    ) as? T
+    )
+    assertEquals(T::class.java, after::class.java)
     if (matcher != null) {
-      assertThat(after, matcher(value))
+      assertThat(after as? T, matcher(value))
     } else {
       assertEquals(value, after)
     }

@@ -151,7 +151,7 @@ sealed class HandshakeMessage {
     /**
      * Storage backend configuration data
      */
-    val setupData: QVariantMap?,
+    val setupData: QVariantMap,
     /**
      * Chosen authenticator backend id
      */
@@ -159,7 +159,7 @@ sealed class HandshakeMessage {
     /**
      * Authenticator backend configuration data
      */
-    val authSetupData: QVariantMap?
+    val authSetupData: QVariantMap
   ) : HandshakeMessage()
 
   /**
@@ -184,7 +184,7 @@ sealed class HandshakeMessage {
      * Identity objects created or modified after [SessionInit] will be defined
      * via sync updates and RPC identity creation messages.
      */
-    val identities: QVariantList?,
+    val identities: List<QVariantMap>,
     /**
      * List of existing buffers at the current time.
      *

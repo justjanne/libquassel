@@ -23,17 +23,18 @@ import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.syncables.state.BufferSyncerState
 import de.justjanne.libquassel.protocol.syncables.stubs.BufferSyncerStub
-import de.justjanne.libquassel.protocol.util.pairs
+import de.justjanne.libquassel.protocol.util.collections.pairs
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 
 open class BufferSyncer(
-  session: Session
-) : SyncableObject(session, "BufferSyncer"), BufferSyncerStub {
+  session: Session? = null,
+  state: BufferSyncerState = BufferSyncerState()
+) : StatefulSyncableObject<BufferSyncerState>(session, "BufferSyncer", state),
+  BufferSyncerStub {
   override fun toVariantMap() = mapOf(
     "Activities" to qVariant(
       state().activities.flatMap { (key, value) ->
@@ -178,7 +179,7 @@ open class BufferSyncer(
       val bufferInfo = bufferInfo(buffer)
 
       if (bufferInfo != null) {
-        session.bufferViewManager().handleBuffer(bufferInfo, true)
+        session?.bufferViewManager()?.handleBuffer(bufferInfo, true)
       }
     }
 
@@ -200,19 +201,8 @@ open class BufferSyncer(
       }
 
       if (oldInfo != null) {
-        session.bufferViewManager().handleBuffer(info)
+        session?.bufferViewManager()?.handleBuffer(info)
       }
     }
   }
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    BufferSyncerState()
-  )
 }

@@ -26,12 +26,12 @@ object RpcSerializer : SignalProxySerializer<SignalProxyMessage.Rpc> {
   override val type: Int = 2
 
   override fun serialize(data: SignalProxyMessage.Rpc) = listOf(
-    qVariant(SyncSerializer.type, QtType.Int),
+    qVariant(type, QtType.Int),
     qVariant(StringSerializerUtf8.serializeRaw(data.slotName), QtType.QByteArray)
   ) + data.params
 
   override fun deserialize(data: QVariantList) = SignalProxyMessage.Rpc(
-    StringSerializerUtf8.deserializeRaw(data[1].into<ByteBuffer>()),
+    StringSerializerUtf8.deserializeRaw(data.getOrNull(1).into<ByteBuffer>()),
     data.drop(2)
   )
 }

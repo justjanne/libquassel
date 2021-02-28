@@ -21,11 +21,12 @@ import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 
 open class AliasManager(
-  session: Session
-) : SyncableObject(session, "AliasManager"), AliasManagerStub {
+  session: Session? = null,
+  state: AliasManagerState = AliasManagerState()
+) : StatefulSyncableObject<AliasManagerState>(session, "AliasManager", state),
+  AliasManagerStub {
   override fun toVariantMap(): QVariantMap = mapOf(
     "Aliases" to qVariant(
       mapOf(
@@ -72,7 +73,7 @@ open class AliasManager(
     message: String
   ) = state().processInput(
     info,
-    session.network(info.networkId)?.state(),
+    session?.network(info.networkId)?.state(),
     message
   )
 
@@ -82,7 +83,7 @@ open class AliasManager(
     previousCommands: MutableList<Command>
   ) = state().processInput(
     info,
-    session.network(info.networkId)?.state(),
+    session?.network(info.networkId)?.state(),
     message,
     previousCommands
   )
@@ -95,19 +96,8 @@ open class AliasManager(
   ) = state().expand(
     expansion,
     bufferInfo,
-    session.network(bufferInfo.networkId)?.state(),
+    session?.network(bufferInfo.networkId)?.state(),
     arguments,
     previousCommands
-  )
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    AliasManagerState()
   )
 }

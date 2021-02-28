@@ -15,7 +15,7 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.QVariant_
 
 open class BacklogManager(
-  session: Session
+  session: Session? = null
 ) : SyncableObject(session, "BacklogManager"), BacklogManagerStub {
 
   override fun fromVariantMap(properties: QVariantMap) = Unit

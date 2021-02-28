@@ -35,7 +35,6 @@ fun <T> testPrimitiveSerializerDirect(
   val buffer = ChainedByteBuffer(limit = 16384)
   serializer.serialize(buffer, data, featureSet)
   val result = buffer.toBuffer()
-  println(result.contentToString())
   val after = serializer.deserialize(result, featureSet)
   assertEquals(0, result.remaining())
   if (matcher != null) {

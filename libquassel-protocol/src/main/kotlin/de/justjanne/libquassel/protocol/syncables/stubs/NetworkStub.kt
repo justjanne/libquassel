@@ -350,6 +350,7 @@ interface NetworkStub : SyncableStub {
       qVariant(hostmask, QtType.QString),
     )
   }
+
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun addIrcChannel(channel: String) {
     sync(

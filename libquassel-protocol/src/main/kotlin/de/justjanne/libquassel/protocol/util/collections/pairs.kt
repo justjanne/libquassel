@@ -8,7 +8,10 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.util
+package de.justjanne.libquassel.protocol.util.collections
+
+import org.bouncycastle.util.io.Streams
+import java.util.stream.Stream
 
 /**
  * Returns a partitioned list of pairs

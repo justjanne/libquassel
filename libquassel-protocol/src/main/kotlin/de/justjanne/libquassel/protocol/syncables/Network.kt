@@ -16,16 +16,17 @@ import de.justjanne.libquassel.protocol.models.NetworkInfo
 import de.justjanne.libquassel.protocol.models.NetworkServer
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
-import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
+import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
+import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
 import de.justjanne.libquassel.protocol.syncables.stubs.NetworkStub
-import de.justjanne.libquassel.protocol.util.indices
+import de.justjanne.libquassel.protocol.util.collections.indices
 import de.justjanne.libquassel.protocol.util.irc.HostmaskHelper
 import de.justjanne.libquassel.protocol.util.irc.IrcISupport
-import de.justjanne.libquassel.protocol.util.transpose
+import de.justjanne.libquassel.protocol.util.collections.transpose
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
@@ -35,10 +36,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.nio.ByteBuffer
 
 open class Network(
-  networkId: NetworkId,
-  session: Session
-) : SyncableObject(session, "Network"), NetworkStub {
-  override fun init() {
+  session: Session? = null,
+  state: NetworkState
+) : StatefulSyncableObject<NetworkState>(session, "Network", state),
+  NetworkStub {
+  init {
     renameObject(state().identifier())
   }
 
@@ -95,7 +97,7 @@ open class Network(
           .into(useCustomMessageRate),
         messageRateBurstSize = properties["msgRateBurstSize"]
           .into(messageRateBurstSize),
-        messageRateDelay = properties["messageRateDelay"]
+        messageRateDelay = properties["msgRateMessageDelay"]
           .into(messageRateDelay),
         unlimitedMessageRate = properties["unlimitedMessageRate"]
           .into(unlimitedMessageRate),
@@ -119,45 +121,22 @@ open class Network(
           .orEmpty(),
         ircUsers = properties["IrcUsersAndChannels"].into<QVariantMap>()
           ?.get("Users")?.into<QVariantMap>()
-          ?.let {
-            it.indices.map { index ->
-              newIrcUser(
-                properties["nick"]
-                  .into<QVariantList>()
-                  ?.getOrNull(index)
-                  .into(""),
-                properties,
-                index
-              )
+          ?.let { user ->
+            user["nick"].into<QVariantList>()?.withIndex()?.map { (index, value) ->
+              newIrcUser(value.into(""), user, index)
             }
           }
           ?.associateBy { caseMapper().toLowerCase(it.nick()) }
           .orEmpty(),
         ircChannels = properties["IrcUsersAndChannels"].into<QVariantMap>()
           ?.get("Channels")?.into<QVariantMap>()
-          ?.let {
-            it.indices.map { index ->
-              newIrcChannel(
-                properties["name"]
-                  .into<QVariantList>()
-                  ?.getOrNull(index)
-                  .into(""),
-                properties,
-                index
-              )
+          ?.let { channel ->
+            channel["name"].into<QVariantList>()?.withIndex()?.map { (index, value) ->
+              newIrcChannel(value.into(""), channel, index)
             }
           }
           ?.associateBy { caseMapper().toLowerCase(it.name()) }
           .orEmpty()
-      )
-    }
-    state.update {
-      val (prefixes, prefixModes) = determinePrefixes()
-      val channelModeTypes = determineChannelModeTypes()
-      copy(
-        prefixes = prefixes,
-        prefixModes = prefixModes,
-        channelModes = channelModeTypes
       )
     }
   }
@@ -199,6 +178,7 @@ open class Network(
     "msgRateBurstSize" to qVariant(messageRateBurstSize(), QtType.UInt),
     "msgRateMessageDelay" to qVariant(messageRateDelay(), QtType.UInt),
     "unlimitedMessageRate" to qVariant(unlimitedMessageRate(), QtType.Bool),
+    "skipCaps" to qVariant(skipCaps().toList(), QtType.QStringList),
     "Supports" to qVariant(
       supports().mapValues { (_, value) -> qVariant(value, QtType.QString) },
       QtType.QVariantMap
@@ -335,21 +315,27 @@ open class Network(
     properties: QVariantMap = emptyMap(),
     index: Int? = null
   ): IrcUser {
-    val nick = caseMapper().toLowerCase(HostmaskHelper.nick(hostMask))
+    val (nick, ident, host) = HostmaskHelper.split(hostMask)
     val ircUser = ircUser(nick)
     if (ircUser != null) {
       return ircUser
     }
 
-    val user = IrcUser(hostMask, networkId(), session)
-    user.init()
+    val user = IrcUser(
+      session, IrcUserState(
+        network = networkId(),
+        nick = nick,
+        user = ident,
+        host = host
+      )
+    )
     if (properties.isNotEmpty()) {
       user.fromVariantMap(properties, index)
       user.initialized = true
     }
-    session.synchronize(user)
+    session?.synchronize(user)
     state.update {
-      copy(ircUsers = ircUsers + Pair(nick, user))
+      copy(ircUsers = ircUsers + Pair(caseMapper().toLowerCase(nick), user))
     }
     return user
   }
@@ -364,12 +350,16 @@ open class Network(
       return ircChannel
     }
 
-    val channel = IrcChannel(name, networkId(), session)
-    channel.init()
+    val channel = IrcChannel(
+      session, IrcChannelState(
+        network = networkId(),
+        name = name
+      )
+    )
     if (properties.isNotEmpty()) {
       channel.fromVariantMap(properties, index)
       channel.initialized = true
-      session.synchronize(channel)
+      session?.synchronize(channel)
       state.update {
         copy(ircChannels = ircChannels + Pair(caseMapper().toLowerCase(name), channel))
       }
@@ -464,49 +454,6 @@ open class Network(
     }
   }
 
-  private fun determineChannelModeTypes(): Map<ChannelModeType, Set<Char>> {
-    return ChannelModeType.values()
-      .zip(
-        supportValue(IrcISupport.CHANMODES)
-          ?.split(',', limit = ChannelModeType.values().size)
-          ?.map(String::toSet)
-          .orEmpty()
-      )
-      .toMap()
-  }
-
-  private fun determinePrefixes(): Pair<List<Char>, List<Char>> {
-    val defaultPrefixes = listOf('~', '&', '@', '%', '+')
-    val defaultPrefixModes = listOf('q', 'a', 'o', 'h', 'v')
-
-    val prefix = supportValue(IrcISupport.PREFIX)
-      ?: return Pair(defaultPrefixes, defaultPrefixModes)
-
-    if (prefix.startsWith("(") && prefix.contains(")")) {
-      val (prefixModes, prefixes) = prefix.substringAfter('(')
-        .split(')', limit = 2)
-        .map(String::toList)
-
-      return Pair(prefixModes, prefixes)
-    } else if (prefix.isBlank()) {
-      return Pair(defaultPrefixes, defaultPrefixModes)
-    } else if ((prefix.toSet() intersect defaultPrefixes.toSet()).isNotEmpty()) {
-      val (prefixes, prefixModes) = defaultPrefixes.zip(defaultPrefixModes)
-        .filter { prefix.contains(it.second) }
-        .unzip()
-
-      return Pair(prefixModes, prefixes)
-    } else if ((prefix.toSet() intersect defaultPrefixModes.toSet()).isNotEmpty()) {
-      val (prefixes, prefixModes) = defaultPrefixes.zip(defaultPrefixModes)
-        .filter { prefix.contains(it.first) }
-        .unzip()
-
-      return Pair(prefixModes, prefixes)
-    }
-
-    return Pair(defaultPrefixes, defaultPrefixModes)
-  }
-
   override fun setIdentity(identityId: IdentityId) {
     state.update {
       copy(identity = identity)
@@ -547,8 +494,10 @@ open class Network(
       if (isConnected) {
         copy(connected = true)
       } else {
-        ircChannels.values.forEach(session::stopSynchronize)
-        ircUsers.values.forEach(session::stopSynchronize)
+        session?.let {
+          ircChannels.values.forEach(it::stopSynchronize)
+          ircUsers.values.forEach(it::stopSynchronize)
+        }
         copy(
           connected = isConnected,
           myNick = "",
@@ -721,17 +670,4 @@ open class Network(
     }
     super.setCodecForDecoding(codecForDecoding)
   }
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    NetworkState(
-      networkId = networkId
-    )
-  )
 }

@@ -8,6 +8,6 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.util
+package de.justjanne.libquassel.protocol.util.collections
 
 inline val <K, V> Map<K, V>.indices get() = 0 until size

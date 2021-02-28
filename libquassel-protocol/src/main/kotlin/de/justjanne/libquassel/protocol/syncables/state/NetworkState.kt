@@ -31,9 +31,6 @@ data class NetworkState(
   val currentServer: String = "",
   val connected: Boolean = false,
   val connectionState: ConnectionState = ConnectionState.Disconnected,
-  val prefixes: List<Char> = emptyList(),
-  val prefixModes: List<Char> = emptyList(),
-  val channelModes: Map<ChannelModeType, Set<Char>> = emptyMap(),
   val ircUsers: Map<String, IrcUser> = emptyMap(),
   val ircChannels: Map<String, IrcChannel> = emptyMap(),
   val supports: Map<String, String?> = emptyMap(),
@@ -62,6 +59,17 @@ data class NetworkState(
   val codecForEncoding: String = "UTF_8",
   val codecForDecoding: String = "UTF_8"
 ) {
+  val prefixes: List<Char>
+  val prefixModes: List<Char>
+  val channelModes: Map<ChannelModeType, Set<Char>>
+
+  init {
+    val (prefixes, prefixModes) = determinePrefixes()
+    this.prefixes = prefixes
+    this.prefixModes = prefixModes
+    this.channelModes = determineChannelModeTypes()
+  }
+
   fun identifier() = "${networkId.id}"
 
   fun caseMapper() = IrcCaseMapper[supportValue(IrcISupport.CASEMAPPING)]
@@ -93,5 +101,48 @@ data class NetworkState(
     return channelModes.entries.find {
       it.value.contains(mode)
     }?.key
+  }
+
+  private fun determinePrefixes(): Pair<List<Char>, List<Char>> {
+    val defaultPrefixes = listOf('~', '&', '@', '%', '+')
+    val defaultPrefixModes = listOf('q', 'a', 'o', 'h', 'v')
+
+    val prefix = supportValue(IrcISupport.PREFIX)
+      ?: return Pair(defaultPrefixes, defaultPrefixModes)
+
+    if (prefix.startsWith("(") && prefix.contains(")")) {
+      val (prefixModes, prefixes) = prefix.substringAfter('(')
+        .split(')', limit = 2)
+        .map(String::toList)
+
+      return Pair(prefixModes, prefixes)
+    } else if (prefix.isBlank()) {
+      return Pair(defaultPrefixes, defaultPrefixModes)
+    } else if ((prefix.toSet() intersect defaultPrefixes.toSet()).isNotEmpty()) {
+      val (prefixes, prefixModes) = defaultPrefixes.zip(defaultPrefixModes)
+        .filter { prefix.contains(it.second) }
+        .unzip()
+
+      return Pair(prefixModes, prefixes)
+    } else if ((prefix.toSet() intersect defaultPrefixModes.toSet()).isNotEmpty()) {
+      val (prefixes, prefixModes) = defaultPrefixes.zip(defaultPrefixModes)
+        .filter { prefix.contains(it.first) }
+        .unzip()
+
+      return Pair(prefixModes, prefixes)
+    }
+
+    return Pair(defaultPrefixes, defaultPrefixModes)
+  }
+
+  private fun determineChannelModeTypes(): Map<ChannelModeType, Set<Char>> {
+    return ChannelModeType.values()
+      .zip(
+        supportValue(IrcISupport.CHANMODES)
+          ?.split(',', limit = ChannelModeType.values().size)
+          ?.map(String::toSet)
+          .orEmpty()
+      )
+      .toMap()
   }
 }

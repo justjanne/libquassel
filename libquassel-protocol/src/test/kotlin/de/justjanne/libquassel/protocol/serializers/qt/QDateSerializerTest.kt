@@ -23,10 +23,12 @@ import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.TemporalMatcher
 import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.threeten.bp.LocalDate
 import org.threeten.bp.Month
 
+@Tag("QtSerializerTest")
 class QDateSerializerTest {
   @Test
   fun testIsRegistered() {

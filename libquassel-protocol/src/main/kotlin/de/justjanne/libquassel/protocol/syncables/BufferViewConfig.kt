@@ -21,19 +21,19 @@ import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewConfigState
 import de.justjanne.libquassel.protocol.syncables.stubs.BufferViewConfigStub
-import de.justjanne.libquassel.protocol.util.insert
-import de.justjanne.libquassel.protocol.util.move
+import de.justjanne.libquassel.protocol.util.collections.insert
+import de.justjanne.libquassel.protocol.util.collections.move
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 
 open class BufferViewConfig(
-  bufferViewId: Int,
-  session: Session
-) : SyncableObject(session, "BufferViewConfig"), BufferViewConfigStub {
+  session: Session? = null,
+  state: BufferViewConfigState
+) : StatefulSyncableObject<BufferViewConfigState>(session, "BufferViewConfig", state),
+  BufferViewConfigStub {
   override fun fromVariantMap(properties: QVariantMap) {
     state.update {
       copy(
@@ -236,9 +236,14 @@ open class BufferViewConfig(
       info.bufferId,
       buffers()
         .asSequence()
-        .map(session.bufferSyncer()::bufferInfo)
         .withIndex()
-        .mapNotNull { (index, value) -> IndexedValue(index, value ?: return@mapNotNull null) }
+        .mapNotNull { (index, value) ->
+          IndexedValue(
+            index,
+            session?.bufferSyncer()?.bufferInfo(value)
+              ?: return@mapNotNull null
+          )
+        }
         .filter { (_, value) -> value.networkId == info.networkId }
         .find { (_, value) ->
           String.CASE_INSENSITIVE_ORDER.compare(value.bufferName, info.bufferName) > 0
@@ -261,17 +266,4 @@ open class BufferViewConfig(
       insertBufferSorted(info)
     }
   }
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    BufferViewConfigState(
-      bufferViewId = bufferViewId
-    )
-  )
 }

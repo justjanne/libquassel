@@ -17,6 +17,9 @@ import de.justjanne.libquassel.protocol.serializers.quassel.BufferInfoSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.DccIpDetectionModeSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.DccPortSelectionModeSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.IdentityIdSerializer
+import de.justjanne.libquassel.protocol.serializers.quassel.IdentitySerializer
+import de.justjanne.libquassel.protocol.serializers.quassel.IrcChannelSerializer
+import de.justjanne.libquassel.protocol.serializers.quassel.IrcUserSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.MessageSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.MsgIdSerializer
 import de.justjanne.libquassel.protocol.serializers.quassel.NetworkIdSerializer
@@ -70,19 +73,19 @@ enum class QuasselType(
    * Type for IrcUser objects
    * Serialized as [de.justjanne.libquassel.protocol.variant.QVariantMap]
    */
-  IrcUser("IrcUser"),
+  IrcUser("IrcUser", IrcUserSerializer),
 
   /**
    * Type for IrcChannel objects
    * Serialized as [de.justjanne.libquassel.protocol.variant.QVariantMap]
    */
-  IrcChannel("IrcChannel"),
+  IrcChannel("IrcChannel", IrcChannelSerializer),
 
   /**
    * Type for Identity objects
    * Serialized as [de.justjanne.libquassel.protocol.variant.QVariantMap]
    */
-  Identity("Identity"),
+  Identity("Identity", IdentitySerializer),
 
   /**
    * Type for [de.justjanne.libquassel.protocol.models.IdentityId]

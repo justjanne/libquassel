@@ -8,10 +8,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.util
+package de.justjanne.libquassel.protocol.util.collections
 
-@Suppress("NOTHING_TO_INLINE")
-inline fun <T> List<T>.insert(value: T, pos: Int = size): List<T> {
+fun <T> List<T>.insert(value: T, pos: Int = size): List<T> {
   return if (pos <= 0) {
     listOf(value) + this
   } else if (pos >= size) {

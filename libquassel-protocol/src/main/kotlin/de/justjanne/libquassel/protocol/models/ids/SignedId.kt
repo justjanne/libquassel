@@ -42,7 +42,6 @@ interface SignedId<T> : Serializable, Comparable<SignedId<T>>
  */
 @Suppress("NOTHING_TO_INLINE")
 @JvmName("isValidId")
-@Generated
 inline fun SignedId<SignedIdType>.isValid() = id > 0
 
 /**
@@ -50,5 +49,4 @@ inline fun SignedId<SignedIdType>.isValid() = id > 0
  */
 @Suppress("NOTHING_TO_INLINE")
 @JvmName("isValidId64")
-@Generated
 inline fun SignedId<SignedId64Type>.isValid() = id > 0

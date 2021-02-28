@@ -23,6 +23,7 @@ import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.TemporalMatcher
 import de.justjanne.libquassel.protocol.testutil.primitiveSerializerTest
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.threeten.bp.Instant
@@ -33,6 +34,7 @@ import org.threeten.bp.ZoneOffset
 import org.threeten.bp.chrono.JapaneseDate
 import org.threeten.bp.temporal.Temporal
 
+@Tag("QtSerializerTest")
 class QDateTimeSerializerTest {
   @Test
   fun testIsRegistered() {

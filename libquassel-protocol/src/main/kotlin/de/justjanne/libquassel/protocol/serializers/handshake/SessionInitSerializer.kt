@@ -18,6 +18,7 @@ import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.serializers.HandshakeSerializer
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
+import de.justjanne.libquassel.protocol.variant.QVariant_
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 
@@ -27,23 +28,25 @@ import de.justjanne.libquassel.protocol.variant.qVariant
 object SessionInitSerializer : HandshakeSerializer<HandshakeMessage.SessionInit> {
   override val type: String = "SessionInit"
 
-  override fun serialize(data: HandshakeMessage.SessionInit) = mapOf(
-    "MsgType" to qVariant(type, QtType.QString),
-    "SessionState" to qVariant(
+  override fun serialize(data: HandshakeMessage.SessionInit) = mapOf<String, QVariant_>(
+    "MsgType" to qVariant<String>(type, QtType.QString),
+    "SessionState" to qVariant<QVariantMap>(
       mapOf(
         "BufferInfos" to qVariant<QVariantList>(
           data.bufferInfos.map {
-            qVariant(it, QuasselType.BufferInfo)
+            qVariant<BufferInfo>(it, QuasselType.BufferInfo)
           },
           QtType.QVariantList
         ),
         "NetworkIds" to qVariant<QVariantList>(
           data.networkIds.map {
-            qVariant(it, QuasselType.NetworkId)
+            qVariant<NetworkId>(it, QuasselType.NetworkId)
           },
           QtType.QVariantList
         ),
-        "Identities" to qVariant(data.identities, QtType.QVariantList),
+        "Identities" to qVariant<QVariantList>(data.identities.map {
+          qVariant<QVariantMap>(it, QuasselType.Identity)
+        }, QtType.QVariantList),
       ),
       QtType.QVariantMap
     )
@@ -57,7 +60,9 @@ object SessionInitSerializer : HandshakeSerializer<HandshakeMessage.SessionInit>
       networkIds = it?.get("NetworkIds").into<QVariantList>()?.mapNotNull {
         it.into<NetworkId>()
       }.orEmpty(),
-      identities = it?.get("Identities").into(),
+      identities = it?.get("Identities").into<QVariantList>()?.mapNotNull {
+        it.into<QVariantMap>()
+      }.orEmpty(),
     )
   }
 }

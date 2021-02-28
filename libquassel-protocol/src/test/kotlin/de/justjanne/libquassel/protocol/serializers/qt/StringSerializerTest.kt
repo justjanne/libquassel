@@ -28,8 +28,10 @@ import de.justjanne.libquassel.protocol.testutil.testPrimitiveSerializerVariant
 import de.justjanne.libquassel.protocol.util.withRewind
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 
+@Tag("QtSerializerTest")
 class StringSerializerTest {
   @Test
   fun testIsRegistered() {
@@ -37,6 +39,13 @@ class StringSerializerTest {
       StringSerializerUtf16,
       QtType.QString.serializer<String>(),
     )
+  }
+
+  @Test
+  fun testEmpty() {
+    assertEquals("", StringSerializerAscii.deserializeRaw(null))
+    assertEquals("", StringSerializerUtf8.deserializeRaw(null))
+    assertEquals("", StringSerializerUtf16.deserializeRaw(null))
   }
 
   @Test

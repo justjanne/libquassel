@@ -20,13 +20,14 @@ import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
-import kotlinx.coroutines.flow.MutableStateFlow
 import java.net.InetAddress
 
 open class DccConfig(
-  session: Session
-) : SyncableObject(session, "DccConfig"), DccConfigStub {
-  override fun init() {
+  session: Session? = null,
+  state: DccConfigState = DccConfigState()
+) : StatefulSyncableObject<DccConfigState>(session, "DccConfig", state),
+  DccConfigStub {
+  init {
     renameObject("DccConfig")
   }
 
@@ -140,15 +141,4 @@ open class DccConfig(
   fun sendTimeout() = state().sendTimeout
   fun usePassiveDcc() = state().usePassiveDcc
   fun useFastSend() = state().useFastSend
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
-    DccConfigState()
-  )
 }

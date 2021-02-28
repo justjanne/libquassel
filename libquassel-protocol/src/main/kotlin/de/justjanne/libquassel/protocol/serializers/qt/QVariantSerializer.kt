@@ -33,6 +33,12 @@ object QVariantSerializer : PrimitiveSerializer<QVariant_> {
         BoolSerializer.serialize(buffer, false, featureSet)
         data.serialize(buffer, featureSet)
       }
+      is QVariant.Custom -> {
+        IntSerializer.serialize(buffer, QtType.UserType.id, featureSet)
+        BoolSerializer.serialize(buffer, false, featureSet)
+        StringSerializerAscii.serialize(buffer, data.type.typeName, featureSet)
+        data.serialize(buffer, featureSet)
+      }
     }
   }
 

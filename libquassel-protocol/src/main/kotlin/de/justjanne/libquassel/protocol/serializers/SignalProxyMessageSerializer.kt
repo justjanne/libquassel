@@ -47,7 +47,7 @@ object SignalProxyMessageSerializer : PrimitiveSerializer<SignalProxyMessage> {
     }
 
   private fun deserializeFromList(data: QVariantList): SignalProxyMessage =
-    when (val type = data.firstOrNull().into<Int>(0)) {
+    when (val type = data.firstOrNull().into(0)) {
       SyncSerializer.type ->
         SyncSerializer.deserialize(data)
       RpcSerializer.type ->

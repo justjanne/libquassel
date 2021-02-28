@@ -90,11 +90,6 @@ class ExpressionMatchTest {
 
   @Test
   fun matchMultiPhrase() {
-    val emptyMatch =
-      ExpressionMatch(
-        "\n\n",
-        ExpressionMatch.MatchMode.MatchMultiPhrase, false
-      )
     // Simple phrases, case-insensitive
     val simpleMatch = ExpressionMatch(
       "test\nOther ",
@@ -117,9 +112,6 @@ class ExpressionMatchTest {
       ExpressionMatch.MatchMode.MatchMultiPhrase,
       false
     )
-
-    println(simpleMatch.positiveRegex)
-    println(simpleMatch.negativeRegex)
 
     // Assert valid and not empty
     assertFalse(simpleMatch.isEmpty())
@@ -430,7 +422,6 @@ class ExpressionMatchTest {
       ExpressionMatch.MatchMode.MatchWildcard,
       caseSensitive = false
     )
-    println(mask1.positiveRegex)
     assertTrue(mask1.match("coolguy!ab@127.0.0.1"))
     assertTrue(mask1.match("cooldud3!~bc@127.0.0.1"))
     assertFalse(mask1.match("coolguy!ab@127.0.0.5"))
@@ -441,7 +432,6 @@ class ExpressionMatchTest {
       ExpressionMatch.MatchMode.MatchWildcard,
       caseSensitive = false
     )
-    println(mask2.positiveRegex)
     assertTrue(mask2.match("coolguy!ab@127.0.0.1"))
     assertTrue(mask2.match("cooldud3!~bc@127.0.0.1"))
     assertTrue(mask2.match("cool132!ab@example.com"))
@@ -453,7 +443,6 @@ class ExpressionMatchTest {
       ExpressionMatch.MatchMode.MatchWildcard,
       caseSensitive = false
     )
-    println(mask3.positiveRegex)
     assertTrue(mask3.match("cool!guyab@127.0.0.1"))
     assertTrue(mask3.match("cool!~dudebc@127.0.0.1"))
     assertTrue(mask3.match("cool!312ab@example.com"))
@@ -468,7 +457,6 @@ class ExpressionMatchTest {
       ExpressionMatch.MatchMode.MatchWildcard,
       caseSensitive = false
     )
-    println(mask4.positiveRegex)
     assertTrue(mask4.match("cool[guy]!guy@127.0.0.1"))
     assertTrue(mask4.match("cool[guy]!a@example.com"))
     assertFalse(mask4.match("coolg!ab@127.0.0.1"))
