@@ -9,16 +9,24 @@
 
 package de.justjanne.libquassel.protocol.testutil
 
+import de.justjanne.bitflags.of
+import de.justjanne.libquassel.protocol.models.flags.BufferActivity
+import de.justjanne.libquassel.protocol.models.flags.BufferType
+import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.network.NetworkServer
+import de.justjanne.libquassel.protocol.syncables.BufferViewConfig
 import de.justjanne.libquassel.protocol.syncables.IrcChannel
 import de.justjanne.libquassel.protocol.syncables.IrcUser
+import de.justjanne.libquassel.protocol.syncables.state.BufferViewConfigState
+import de.justjanne.libquassel.protocol.syncables.state.BufferViewManagerState
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
 import org.threeten.bp.Instant
 import java.util.EnumSet
+import java.util.Locale
 import java.util.UUID
 import kotlin.random.Random
 import kotlin.random.nextUInt
@@ -52,16 +60,20 @@ fun Random.nextNetwork(networkId: NetworkId) = NetworkState(
   connected = nextBoolean(),
   connectionState = nextEnum(),
   ircUsers = List(nextInt(20)) {
-    nextIrcUser(networkId)
-  }.associateBy(IrcUser::nick),
+    IrcUser(state = nextIrcUser(networkId))
+  }.associateBy(IrcUser::nick).mapKeys { (key) ->
+    key.toLowerCase(Locale.ROOT)
+  },
   ircChannels = List(nextInt(20)) {
-    nextIrcChannel(networkId)
-  }.associateBy(IrcChannel::name),
+    IrcChannel(state = nextIrcChannel(networkId))
+  }.associateBy(IrcChannel::name).mapKeys { (key) ->
+    key.toLowerCase(Locale.ROOT)
+  },
   supports = List(nextInt(20)) {
-    nextString() to nextString()
+    nextString().toUpperCase(Locale.ROOT) to nextString()
   }.toMap(),
   caps = List(nextInt(20)) {
-    nextString() to nextString()
+    nextString().toLowerCase(Locale.ROOT) to nextString()
   }.toMap(),
   capsEnabled = List(nextInt(20)) {
     nextString()
@@ -109,35 +121,66 @@ fun Random.nextNetworkServer() = NetworkServer(
 
 fun Random.nextIrcUser(
   networkId: NetworkId = NetworkId(nextInt())
-) = IrcUser(
-  state = IrcUserState(
-    network = networkId,
-    nick = nextString(),
-    user = nextString(),
-    host = nextString(),
-    realName = nextString(),
-    account = nextString(),
-    away = nextBoolean(),
-    awayMessage = nextString(),
-    idleTime = nextInstant(),
-    loginTime = nextInstant(),
-    server = nextString(),
-    ircOperator = nextString(),
-    lastAwayMessageTime = nextInstant(),
-    whoisServiceReply = nextString(),
-    suserHost = nextString(),
-    encrypted = nextBoolean()
-  )
+) = IrcUserState(
+  network = networkId,
+  nick = nextString(),
+  user = nextString(),
+  host = nextString(),
+  realName = nextString(),
+  account = nextString(),
+  away = nextBoolean(),
+  awayMessage = nextString(),
+  idleTime = nextInstant(),
+  loginTime = nextInstant(),
+  server = nextString(),
+  ircOperator = nextString(),
+  lastAwayMessageTime = nextInstant(),
+  whoisServiceReply = nextString(),
+  suserHost = nextString(),
+  encrypted = nextBoolean()
 )
 
 fun Random.nextIrcChannel(
   networkId: NetworkId = NetworkId(nextInt())
-) = IrcChannel(
-  state = IrcChannelState(
-    network = networkId,
-    name = nextString(),
-    topic = nextString(),
-    password = nextString(),
-    encrypted = nextBoolean()
-  )
+) = IrcChannelState(
+  network = networkId,
+  name = nextString(),
+  topic = nextString(),
+  password = nextString(),
+  encrypted = nextBoolean()
+)
+
+fun Random.nextBufferViewConfig(
+  bufferViewId: Int = nextInt()
+) = BufferViewConfigState(
+  bufferViewId = bufferViewId,
+  bufferViewName = nextString(),
+  networkId = NetworkId(nextInt()),
+  addNewBuffersAutomatically = nextBoolean(),
+  sortAlphabetically = nextBoolean(),
+  hideInactiveNetworks = nextBoolean(),
+  hideInactiveBuffers = nextBoolean(),
+  disableDecoration = nextBoolean(),
+  allowedBufferTypes = BufferType.of(
+    List(nextInt(BufferType.values().size)) {
+      nextEnum()
+    }
+  ),
+  minimumActivity = BufferActivity.of(nextEnum<BufferActivity>()),
+  showSearch = nextBoolean(),
+  buffers = List(nextInt(20)) {
+    BufferId(nextInt())
+  },
+  removedBuffers = List(nextInt(20)) {
+    BufferId(nextInt())
+  }.toSet(),
+  temporarilyRemovedBuffers = List(nextInt(20)) {
+    BufferId(nextInt())
+  }.toSet()
+)
+
+fun Random.nextBufferViewManager() = BufferViewManagerState(
+  bufferViewConfigs = List(nextInt(20)) {
+    BufferViewConfig(state = BufferViewConfigState(bufferViewId = nextInt()))
+  }.associateBy(BufferViewConfig::bufferViewId)
 )

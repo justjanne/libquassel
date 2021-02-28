@@ -47,16 +47,22 @@ open class BufferViewConfig(
           ?.mapNotNull { it.into<BufferId>() }
           ?.toSet()
           .orEmpty(),
-        bufferViewName = properties["bufferViewName"].into(bufferViewName()),
-        networkId = properties["networkId"].into(networkId()),
-        addNewBuffersAutomatically = properties["addNewBuffersAutomatically"].into(addNewBuffersAutomatically()),
-        sortAlphabetically = properties["sortAlphabetically"].into(sortAlphabetically()),
-        hideInactiveBuffers = properties["hideInactiveBuffers"].into(hideInactiveBuffers()),
-        hideInactiveNetworks = properties["hideInactiveNetworks"].into(hideInactiveNetworks()),
-        disableDecoration = properties["disableDecoration"].into(disableDecoration()),
-        allowedBufferTypes = properties["allowedBufferTypes"].into(allowedBufferTypes()),
-        minimumActivity = properties["minimumActivity"].into(minimumActivity()),
-        showSearch = properties["showSearch"].into(showSearch()),
+        bufferViewName = properties["bufferViewName"].into(bufferViewName),
+        networkId = properties["networkId"].into(networkId),
+        addNewBuffersAutomatically = properties["addNewBuffersAutomatically"].into(addNewBuffersAutomatically),
+        sortAlphabetically = properties["sortAlphabetically"].into(sortAlphabetically),
+        hideInactiveBuffers = properties["hideInactiveBuffers"].into(hideInactiveBuffers),
+        hideInactiveNetworks = properties["hideInactiveNetworks"].into(hideInactiveNetworks),
+        disableDecoration = properties["disableDecoration"].into(disableDecoration),
+        allowedBufferTypes = properties["allowedBufferTypes"].into<Int>()
+          ?.let(Int::toUShort)
+          ?.let(BufferType.Companion::of)
+          ?: allowedBufferTypes,
+        minimumActivity = properties["minimumActivity"].into<Int>()
+          ?.let(Int::toUInt)
+          ?.let(BufferActivity.Companion::of)
+          ?: minimumActivity,
+        showSearch = properties["showSearch"].into(showSearch),
       )
     }
   }

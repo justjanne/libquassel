@@ -44,17 +44,17 @@ open class Network(
       copy(
         networkName = properties["networkName"].into(networkName),
         currentServer = properties["currentServer"].into(currentServer),
-        myNick = properties["myNick"].into(),
+        myNick = properties["myNick"].into(myNick),
         latency = properties["latency"].into(latency),
-        codecForServer = StringSerializerUtf8.deserializeRaw(
-          properties["codecForServer"].into<ByteBuffer>()
-        ),
-        codecForEncoding = StringSerializerUtf8.deserializeRaw(
-          properties["codecForEncoding"].into<ByteBuffer>()
-        ),
-        codecForDecoding = StringSerializerUtf8.deserializeRaw(
-          properties["codecForDecoding"].into<ByteBuffer>()
-        ),
+        codecForServer = properties["codecForServer"].into<ByteBuffer>()
+          ?.let(StringSerializerUtf8::deserializeRaw)
+          ?: codecForServer,
+        codecForEncoding = properties["codecForEncoding"].into<ByteBuffer>()
+          ?.let(StringSerializerUtf8::deserializeRaw)
+          ?: codecForServer,
+        codecForDecoding = properties["codecForDecoding"].into<ByteBuffer>()
+          ?.let(StringSerializerUtf8::deserializeRaw)
+          ?: codecForServer,
         identity = properties["identityId"]
           .into(identity),
         connected = properties["isConnected"]
@@ -356,10 +356,10 @@ open class Network(
     if (properties.isNotEmpty()) {
       channel.fromVariantMap(properties, index)
       channel.initialized = true
-      session?.synchronize(channel)
-      state.update {
-        copy(ircChannels = ircChannels + Pair(caseMapper().toLowerCase(name), channel))
-      }
+    }
+    session?.synchronize(channel)
+    state.update {
+      copy(ircChannels = ircChannels + Pair(caseMapper().toLowerCase(name), channel))
     }
     return channel
   }
@@ -421,7 +421,10 @@ open class Network(
 
   override fun removeCap(capability: String) {
     state.update {
-      copy(capsEnabled = capsEnabled - caseMapper().toLowerCase(capability))
+      copy(
+        caps = caps - caseMapper().toLowerCase(capability),
+        capsEnabled = capsEnabled - caseMapper().toLowerCase(capability),
+      )
     }
     super.removeCap(capability)
   }

@@ -119,29 +119,29 @@ data class NetworkState(
       return Pair(defaultPrefixes, defaultPrefixModes)
     } else if ((prefix.toSet() intersect defaultPrefixes.toSet()).isNotEmpty()) {
       val (prefixes, prefixModes) = defaultPrefixes.zip(defaultPrefixModes)
-        .filter { prefix.contains(it.second) }
-        .unzip()
-
-      return Pair(prefixModes, prefixes)
-    } else if ((prefix.toSet() intersect defaultPrefixModes.toSet()).isNotEmpty()) {
-      val (prefixes, prefixModes) = defaultPrefixes.zip(defaultPrefixModes)
         .filter { prefix.contains(it.first) }
         .unzip()
 
-      return Pair(prefixModes, prefixes)
+      return Pair(prefixes, prefixModes)
+    } else if ((prefix.toSet() intersect defaultPrefixModes.toSet()).isNotEmpty()) {
+      val (prefixes, prefixModes) = defaultPrefixes.zip(defaultPrefixModes)
+        .filter { prefix.contains(it.second) }
+        .unzip()
+
+      return Pair(prefixes, prefixModes)
     }
 
     return Pair(defaultPrefixes, defaultPrefixModes)
   }
 
   private fun determineChannelModeTypes(): Map<ChannelModeType, Set<Char>> {
-    return ChannelModeType.values()
-      .zip(
-        supportValue(IrcISupport.CHANMODES)
-          ?.split(',', limit = ChannelModeType.values().size)
-          ?.map(String::toSet)
-          .orEmpty()
-      )
-      .toMap()
+    val groups = supportValue(IrcISupport.CHANMODES)
+      ?.split(',')
+      ?.map(String::toSet)
+      .orEmpty()
+
+    return ChannelModeType.values().withIndex().map { (index, key) ->
+      key to groups.getOrNull(index).orEmpty()
+    }.toMap()
   }
 }
