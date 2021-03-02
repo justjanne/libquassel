@@ -50,7 +50,8 @@ class HighlightRuleManagerTest {
               mapOf(
                 "id" to qVariant<QVariantList>(emptyList(), QtType.QVariantList),
                 "name" to qVariant<QStringList>(listOf(""), QtType.QStringList),
-              ), QtType.QVariantMap
+              ),
+              QtType.QVariantMap
             )
           )
         )
@@ -61,10 +62,14 @@ class HighlightRuleManagerTest {
             "HighlightRuleList" to qVariant<QVariantMap>(
               mapOf(
                 "id" to qVariant<QVariantList>(emptyList(), QtType.QVariantList),
-                "isRegEx" to qVariant<QVariantList>(listOf(
-                  qVariant(false, QtType.Bool)
-                ), QtType.QVariantList),
-              ), QtType.QVariantMap
+                "isRegEx" to qVariant<QVariantList>(
+                  listOf(
+                    qVariant(false, QtType.Bool)
+                  ),
+                  QtType.QVariantList
+                ),
+              ),
+              QtType.QVariantMap
             )
           )
         )
@@ -75,10 +80,14 @@ class HighlightRuleManagerTest {
             "HighlightRuleList" to qVariant<QVariantMap>(
               mapOf(
                 "id" to qVariant<QVariantList>(emptyList(), QtType.QVariantList),
-                "isCaseSensitive" to qVariant<QVariantList>(listOf(
-                  qVariant(false, QtType.Bool)
-                ), QtType.QVariantList),
-              ), QtType.QVariantMap
+                "isCaseSensitive" to qVariant<QVariantList>(
+                  listOf(
+                    qVariant(false, QtType.Bool)
+                  ),
+                  QtType.QVariantList
+                ),
+              ),
+              QtType.QVariantMap
             )
           )
         )
@@ -89,10 +98,14 @@ class HighlightRuleManagerTest {
             "HighlightRuleList" to qVariant<QVariantMap>(
               mapOf(
                 "id" to qVariant<QVariantList>(emptyList(), QtType.QVariantList),
-                "isEnabled" to qVariant<QVariantList>(listOf(
-                  qVariant(false, QtType.Bool)
-                ), QtType.QVariantList),
-              ), QtType.QVariantMap
+                "isEnabled" to qVariant<QVariantList>(
+                  listOf(
+                    qVariant(false, QtType.Bool)
+                  ),
+                  QtType.QVariantList
+                ),
+              ),
+              QtType.QVariantMap
             )
           )
         )
@@ -103,10 +116,14 @@ class HighlightRuleManagerTest {
             "HighlightRuleList" to qVariant<QVariantMap>(
               mapOf(
                 "id" to qVariant<QVariantList>(emptyList(), QtType.QVariantList),
-                "isInverse" to qVariant<QVariantList>(listOf(
-                  qVariant(false, QtType.Bool)
-                ), QtType.QVariantList),
-              ), QtType.QVariantMap
+                "isInverse" to qVariant<QVariantList>(
+                  listOf(
+                    qVariant(false, QtType.Bool)
+                  ),
+                  QtType.QVariantList
+                ),
+              ),
+              QtType.QVariantMap
             )
           )
         )
@@ -118,7 +135,8 @@ class HighlightRuleManagerTest {
               mapOf(
                 "id" to qVariant<QVariantList>(emptyList(), QtType.QVariantList),
                 "sender" to qVariant<QStringList>(listOf(""), QtType.QStringList),
-              ), QtType.QVariantMap
+              ),
+              QtType.QVariantMap
             )
           )
         )
@@ -130,7 +148,8 @@ class HighlightRuleManagerTest {
               mapOf(
                 "id" to qVariant<QVariantList>(emptyList(), QtType.QVariantList),
                 "channel" to qVariant<QStringList>(listOf(""), QtType.QStringList),
-              ), QtType.QVariantMap
+              ),
+              QtType.QVariantMap
             )
           )
         )
@@ -146,46 +165,78 @@ class HighlightRuleManagerTest {
     val actual = HighlightRuleManager(
       state = HighlightRuleManagerState()
     ).apply {
-      update(mapOf(
-        "HighlightRuleList" to qVariant(mapOf(
-          "id" to qVariant(listOf(
-            qVariant(999, QtType.Int)
-          ), QtType.QVariantList),
-          "name" to qVariant(listOf(
-            null
-          ), QtType.QStringList),
-          "isRegEx" to qVariant(listOf(
-            qVariant(false, QtType.Bool)
-          ), QtType.QVariantList),
-          "isCaseSensitive" to qVariant(listOf(
-            qVariant(false, QtType.Bool)
-          ), QtType.QVariantList),
-          "isEnabled" to qVariant(listOf(
-            qVariant(false, QtType.Bool)
-          ), QtType.QVariantList),
-          "isInverse" to qVariant(listOf(
-            qVariant(false, QtType.Bool)
-          ), QtType.QVariantList),
-          "sender" to qVariant(listOf(
-            null
-          ), QtType.QStringList),
-          "channel" to qVariant(listOf(
-            null
-          ), QtType.QStringList)
-        ), QtType.QVariantMap)
-      ))
+      update(
+        mapOf(
+          "HighlightRuleList" to qVariant(
+            mapOf(
+              "id" to qVariant(
+                listOf(
+                  qVariant(999, QtType.Int)
+                ),
+                QtType.QVariantList
+              ),
+              "name" to qVariant(
+                listOf(
+                  null
+                ),
+                QtType.QStringList
+              ),
+              "isRegEx" to qVariant(
+                listOf(
+                  qVariant(false, QtType.Bool)
+                ),
+                QtType.QVariantList
+              ),
+              "isCaseSensitive" to qVariant(
+                listOf(
+                  qVariant(false, QtType.Bool)
+                ),
+                QtType.QVariantList
+              ),
+              "isEnabled" to qVariant(
+                listOf(
+                  qVariant(false, QtType.Bool)
+                ),
+                QtType.QVariantList
+              ),
+              "isInverse" to qVariant(
+                listOf(
+                  qVariant(false, QtType.Bool)
+                ),
+                QtType.QVariantList
+              ),
+              "sender" to qVariant(
+                listOf(
+                  null
+                ),
+                QtType.QStringList
+              ),
+              "channel" to qVariant(
+                listOf(
+                  null
+                ),
+                QtType.QStringList
+              )
+            ),
+            QtType.QVariantMap
+          )
+        )
+      )
     }.state()
 
-    assertEquals(HighlightRule(
-      id = 999,
-      content = "",
-      isRegEx = false,
-      isCaseSensitive = false,
-      isEnabled = false,
-      isInverse = false,
-      sender = "",
-      channel = ""
-    ), actual.rules.first())
+    assertEquals(
+      HighlightRule(
+        id = 999,
+        content = "",
+        isRegEx = false,
+        isCaseSensitive = false,
+        isEnabled = false,
+        isInverse = false,
+        sender = "",
+        channel = ""
+      ),
+      actual.rules.first()
+    )
   }
 
   @Test
