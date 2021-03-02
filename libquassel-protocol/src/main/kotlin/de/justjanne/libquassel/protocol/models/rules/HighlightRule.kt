@@ -13,7 +13,7 @@ import de.justjanne.libquassel.protocol.util.expression.ExpressionMatch
 
 data class HighlightRule(
   val id: Int,
-  val contents: String,
+  val content: String,
   val isRegEx: Boolean = false,
   val isCaseSensitive: Boolean = false,
   val isEnabled: Boolean = true,
@@ -22,7 +22,7 @@ data class HighlightRule(
   val channel: String
 ) {
   val contentMatch = ExpressionMatch(
-    contents,
+    content,
     if (isRegEx) ExpressionMatch.MatchMode.MatchRegEx
     else ExpressionMatch.MatchMode.MatchPhrase,
     isCaseSensitive

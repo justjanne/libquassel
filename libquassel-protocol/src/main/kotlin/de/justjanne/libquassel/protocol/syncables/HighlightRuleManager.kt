@@ -59,9 +59,6 @@ open class HighlightRuleManager(
     require(idList.size == channelList.size) {
       "Sizes do not match: ids=${idList.size}, channelList=${channelList.size}"
     }
-    require(idList.size == channelList.size) {
-      "Sizes do not match: ids=${idList.size}, channelList=${channelList.size}"
-    }
 
     state.update {
       copy(
@@ -93,7 +90,7 @@ open class HighlightRuleManager(
           QtType.QVariantList
         ),
         "name" to qVariant(
-          state().rules.map(HighlightRule::contents),
+          state().rules.map(HighlightRule::content),
           QtType.QStringList
         ),
         "isRegEx" to qVariant(
@@ -134,7 +131,7 @@ open class HighlightRuleManager(
   fun count() = state().count()
   fun removeAt(index: Int) {
     state.update {
-      copy(rules = rules.drop(index))
+      copy(rules = rules.take(index) + rules.drop(index + 1))
     }
   }
 
@@ -157,13 +154,13 @@ open class HighlightRuleManager(
 
   override fun addHighlightRule(
     id: Int,
-    name: String?,
+    content: String?,
     isRegEx: Boolean,
     isCaseSensitive: Boolean,
     isEnabled: Boolean,
     isInverse: Boolean,
     sender: String?,
-    chanName: String?
+    channel: String?
   ) {
     if (contains(id)) {
       return
@@ -173,18 +170,18 @@ open class HighlightRuleManager(
       copy(
         rules = rules + HighlightRule(
           id,
-          name ?: "",
+          content ?: "",
           isRegEx,
           isCaseSensitive,
           isEnabled,
           isInverse,
           sender ?: "",
-          chanName ?: ""
+          channel ?: ""
         )
       )
     }
 
-    super.addHighlightRule(id, name, isRegEx, isCaseSensitive, isEnabled, isInverse, sender, chanName)
+    super.addHighlightRule(id, content, isRegEx, isCaseSensitive, isEnabled, isInverse, sender, channel)
   }
 
   override fun setHighlightNick(highlightNick: Int) {

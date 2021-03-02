@@ -16,6 +16,8 @@ import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.network.NetworkServer
+import de.justjanne.libquassel.protocol.models.rules.HighlightRule
+import de.justjanne.libquassel.protocol.models.rules.IgnoreRule
 import de.justjanne.libquassel.protocol.syncables.BufferViewConfig
 import de.justjanne.libquassel.protocol.syncables.IrcChannel
 import de.justjanne.libquassel.protocol.syncables.IrcUser
@@ -183,4 +185,25 @@ fun Random.nextBufferViewManager() = BufferViewManagerState(
   bufferViewConfigs = List(nextInt(20)) {
     BufferViewConfig(state = BufferViewConfigState(bufferViewId = nextInt()))
   }.associateBy(BufferViewConfig::bufferViewId)
+)
+
+fun Random.nextHighlightRule(id: Int) = HighlightRule(
+  id = id,
+  content = nextString(),
+  isRegEx = nextBoolean(),
+  isCaseSensitive = nextBoolean(),
+  isEnabled = nextBoolean(),
+  isInverse = nextBoolean(),
+  sender = nextString(),
+  channel = nextString()
+)
+
+fun Random.nextIgnoreRule() = IgnoreRule(
+  type = nextEnum(),
+  ignoreRule = nextString(),
+  isRegEx = nextBoolean(),
+  strictness = nextEnum(),
+  isEnabled = nextBoolean(),
+  scope = nextEnum(),
+  scopeRule = nextString()
 )

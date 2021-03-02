@@ -58,50 +58,50 @@ interface HighlightRuleManagerStub : SyncableStub {
   @SyncedCall(target = ProtocolSide.CORE)
   fun requestAddHighlightRule(
     id: Int,
-    name: String?,
+    content: String?,
     isRegEx: Boolean,
     isCaseSensitive: Boolean,
     isEnabled: Boolean,
     isInverse: Boolean,
     sender: String?,
-    chanName: String?
+    channel: String?
   ) {
     sync(
       target = ProtocolSide.CORE,
       "requestToggleHighlightRule",
       qVariant(id, QtType.Int),
-      qVariant(name, QtType.QString),
+      qVariant(content, QtType.QString),
       qVariant(isRegEx, QtType.Bool),
       qVariant(isCaseSensitive, QtType.Bool),
       qVariant(isEnabled, QtType.Bool),
       qVariant(isInverse, QtType.Bool),
       qVariant(sender, QtType.QString),
-      qVariant(chanName, QtType.QString),
+      qVariant(channel, QtType.QString),
     )
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun addHighlightRule(
     id: Int,
-    name: String?,
+    content: String?,
     isRegEx: Boolean,
     isCaseSensitive: Boolean,
     isEnabled: Boolean,
     isInverse: Boolean,
     sender: String?,
-    chanName: String?
+    channel: String?
   ) {
     sync(
       target = ProtocolSide.CLIENT,
       "addHighlightRule",
       qVariant(id, QtType.Int),
-      qVariant(name, QtType.QString),
+      qVariant(content, QtType.QString),
       qVariant(isRegEx, QtType.Bool),
       qVariant(isCaseSensitive, QtType.Bool),
       qVariant(isEnabled, QtType.Bool),
       qVariant(isInverse, QtType.Bool),
       qVariant(sender, QtType.QString),
-      qVariant(chanName, QtType.QString),
+      qVariant(channel, QtType.QString),
     )
   }
 
