@@ -13,6 +13,8 @@ import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.testutil.nextIrcChannel
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
@@ -24,7 +26,7 @@ class IrcChannelTest {
       name = "#name"
     )
     val actual = IrcChannel(state = state).apply {
-      fromVariantMap(emptyMap())
+      update(emptyMap())
     }.state()
 
     assertEquals(state, actual)
@@ -41,9 +43,43 @@ class IrcChannelTest {
         name = expected.name,
       )
     ).apply {
-      fromVariantMap(IrcChannel(state = expected).toVariantMap())
+      update(IrcChannel(state = expected).toVariantMap())
     }.state()
 
     assertEquals(expected, actual)
+  }
+
+  @Nested
+  inner class Setters {
+    @Test
+    fun testTopic() {
+      val random = Random(1337)
+      val channel = IrcChannel(state = random.nextIrcChannel(NetworkId(random.nextInt())))
+
+      assertNotEquals("IMPLEMENTATION DEFINED CONTROVERSY", channel.topic())
+      channel.setTopic("IMPLEMENTATION DEFINED CONTROVERSY")
+      assertEquals("IMPLEMENTATION DEFINED CONTROVERSY", channel.topic())
+    }
+
+    @Test
+    fun testPassword() {
+      val random = Random(1337)
+      val channel = IrcChannel(state = random.nextIrcChannel(NetworkId(random.nextInt())))
+
+      assertNotEquals("hunter2", channel.password())
+      channel.setPassword("hunter2")
+      assertEquals("hunter2", channel.password())
+    }
+
+    @Test
+    fun testEncrypted() {
+      val random = Random(1337)
+      val channel = IrcChannel(state = random.nextIrcChannel(NetworkId(random.nextInt())))
+
+      channel.setEncrypted(false)
+      assertEquals(false, channel.isEncrypted())
+      channel.setEncrypted(true)
+      assertEquals(true, channel.isEncrypted())
+    }
   }
 }

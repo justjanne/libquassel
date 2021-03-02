@@ -20,7 +20,7 @@ class BufferViewManagerTest {
   fun testEmpty() {
     val state = BufferViewManagerState()
     val actual = BufferViewManager(state = state).apply {
-      fromVariantMap(emptyMap())
+      update(emptyMap())
     }.state()
 
     assertEquals(state, actual)
@@ -32,7 +32,7 @@ class BufferViewManagerTest {
     val expected = random.nextBufferViewManager()
 
     val actual = BufferViewManager().apply {
-      fromVariantMap(BufferViewManager(state = expected).toVariantMap())
+      update(BufferViewManager(state = expected).toVariantMap())
     }.state()
 
     assertEquals(expected, actual)

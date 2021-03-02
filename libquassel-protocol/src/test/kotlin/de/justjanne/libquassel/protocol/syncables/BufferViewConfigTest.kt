@@ -20,7 +20,7 @@ class BufferViewConfigTest {
   fun testEmpty() {
     val state = BufferViewConfigState(bufferViewId = 1)
     val actual = BufferViewConfig(state = state).apply {
-      fromVariantMap(emptyMap())
+      update(emptyMap())
     }.state()
 
     assertEquals(state, actual)
@@ -36,7 +36,7 @@ class BufferViewConfigTest {
         bufferViewId = expected.bufferViewId,
       )
     ).apply {
-      fromVariantMap(BufferViewConfig(state = expected).toVariantMap())
+      update(BufferViewConfig(state = expected).toVariantMap())
     }.state()
 
     assertEquals(expected, actual)

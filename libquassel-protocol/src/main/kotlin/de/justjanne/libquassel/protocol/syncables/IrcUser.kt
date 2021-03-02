@@ -77,7 +77,7 @@ open class IrcUser(
     "lastAwayMessageTime" to qVariant(lastAwayMessageTime(), QtType.QDateTime),
     "whoisServiceReply" to qVariant(whoisServiceReply(), QtType.QString),
     "suserHost" to qVariant(suserHost(), QtType.QString),
-    "encrypted" to qVariant(encrypted(), QtType.Bool),
+    "encrypted" to qVariant(isEncrypted(), QtType.Bool),
 
     "channels" to qVariant(channels().toList(), QtType.QStringList),
     "userModes" to qVariant(userModes().joinToString(), QtType.QString)
@@ -222,7 +222,7 @@ open class IrcUser(
 
   override fun setUserModes(modes: String) {
     state.update {
-      copy(userModes = userModes.toSet())
+      copy(userModes = modes.toSet())
     }
     super.setUserModes(modes)
   }
@@ -292,7 +292,7 @@ open class IrcUser(
   fun lastAwayMessageTime() = state().lastAwayMessageTime
   fun whoisServiceReply() = state().whoisServiceReply
   fun suserHost() = state().suserHost
-  fun encrypted() = state().encrypted
+  fun isEncrypted() = state().encrypted
   fun userModes() = state().userModes
   fun channels() = state().channels
 }

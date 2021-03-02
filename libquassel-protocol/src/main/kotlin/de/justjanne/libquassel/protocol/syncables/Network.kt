@@ -51,10 +51,10 @@ open class Network(
           ?: codecForServer,
         codecForEncoding = properties["codecForEncoding"].into<ByteBuffer>()
           ?.let(StringSerializerUtf8::deserializeRaw)
-          ?: codecForServer,
+          ?: codecForEncoding,
         codecForDecoding = properties["codecForDecoding"].into<ByteBuffer>()
           ?.let(StringSerializerUtf8::deserializeRaw)
-          ?: codecForServer,
+          ?: codecForDecoding,
         identity = properties["identityId"]
           .into(identity),
         connected = properties["isConnected"]
@@ -456,7 +456,7 @@ open class Network(
 
   override fun setIdentity(identityId: IdentityId) {
     state.update {
-      copy(identity = identity)
+      copy(identity = identityId)
     }
     super.setIdentity(identityId)
   }
