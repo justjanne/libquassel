@@ -37,12 +37,12 @@ internal class CoverageConverterAction(
 
   override fun execute(task: Task) {
     fun printTotal(data: ReportDto) {
-      val instructionRate = convertCounter(data.counters, CounterTypeDto.INSTRUCTION).rate
+      val instructionRate = convertCounter(data.counters, CounterTypeDto.INSTRUCTION).rate * 100
       val instructionMissed = convertCounter(data.counters, CounterTypeDto.INSTRUCTION).missed
-      val branchRate = convertCounter(data.counters, CounterTypeDto.BRANCH).rate
+      val branchRate = convertCounter(data.counters, CounterTypeDto.BRANCH).rate * 100
       val branchMissed = convertCounter(data.counters, CounterTypeDto.BRANCH).missed
-      println("[JacocoPrinter] Instructions  $instructionRate  (Missed $instructionMissed)")
-      println("[JacocoPrinter] Branches      $branchRate  (Missed $branchMissed)")
+      println("[JacocoPrinter] Instructions  $instructionRate%  (Missed $instructionMissed)")
+      println("[JacocoPrinter] Branches      $branchRate%  (Missed $branchMissed)")
     }
 
     fun convertFile(input: File, output: File) {
