@@ -11,8 +11,8 @@ package de.justjanne.libquassel.protocol.syncables
 
 import de.justjanne.bitflags.of
 import de.justjanne.bitflags.toBits
+import de.justjanne.libquassel.protocol.models.BufferActivity
 import de.justjanne.libquassel.protocol.models.BufferInfo
-import de.justjanne.libquassel.protocol.models.flags.BufferActivity
 import de.justjanne.libquassel.protocol.models.flags.BufferType
 import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
@@ -43,7 +43,7 @@ open class BufferViewConfig(
           ?.mapNotNull { it.into<BufferId>() }
           ?.toSet()
           .orEmpty(),
-        temporarilyRemovedBuffers = properties["TemporarilyRemovedBuffers"].into<QVariantList>()
+        hiddenBuffers = properties["TemporarilyRemovedBuffers"].into<QVariantList>()
           ?.mapNotNull { it.into<BufferId>() }
           ?.toSet()
           .orEmpty(),
@@ -59,7 +59,6 @@ open class BufferViewConfig(
           ?.let(BufferType.Companion::of)
           ?: allowedBufferTypes,
         minimumActivity = properties["minimumActivity"].into<Int>()
-          ?.let(Int::toUInt)
           ?.let(BufferActivity.Companion::of)
           ?: minimumActivity,
         showSearch = properties["showSearch"].into(showSearch),
@@ -81,7 +80,7 @@ open class BufferViewConfig(
       QtType.QVariantList
     ),
     "TemporarilyRemovedBuffers" to qVariant(
-      temporarilyRemovedBuffers().map {
+      hiddenBuffers().map {
         qVariant(it, QuasselType.BufferId)
       },
       QtType.QVariantList
@@ -94,7 +93,7 @@ open class BufferViewConfig(
     "hideInactiveNetworks" to qVariant(hideInactiveNetworks(), QtType.Bool),
     "disableDecoration" to qVariant(disableDecoration(), QtType.Bool),
     "allowedBufferTypes" to qVariant(allowedBufferTypes().toBits().toInt(), QtType.Int),
-    "minimumActivity" to qVariant(minimumActivity().toBits().toInt(), QtType.Int),
+    "minimumActivity" to qVariant(minimumActivity()?.value?.toInt() ?: 0, QtType.Int),
     "showSearch" to qVariant(showSearch(), QtType.Bool)
   )
 
@@ -112,42 +111,46 @@ open class BufferViewConfig(
 
   fun buffers() = state().buffers
   fun removedBuffers() = state().removedBuffers
-  fun temporarilyRemovedBuffers() = state().temporarilyRemovedBuffers
+  fun hiddenBuffers() = state().hiddenBuffers
 
   override fun addBuffer(buffer: BufferId, pos: Int) {
+    if (buffers().contains(buffer)) {
+      return
+    }
+
     state.update {
       copy(
         buffers = buffers.insert(buffer, pos),
         removedBuffers = removedBuffers - buffer,
-        temporarilyRemovedBuffers = temporarilyRemovedBuffers - buffer
+        hiddenBuffers = hiddenBuffers - buffer
       )
     }
 
     super.addBuffer(buffer, pos)
   }
 
-  override fun removeBuffer(buffer: BufferId) {
+  override fun hideBuffer(buffer: BufferId) {
     state.update {
       copy(
         buffers = buffers - buffer,
         removedBuffers = removedBuffers - buffer,
-        temporarilyRemovedBuffers = temporarilyRemovedBuffers + buffer
+        hiddenBuffers = hiddenBuffers + buffer
       )
     }
 
-    super.removeBuffer(buffer)
+    super.hideBuffer(buffer)
   }
 
-  override fun removeBufferPermanently(buffer: BufferId) {
+  override fun removeBuffer(buffer: BufferId) {
     state.update {
       copy(
         buffers = buffers - buffer,
         removedBuffers = removedBuffers + buffer,
-        temporarilyRemovedBuffers = temporarilyRemovedBuffers - buffer
+        hiddenBuffers = hiddenBuffers - buffer
       )
     }
 
-    super.removeBufferPermanently(buffer)
+    super.removeBuffer(buffer)
   }
 
   override fun moveBuffer(buffer: BufferId, pos: Int) {
@@ -159,7 +162,7 @@ open class BufferViewConfig(
       copy(
         buffers = buffers.move(buffer, pos),
         removedBuffers = removedBuffers - buffer,
-        temporarilyRemovedBuffers = temporarilyRemovedBuffers - buffer
+        hiddenBuffers = hiddenBuffers - buffer
       )
     }
 
@@ -210,7 +213,7 @@ open class BufferViewConfig(
 
   override fun setMinimumActivity(value: Int) {
     state.update {
-      copy(minimumActivity = BufferActivity.of(value.toUInt()))
+      copy(minimumActivity = BufferActivity.of(value))
     }
     super.setMinimumActivity(value)
   }
@@ -259,14 +262,14 @@ open class BufferViewConfig(
   fun handleBuffer(info: BufferInfo, unhide: Boolean = false) {
     if (addNewBuffersAutomatically() &&
       !buffers().contains(info.bufferId) &&
-      !temporarilyRemovedBuffers().contains(info.bufferId) &&
+      !hiddenBuffers().contains(info.bufferId) &&
       !removedBuffers().contains(info.bufferId) &&
       !info.type.contains(BufferType.Status)
     ) {
       insertBufferSorted(info)
     } else if (unhide &&
       !buffers().contains(info.bufferId) &&
-      temporarilyRemovedBuffers().contains(info.bufferId)
+      hiddenBuffers().contains(info.bufferId)
     ) {
       insertBufferSorted(info)
     }

@@ -62,8 +62,8 @@ interface BufferViewConfigStub : SyncableStub {
     )
   }
 
-  @SyncedCall(target = ProtocolSide.CLIENT)
-  fun removeBuffer(buffer: BufferId) {
+  @SyncedCall(target = ProtocolSide.CLIENT, name = "removeBuffer")
+  fun hideBuffer(buffer: BufferId) {
     sync(
       target = ProtocolSide.CLIENT,
       "removeBuffer",
@@ -72,7 +72,7 @@ interface BufferViewConfigStub : SyncableStub {
   }
 
   @SyncedCall(target = ProtocolSide.CORE)
-  fun requestRemoveBuffer(buffer: BufferId) {
+  fun requestHideBuffer(buffer: BufferId) {
     sync(
       target = ProtocolSide.CORE,
       "requestRemoveBuffer",
@@ -80,8 +80,8 @@ interface BufferViewConfigStub : SyncableStub {
     )
   }
 
-  @SyncedCall(target = ProtocolSide.CLIENT)
-  fun removeBufferPermanently(buffer: BufferId) {
+  @SyncedCall(target = ProtocolSide.CLIENT, name = "removeBufferPermanently")
+  fun removeBuffer(buffer: BufferId) {
     sync(
       target = ProtocolSide.CLIENT,
       "removeBufferPermanently",
@@ -90,7 +90,7 @@ interface BufferViewConfigStub : SyncableStub {
   }
 
   @SyncedCall(target = ProtocolSide.CORE)
-  fun requestRemoveBufferPermanently(buffer: BufferId) {
+  fun requestRemoveBuffer(buffer: BufferId) {
     sync(
       target = ProtocolSide.CORE,
       "requestRemoveBufferPermanently",

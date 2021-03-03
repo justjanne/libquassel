@@ -9,9 +9,7 @@
 
 package de.justjanne.libquassel.protocol.syncables.state
 
-import de.justjanne.bitflags.none
-import de.justjanne.libquassel.protocol.models.flags.BufferActivities
-import de.justjanne.libquassel.protocol.models.flags.BufferActivity
+import de.justjanne.libquassel.protocol.models.BufferActivity
 import de.justjanne.libquassel.protocol.models.flags.BufferType
 import de.justjanne.libquassel.protocol.models.flags.BufferTypes
 import de.justjanne.libquassel.protocol.models.ids.BufferId
@@ -27,9 +25,9 @@ data class BufferViewConfigState(
   val hideInactiveNetworks: Boolean = false,
   val disableDecoration: Boolean = false,
   val allowedBufferTypes: BufferTypes = BufferType.all,
-  val minimumActivity: BufferActivities = BufferActivity.none(),
+  val minimumActivity: BufferActivity? = null,
   val showSearch: Boolean = false,
   val buffers: List<BufferId> = emptyList(),
   val removedBuffers: Set<BufferId> = emptySet(),
-  val temporarilyRemovedBuffers: Set<BufferId> = emptySet(),
+  val hiddenBuffers: Set<BufferId> = emptySet(),
 )

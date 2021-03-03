@@ -31,12 +31,11 @@ import kotlin.random.Random
 class HighlightRuleManagerTest {
   @Test
   fun testEmpty() {
-    val state = HighlightRuleManagerState()
-    val actual = HighlightRuleManager(state = state).apply {
+    val actual = HighlightRuleManager().apply {
       update(emptyMap())
     }.state()
 
-    assertEquals(state, actual)
+    assertEquals(HighlightRuleManagerState(), actual)
   }
 
   @Test
@@ -160,8 +159,7 @@ class HighlightRuleManagerTest {
   }
 
   @Test
-  fun testNulLData() {
-    val random = Random(1337)
+  fun testNullData() {
     val actual = HighlightRuleManager(
       state = HighlightRuleManagerState()
     ).apply {
@@ -219,7 +217,8 @@ class HighlightRuleManagerTest {
               )
             ),
             QtType.QVariantMap
-          )
+          ),
+          "highlightNick" to qVariant(-2, QtType.Int)
         )
       )
     }.state()

@@ -18,6 +18,7 @@ import de.justjanne.libquassel.protocol.models.rules.StrictnessType
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.syncables.state.IgnoreListManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.IgnoreListManagerStub
+import de.justjanne.libquassel.protocol.util.collections.removeAt
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
@@ -132,7 +133,7 @@ class IgnoreListManager(
   fun count() = state().count()
   fun removeAt(index: Int) {
     state.update {
-      copy(rules = rules.drop(index))
+      copy(rules = rules.removeAt(index))
     }
   }
 

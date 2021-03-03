@@ -10,7 +10,7 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.bitflags.of
-import de.justjanne.libquassel.protocol.models.flags.BufferActivity
+import de.justjanne.libquassel.protocol.models.BufferActivity
 import de.justjanne.libquassel.protocol.models.flags.BufferType
 import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
@@ -168,16 +168,16 @@ fun Random.nextBufferViewConfig(
       nextEnum()
     }
   ),
-  minimumActivity = BufferActivity.of(nextEnum<BufferActivity>()),
+  minimumActivity = nextEnum<BufferActivity>(),
   showSearch = nextBoolean(),
-  buffers = List(nextInt(20)) {
-    BufferId(nextInt())
-  },
-  removedBuffers = List(nextInt(20)) {
-    BufferId(nextInt())
+  buffers = List(nextInt(5, 20)) {
+    BufferId(nextInt(0, 33))
+  }.toSet().toList().shuffled(),
+  removedBuffers = List(nextInt(5, 20)) {
+    BufferId(nextInt(34, 66))
   }.toSet(),
-  temporarilyRemovedBuffers = List(nextInt(20)) {
-    BufferId(nextInt())
+  hiddenBuffers = List(nextInt(5, 20)) {
+    BufferId(nextInt(67, 100))
   }.toSet()
 )
 

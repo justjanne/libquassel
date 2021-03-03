@@ -234,6 +234,7 @@ open class IrcChannel(
 
   override fun removeChannelMode(mode: Char, value: String?) {
     val network = session?.network(network())
+    println(network?.channelModeType(mode))
     state.update {
       copy(
         channelModes = channelModes.run {
@@ -243,13 +244,15 @@ open class IrcChannel(
                 "Mode $mode of ChannelModeType A must have a value"
               }
 
-              copy(a = a + Pair(mode, a[mode].orEmpty() - value))
+              val result = Pair(mode, a[mode].orEmpty() - value)
+              if (result.second.isNotEmpty()) copy(a = a + result)
+              else copy(a = a - mode)
             }
             ChannelModeType.B_CHANMODE -> {
               copy(b = b - mode)
             }
             ChannelModeType.C_CHANMODE -> {
-              copy(b = c - mode)
+              copy(c = c - mode)
             }
             ChannelModeType.D_CHANMODE ->
               copy(d = d - mode)

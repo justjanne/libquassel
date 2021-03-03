@@ -13,9 +13,6 @@ fun <T> List<T>.move(value: T, pos: Int = size): List<T> {
   val newPos = pos.coerceIn(0, size)
   val oldPos = indexOf(value)
 
-  return when {
-    newPos > oldPos -> remove(value).insert(value, newPos - 1)
-    newPos < oldPos -> remove(value).insert(value, newPos)
-    else -> this
-  }
+  return if (newPos == oldPos) this
+  else remove(value).insert(value, newPos)
 }

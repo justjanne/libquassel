@@ -7,41 +7,39 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models.flags
-
-import de.justjanne.bitflags.Flag
-import de.justjanne.bitflags.Flags
-import de.justjanne.bitflags.toEnumSet
+package de.justjanne.libquassel.protocol.models
 
 /**
  * Model representing all seen activity on a buffer
  */
 enum class BufferActivity(
-  override val value: UInt,
-) : Flag<UInt> {
+  /**
+   * Underlying representation
+   */
+  val value: Int,
+) {
   /**
    * Other, unspecified activity has occurred on this buffer (join, part, quit, etc)
    */
-  OtherActivity(0x01u),
+  OtherActivity(1),
 
   /**
    * A new unread mesage is available on this buffer
    */
-  NewMessage(0x02u),
+  NewMessage(2),
 
   /**
    * A highlight for the current user is available on this buffer
    */
-  Highlight(0x04u);
+  Highlight(4);
 
-  companion object : Flags<UInt, BufferActivity> {
-    private val values = enumValues<BufferActivity>()
+  companion object {
+    private val map = enumValues<BufferActivity>()
       .associateBy(BufferActivity::value)
-    override val all: BufferActivities = values.values.toEnumSet()
+
+    /**
+     * Obtain a zone specification by its underlying representation
+     */
+    fun of(type: Int) = map[type]
   }
 }
-
-/**
- * Model representing a bitfield of [BufferActivity] flags
- */
-typealias BufferActivities = Set<BufferActivity>

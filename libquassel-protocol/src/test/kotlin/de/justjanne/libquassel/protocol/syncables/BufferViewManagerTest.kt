@@ -18,12 +18,11 @@ import kotlin.random.Random
 class BufferViewManagerTest {
   @Test
   fun testEmpty() {
-    val state = BufferViewManagerState()
-    val actual = BufferViewManager(state = state).apply {
+    val actual = BufferViewManager().apply {
       update(emptyMap())
     }.state()
 
-    assertEquals(state, actual)
+    assertEquals(BufferViewManagerState(), actual)
   }
 
   @Test
