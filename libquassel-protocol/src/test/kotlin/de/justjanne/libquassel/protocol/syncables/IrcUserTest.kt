@@ -10,6 +10,7 @@
 package de.justjanne.libquassel.protocol.syncables
 
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.syncables.common.IrcUser
 import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
 import de.justjanne.libquassel.protocol.testutil.nextIrcUser
 import org.junit.jupiter.api.Assertions.assertEquals

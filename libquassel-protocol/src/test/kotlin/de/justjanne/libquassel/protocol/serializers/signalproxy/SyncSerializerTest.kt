@@ -11,7 +11,7 @@ package de.justjanne.libquassel.protocol.serializers.signalproxy
 import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QtType
-import de.justjanne.libquassel.protocol.syncables.Network
+import de.justjanne.libquassel.protocol.syncables.common.Network
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.signalProxySerializerTest

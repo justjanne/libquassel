@@ -11,6 +11,7 @@ package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.bitflags.of
 import de.justjanne.libquassel.protocol.models.BufferActivity
+import de.justjanne.libquassel.protocol.models.alias.Alias
 import de.justjanne.libquassel.protocol.models.flags.BufferType
 import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
@@ -18,9 +19,10 @@ import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.network.NetworkServer
 import de.justjanne.libquassel.protocol.models.rules.HighlightRule
 import de.justjanne.libquassel.protocol.models.rules.IgnoreRule
-import de.justjanne.libquassel.protocol.syncables.BufferViewConfig
-import de.justjanne.libquassel.protocol.syncables.IrcChannel
-import de.justjanne.libquassel.protocol.syncables.IrcUser
+import de.justjanne.libquassel.protocol.syncables.common.BufferViewConfig
+import de.justjanne.libquassel.protocol.syncables.common.IrcChannel
+import de.justjanne.libquassel.protocol.syncables.common.IrcUser
+import de.justjanne.libquassel.protocol.syncables.state.AliasManagerState
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewConfigState
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewManagerState
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
@@ -179,6 +181,12 @@ fun Random.nextBufferViewConfig(
   hiddenBuffers = List(nextInt(5, 20)) {
     BufferId(nextInt(67, 100))
   }.toSet()
+)
+
+fun Random.nextAliasManager() = AliasManagerState(
+  aliases = List(nextInt(20)) {
+    Alias(nextString(), nextString())
+  }
 )
 
 fun Random.nextBufferViewManager() = BufferViewManagerState(

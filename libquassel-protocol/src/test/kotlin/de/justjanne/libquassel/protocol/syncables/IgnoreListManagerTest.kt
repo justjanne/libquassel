@@ -15,6 +15,7 @@ import de.justjanne.libquassel.protocol.models.rules.IgnoreType
 import de.justjanne.libquassel.protocol.models.rules.ScopeType
 import de.justjanne.libquassel.protocol.models.rules.StrictnessType
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.syncables.common.IgnoreListManager
 import de.justjanne.libquassel.protocol.syncables.state.IgnoreListManagerState
 import de.justjanne.libquassel.protocol.testutil.nextIgnoreRule
 import de.justjanne.libquassel.protocol.variant.QVariantList

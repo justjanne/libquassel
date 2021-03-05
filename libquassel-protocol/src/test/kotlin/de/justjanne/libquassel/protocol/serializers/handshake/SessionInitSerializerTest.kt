@@ -15,7 +15,7 @@ import de.justjanne.libquassel.protocol.models.flags.BufferType
 import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
-import de.justjanne.libquassel.protocol.syncables.Identity
+import de.justjanne.libquassel.protocol.syncables.common.Identity
 import de.justjanne.libquassel.protocol.syncables.state.IdentityState
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.handshakeSerializerTest

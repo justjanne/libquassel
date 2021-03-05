@@ -9,6 +9,7 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
+import de.justjanne.libquassel.protocol.syncables.common.BufferViewManager
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewManagerState
 import de.justjanne.libquassel.protocol.testutil.nextBufferViewManager
 import org.junit.jupiter.api.Assertions.assertEquals

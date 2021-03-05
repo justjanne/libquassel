@@ -11,8 +11,11 @@ package de.justjanne.libquassel.protocol.syncables
 
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.network.ChannelModes
+import de.justjanne.libquassel.protocol.syncables.common.IrcChannel
+import de.justjanne.libquassel.protocol.syncables.common.IrcUser
+import de.justjanne.libquassel.protocol.syncables.common.Network
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
-import de.justjanne.libquassel.protocol.testutil.MockSession
+import de.justjanne.libquassel.protocol.testutil.mocks.EmptySession
 import de.justjanne.libquassel.protocol.testutil.nextIrcChannel
 import de.justjanne.libquassel.protocol.testutil.nextNetwork
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -651,7 +654,7 @@ class IrcChannelTest {
     }
   }
 
-  class ChannelMockSession : MockSession() {
+  class ChannelMockSession : EmptySession() {
     val networks = mutableListOf<Network>()
     override fun network(id: NetworkId) = networks.find { it.networkId() == id }
   }

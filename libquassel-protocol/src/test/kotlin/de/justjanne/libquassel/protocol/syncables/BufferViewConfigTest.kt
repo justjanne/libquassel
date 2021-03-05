@@ -15,6 +15,7 @@ import de.justjanne.libquassel.protocol.models.BufferActivity
 import de.justjanne.libquassel.protocol.models.flags.BufferType
 import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.syncables.common.BufferViewConfig
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewConfigState
 import de.justjanne.libquassel.protocol.testutil.nextBufferViewConfig
 import org.junit.jupiter.api.Assertions.assertEquals

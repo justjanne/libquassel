@@ -10,7 +10,7 @@ package de.justjanne.libquassel.protocol.serializers.quassel
 
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QuasselType
-import de.justjanne.libquassel.protocol.syncables.IrcChannel
+import de.justjanne.libquassel.protocol.syncables.common.IrcChannel
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.matchers.MapMatcher

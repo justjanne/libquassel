@@ -17,8 +17,9 @@ import de.justjanne.libquassel.protocol.models.network.NetworkServer
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
+import de.justjanne.libquassel.protocol.syncables.common.Network
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
-import de.justjanne.libquassel.protocol.testutil.MockSession
+import de.justjanne.libquassel.protocol.testutil.mocks.EmptySession
 import de.justjanne.libquassel.protocol.testutil.nextNetwork
 import de.justjanne.libquassel.protocol.testutil.nextString
 import de.justjanne.libquassel.protocol.variant.qVariant
@@ -407,11 +408,11 @@ class NetworkTest {
       assertNotEquals(0, sizeBefore)
       val userName = random.nextString()
       assertFalse(network.nicks().contains(userName))
-      assertFalse(session.synchronizeCalls.contains(network.ircUser(userName) as SyncableObject?))
+      assertFalse(session.synchronizeCalls.contains(network.ircUser(userName) as SyncableStub?))
       network.addIrcUser(userName)
       assertEquals(sizeBefore + 1, network.ircUserCount())
       assertTrue(network.nicks().contains(userName))
-      assertTrue(session.synchronizeCalls.contains(network.ircUser(userName) as SyncableObject?))
+      assertTrue(session.synchronizeCalls.contains(network.ircUser(userName) as SyncableStub?))
     }
 
     @Test
@@ -437,10 +438,10 @@ class NetworkTest {
       assertNotEquals(0, network.ircUserCount())
       val user = network.ircUsers().first()
       assertTrue(network.nicks().contains(user.nick()))
-      assertFalse(session.synchronizeCalls.contains(network.ircUser(user.nick()) as SyncableObject?))
+      assertFalse(session.synchronizeCalls.contains(network.ircUser(user.nick()) as SyncableStub?))
       assertEquals(user, network.newIrcUser(user.hostMask()))
       assertTrue(network.nicks().contains(user.nick()))
-      assertFalse(session.synchronizeCalls.contains(network.ircUser(user.nick()) as SyncableObject?))
+      assertFalse(session.synchronizeCalls.contains(network.ircUser(user.nick()) as SyncableStub?))
     }
 
     @Test
@@ -481,11 +482,11 @@ class NetworkTest {
       val sizeBefore = network.ircChannelCount()
       assertNotEquals(0, sizeBefore)
       val channelName = random.nextString()
-      assertFalse(session.synchronizeCalls.contains(network.ircChannel(channelName) as SyncableObject?))
+      assertFalse(session.synchronizeCalls.contains(network.ircChannel(channelName) as SyncableStub?))
       network.addIrcChannel(channelName)
       assertEquals(sizeBefore + 1, network.ircChannelCount())
       assertTrue(network.channels().contains(channelName))
-      assertTrue(session.synchronizeCalls.contains(network.ircChannel(channelName) as SyncableObject?))
+      assertTrue(session.synchronizeCalls.contains(network.ircChannel(channelName) as SyncableStub?))
     }
     @Test
     fun addNewOffline() {
@@ -508,9 +509,9 @@ class NetworkTest {
 
       assertNotEquals(0, network.ircUserCount())
       val existing = network.ircChannels().first()
-      assertFalse(session.synchronizeCalls.contains(network.ircChannel(existing.name()) as SyncableObject?))
+      assertFalse(session.synchronizeCalls.contains(network.ircChannel(existing.name()) as SyncableStub?))
       assertEquals(existing, network.newIrcChannel(existing.name()))
-      assertFalse(session.synchronizeCalls.contains(network.ircChannel(existing.name()) as SyncableObject?))
+      assertFalse(session.synchronizeCalls.contains(network.ircChannel(existing.name()) as SyncableStub?))
     }
 
     @Test
@@ -914,11 +915,11 @@ class NetworkTest {
     }
   }
 
-  class NetworkMockSession : MockSession() {
-    val synchronizeCalls = mutableListOf<SyncableObject>()
+  class NetworkMockSession : EmptySession() {
+    val synchronizeCalls = mutableListOf<SyncableStub>()
 
-    override fun synchronize(it: SyncableObject) {
-      synchronizeCalls.add(it)
+    override fun synchronize(syncable: SyncableStub) {
+      synchronizeCalls.add(syncable)
     }
   }
 }
