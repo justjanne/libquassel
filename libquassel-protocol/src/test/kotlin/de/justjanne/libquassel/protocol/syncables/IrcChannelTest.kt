@@ -19,11 +19,15 @@ import de.justjanne.libquassel.protocol.testutil.mocks.EmptySession
 import de.justjanne.libquassel.protocol.testutil.nextIrcChannel
 import de.justjanne.libquassel.protocol.testutil.nextNetwork
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
+import kotlin.test.assertFalse
 
 class IrcChannelTest {
   @Test
@@ -444,11 +448,19 @@ class IrcChannelTest {
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('A'))
+      assertTrue(channel.hasMode('a'))
+      assertEquals(emptySet<String>(), channel.modeValues('A'))
+      assertEquals(setOf("a1", "a2"), channel.modeValues('a'))
       channel.removeChannelMode('A', value = "a1")
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('A'))
+      assertTrue(channel.hasMode('a'))
+      assertEquals(emptySet<String>(), channel.modeValues('A'))
+      assertEquals(setOf("a1", "a2"), channel.modeValues('a'))
       channel.removeChannelMode('a', value = "a1")
       assertEquals(
         mapOf(
@@ -459,6 +471,10 @@ class IrcChannelTest {
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('A'))
+      assertTrue(channel.hasMode('a'))
+      assertEquals(emptySet<String>(), channel.modeValues('A'))
+      assertEquals(setOf("a2"), channel.modeValues('a'))
       channel.removeChannelMode('a', value = "a1")
       assertEquals(
         mapOf(
@@ -469,6 +485,10 @@ class IrcChannelTest {
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('A'))
+      assertTrue(channel.hasMode('a'))
+      assertEquals(emptySet<String>(), channel.modeValues('A'))
+      assertEquals(setOf("a2"), channel.modeValues('a'))
 
       assertThrows(IllegalArgumentException::class.java) {
         channel.removeChannelMode('a', value = null)
@@ -519,21 +539,29 @@ class IrcChannelTest {
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('B'))
+      assertTrue(channel.hasMode('b'))
       channel.removeChannelMode('B', value = "b1")
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('B'))
+      assertTrue(channel.hasMode('b'))
       channel.removeChannelMode('b', value = "b1")
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(emptyMap<Char, String>(), channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('B'))
+      assertFalse(channel.hasMode('b'))
       channel.removeChannelMode('b', value = "b2")
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(emptyMap<Char, String>(), channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('B'))
+      assertFalse(channel.hasMode('b'))
     }
 
     @Test
@@ -580,21 +608,37 @@ class IrcChannelTest {
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('C'))
+      assertTrue(channel.hasMode('c'))
+      assertEquals("", channel.modeValue('C'))
+      assertEquals("c1", channel.modeValue('c'))
       channel.removeChannelMode('C', value = "c1")
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('C'))
+      assertTrue(channel.hasMode('c'))
+      assertEquals("", channel.modeValue('C'))
+      assertEquals("c1", channel.modeValue('c'))
       channel.removeChannelMode('c', value = "c1")
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(emptyMap<Char, String>(), channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('C'))
+      assertFalse(channel.hasMode('c'))
+      assertEquals("", channel.modeValue('C'))
+      assertEquals("", channel.modeValue('c'))
       channel.removeChannelMode('c', value = "c2")
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(emptyMap<Char, String>(), channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('C'))
+      assertFalse(channel.hasMode('c'))
+      assertEquals("", channel.modeValue('C'))
+      assertEquals("", channel.modeValue('c'))
     }
 
     @Test
@@ -641,15 +685,21 @@ class IrcChannelTest {
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('D'))
+      assertTrue(channel.hasMode('d'))
       channel.removeChannelMode('D')
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
       assertEquals(expected.d, channel.state().channelModes.d)
+      assertFalse(channel.hasMode('D'))
+      assertTrue(channel.hasMode('d'))
       channel.removeChannelMode('d')
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
       assertEquals(expected.c, channel.state().channelModes.c)
+      assertFalse(channel.hasMode('D'))
+      assertFalse(channel.hasMode('d'))
       assertEquals(emptySet<Char>(), channel.state().channelModes.d)
     }
   }
