@@ -7,10 +7,12 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewConfigState
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.BufferViewManagerStub
@@ -30,6 +32,7 @@ open class BufferViewManager(
     properties["BufferViewIds"].into<QVariantList>()
       ?.mapNotNull<QVariant_, Int>(QVariant_::into)
       ?.forEach(this::addBufferViewConfig)
+    initialized = true
   }
 
   override fun toVariantMap() = mapOf(

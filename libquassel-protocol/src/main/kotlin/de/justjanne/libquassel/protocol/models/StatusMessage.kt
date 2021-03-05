@@ -7,16 +7,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.models.alias
+package de.justjanne.libquassel.protocol.models
 
-data class Alias(
-  val name: String,
-  val expansion: String
-) {
-  companion object {
-    fun of(name: String?, expansion: String?) = Alias(
-      name ?: "",
-      expansion ?: ""
-    )
-  }
-}
+data class StatusMessage(
+  val network: String?,
+  val message: String
+)

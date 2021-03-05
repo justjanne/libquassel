@@ -7,7 +7,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.flags.MessageTypes
@@ -16,6 +16,8 @@ import de.justjanne.libquassel.protocol.models.rules.IgnoreType
 import de.justjanne.libquassel.protocol.models.rules.ScopeType
 import de.justjanne.libquassel.protocol.models.rules.StrictnessType
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.IgnoreListManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.IgnoreListManagerStub
 import de.justjanne.libquassel.protocol.util.collections.removeAt
@@ -124,6 +126,7 @@ class IgnoreListManager(
         }
       )
     }
+    initialized = true
   }
 
   fun indexOf(ignoreRule: String?): Int = state().indexOf(ignoreRule)

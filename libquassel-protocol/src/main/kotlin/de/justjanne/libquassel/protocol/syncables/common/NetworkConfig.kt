@@ -7,9 +7,11 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.NetworkConfigState
 import de.justjanne.libquassel.protocol.syncables.stubs.NetworkConfigStub
 import de.justjanne.libquassel.protocol.util.update
@@ -39,6 +41,7 @@ open class NetworkConfig(
         standardCtcp = properties["standardCtcp"].into(standardCtcp),
       )
     }
+    initialized = true
   }
 
   override fun toVariantMap() = mapOf(

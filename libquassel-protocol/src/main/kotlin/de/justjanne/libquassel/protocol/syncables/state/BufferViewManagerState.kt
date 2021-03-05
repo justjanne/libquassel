@@ -9,7 +9,7 @@
 
 package de.justjanne.libquassel.protocol.syncables.state
 
-import de.justjanne.libquassel.protocol.syncables.BufferViewConfig
+import de.justjanne.libquassel.protocol.syncables.common.BufferViewConfig
 
 data class BufferViewManagerState(
   val bufferViewConfigs: Map<Int, BufferViewConfig> = emptyMap()

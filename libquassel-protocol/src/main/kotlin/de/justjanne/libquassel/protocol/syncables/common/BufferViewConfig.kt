@@ -7,7 +7,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.bitflags.of
 import de.justjanne.bitflags.toBits
@@ -18,6 +18,8 @@ import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewConfigState
 import de.justjanne.libquassel.protocol.syncables.stubs.BufferViewConfigStub
 import de.justjanne.libquassel.protocol.util.collections.insert
@@ -64,6 +66,7 @@ open class BufferViewConfig(
         showSearch = properties["showSearch"].into(showSearch),
       )
     }
+    initialized = true
   }
 
   override fun toVariantMap() = mapOf(
@@ -248,7 +251,7 @@ open class BufferViewConfig(
         .mapNotNull { (index, value) ->
           IndexedValue(
             index,
-            session?.bufferSyncer()?.bufferInfo(value)
+            session?.bufferSyncer?.bufferInfo(value)
               ?: return@mapNotNull null
           )
         }

@@ -66,7 +66,7 @@ interface RpcHandlerStub : SyncableStub {
   }
 
   @SyncedCall(name = "2identityCreated(Identity)", target = ProtocolSide.CLIENT)
-  fun identityCreated(identity: IdentityStub) {
+  fun identityCreated(identity: QVariantMap) {
     rpc(
       target = ProtocolSide.CLIENT,
       "2identityCreated(Identity)",

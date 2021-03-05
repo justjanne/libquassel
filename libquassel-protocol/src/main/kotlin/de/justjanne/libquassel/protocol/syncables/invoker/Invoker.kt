@@ -9,13 +9,13 @@
 
 package de.justjanne.libquassel.protocol.syncables.invoker
 
-import de.justjanne.libquassel.protocol.exceptions.UnknownMethodException
-import de.justjanne.libquassel.protocol.exceptions.WrongObjectTypeException
+import de.justjanne.libquassel.protocol.exceptions.RpcInvocationFailedException
+import de.justjanne.libquassel.protocol.syncables.SyncableStub
 import de.justjanne.libquassel.protocol.variant.QVariantList
 
-interface Invoker<out T> {
+interface Invoker {
   val className: String
 
-  @Throws(WrongObjectTypeException::class, UnknownMethodException::class)
-  fun invoke(on: Any?, method: String, params: QVariantList)
+  @Throws(RpcInvocationFailedException::class)
+  fun invoke(on: SyncableStub, method: String, params: QVariantList)
 }

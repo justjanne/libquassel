@@ -7,15 +7,12 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.SyncableObject
 import de.justjanne.libquassel.protocol.syncables.stubs.IrcListHelperStub
-import de.justjanne.libquassel.protocol.variant.QVariantMap
-import de.justjanne.libquassel.protocol.variant.QVariant_
 
 open class IrcListHelper(
   session: Session? = null
-) : SyncableObject(session, "IrcListHelper"), IrcListHelperStub {
-  override fun fromVariantMap(properties: QVariantMap) = Unit
-  override fun toVariantMap() = emptyMap<String, QVariant_>()
-}
+) : SyncableObject(session, "IrcListHelper"), IrcListHelperStub

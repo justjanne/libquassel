@@ -13,7 +13,7 @@ import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.serializers.qt.QVariantMapSerializer
-import de.justjanne.libquassel.protocol.syncables.IrcChannel
+import de.justjanne.libquassel.protocol.syncables.common.IrcChannel
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import java.nio.ByteBuffer
 

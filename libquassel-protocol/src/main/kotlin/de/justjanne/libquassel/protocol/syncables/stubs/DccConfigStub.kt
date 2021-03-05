@@ -16,13 +16,13 @@ import de.justjanne.libquassel.protocol.models.dcc.DccIpDetectionMode
 import de.justjanne.libquassel.protocol.models.dcc.DccPortSelectionMode
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
-import de.justjanne.libquassel.protocol.syncables.SyncableStub
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableStub
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.qVariant
 import java.net.InetAddress
 
 @SyncedObject("DccConfig")
-interface DccConfigStub : SyncableStub {
+interface DccConfigStub : StatefulSyncableStub {
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun setDccEnabled(enabled: Boolean) {
     sync(

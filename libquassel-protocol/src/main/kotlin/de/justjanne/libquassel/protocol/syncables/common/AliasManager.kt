@@ -7,13 +7,15 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.alias.Alias
 import de.justjanne.libquassel.protocol.models.alias.Command
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.AliasManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.AliasManagerStub
 import de.justjanne.libquassel.protocol.util.update
@@ -46,8 +48,9 @@ open class AliasManager(
     }
 
     state.update {
-      copy(aliases = names.zip(expansions, ::Alias))
+      copy(aliases = names.zip(expansions, Alias::of))
     }
+    initialized = true
   }
 
   override fun addAlias(name: String, expansion: String) {
@@ -84,19 +87,6 @@ open class AliasManager(
     info,
     session?.network(info.networkId)?.state(),
     message,
-    previousCommands
-  )
-
-  fun expand(
-    expansion: String,
-    bufferInfo: BufferInfo,
-    arguments: String,
-    previousCommands: MutableList<Command>
-  ) = state().expand(
-    expansion,
-    bufferInfo,
-    session?.network(bufferInfo.networkId)?.state(),
-    arguments,
     previousCommands
   )
 }

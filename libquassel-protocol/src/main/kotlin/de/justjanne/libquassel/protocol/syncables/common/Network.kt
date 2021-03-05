@@ -7,7 +7,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
@@ -17,6 +17,8 @@ import de.justjanne.libquassel.protocol.models.network.NetworkServer
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
@@ -134,6 +136,7 @@ open class Network(
           .orEmpty()
       )
     }
+    initialized = true
   }
 
   override fun toVariantMap() = mapOf(

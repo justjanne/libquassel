@@ -7,7 +7,11 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.util
+package de.justjanne.libquassel.protocol.syncables
 
-internal infix fun <T> Class<*>?.subtype(other: Class<T>?): Boolean =
-  this != null && other?.isAssignableFrom(this) == true
+data class ObjectIdentifier(
+  val className: String,
+  val objectName: String
+) {
+  constructor(syncable: SyncableStub) : this(syncable.className, syncable.objectName)
+}

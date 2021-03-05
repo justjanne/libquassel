@@ -7,12 +7,14 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.IdentityState
 import de.justjanne.libquassel.protocol.syncables.stubs.IdentityStub
 import de.justjanne.libquassel.protocol.util.update
@@ -54,6 +56,7 @@ open class Identity(
       )
     }
     renameObject(state().identifier())
+    initialized = true
   }
 
   override fun toVariantMap() = mapOf(

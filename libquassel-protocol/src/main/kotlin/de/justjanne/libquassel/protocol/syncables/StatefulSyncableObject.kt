@@ -9,13 +9,14 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 abstract class StatefulSyncableObject<T>(
   session: Session?,
   className: String,
   state: T
-) : SyncableObject(session, className) {
+) : SyncableObject(session, className), StatefulSyncableStub {
   override fun toString(): String {
     return "$className(objectName=$objectName, state=${state()})"
   }
@@ -37,10 +38,10 @@ abstract class StatefulSyncableObject<T>(
   }
 
   @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
+  inline fun state(): T = state.value
 
   @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
+  inline fun flow(): Flow<T> = state
 
   @PublishedApi
   internal val state = MutableStateFlow(state)

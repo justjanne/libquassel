@@ -11,17 +11,32 @@ package de.justjanne.libquassel.generator.visitors
 
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
+import com.google.devtools.ksp.symbol.KSClassDeclaration
 import de.justjanne.libquassel.generator.kotlinmodel.KotlinModel
 import de.justjanne.libquassel.generator.kotlinmodel.KotlinModelVisitor
+import java.io.IOException
 
 class KotlinSaver : KotlinModelVisitor<CodeGenerator, Unit> {
+  private fun generateDependencies(sources: List<KSClassDeclaration>): Dependencies {
+    val sourceFiles = sources.mapNotNull(KSClassDeclaration::containingFile)
+    return Dependencies(sourceFiles.size > 1, *sourceFiles.toTypedArray())
+  }
+
   override fun visitFileModel(model: KotlinModel.FileModel, data: CodeGenerator) {
-    data.createNewFile(
-      Dependencies(false, model.source.containingFile!!),
+    require(model.source.isNotEmpty()) {
+      "Source may not be empty. Sources was empty for $model"
+    }
+
+    val writer = data.createNewFile(
+      generateDependencies(model.source),
       model.data.packageName,
       model.data.name
-    ).bufferedWriter(Charsets.UTF_8).use {
-      model.data.writeTo(it)
+    ).bufferedWriter(Charsets.UTF_8)
+    model.data.writeTo(writer)
+    try {
+      writer.close()
+    } catch (_: IOException) {
+      // Ignored
     }
   }
 

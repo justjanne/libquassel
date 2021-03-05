@@ -16,12 +16,12 @@ import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
-import de.justjanne.libquassel.protocol.syncables.SyncableStub
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableStub
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.qVariant
 
 @SyncedObject("BufferViewConfig")
-interface BufferViewConfigStub : SyncableStub {
+interface BufferViewConfigStub : StatefulSyncableStub {
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun addBuffer(buffer: BufferId, pos: Int) {
     sync(

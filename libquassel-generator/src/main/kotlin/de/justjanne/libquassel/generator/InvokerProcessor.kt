@@ -19,6 +19,7 @@ import de.justjanne.libquassel.annotations.SyncedObject
 import de.justjanne.libquassel.generator.visitors.KSDeclarationParser
 import de.justjanne.libquassel.generator.visitors.KotlinSaver
 import de.justjanne.libquassel.generator.visitors.RpcModelProcessor
+import de.justjanne.libquassel.generator.visitors.RpcObjectCollector
 
 class InvokerProcessor : SymbolProcessor {
   lateinit var codeGenerator: CodeGenerator
@@ -35,15 +36,21 @@ class InvokerProcessor : SymbolProcessor {
   }
 
   override fun process(resolver: Resolver): List<KSAnnotated> {
-    resolver.getSymbolsWithAnnotation(SyncedObject::class.java.canonicalName)
-      .mapNotNull { it.accept(KSDeclarationParser(resolver, logger), Unit) }
-      .flatMap {
-        listOfNotNull(
-          it.accept(RpcModelProcessor(), ProtocolSide.CLIENT),
-          it.accept(RpcModelProcessor(), ProtocolSide.CORE),
-        )
-      }
-      .map { it.accept(KotlinSaver(), codeGenerator) }
+    val annotationModels = resolver.getSymbolsWithAnnotation(SyncedObject::class.java.canonicalName)
+    val rpcModels = annotationModels.mapNotNull { it.accept(KSDeclarationParser(resolver, logger), Unit) }
+    val invokerFiles = rpcModels.flatMap {
+      listOfNotNull(
+        it.accept(RpcModelProcessor(), ProtocolSide.CLIENT),
+        it.accept(RpcModelProcessor(), ProtocolSide.CORE),
+      ) + InvokerRegistryGenerator.generateRegistry(
+        RpcObjectCollector().apply {
+          rpcModels.forEach { it.accept(this, Unit) }
+        }.objects
+      )
+    }
+    invokerFiles.forEach {
+      it.accept(KotlinSaver(), codeGenerator)
+    }
 
     return emptyList()
   }

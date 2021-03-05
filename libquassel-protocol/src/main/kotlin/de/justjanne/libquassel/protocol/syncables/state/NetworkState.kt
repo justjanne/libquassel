@@ -14,8 +14,8 @@ import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.network.ChannelModeType
 import de.justjanne.libquassel.protocol.models.network.ConnectionState
 import de.justjanne.libquassel.protocol.models.network.NetworkServer
-import de.justjanne.libquassel.protocol.syncables.IrcChannel
-import de.justjanne.libquassel.protocol.syncables.IrcUser
+import de.justjanne.libquassel.protocol.syncables.common.IrcChannel
+import de.justjanne.libquassel.protocol.syncables.common.IrcUser
 import de.justjanne.libquassel.protocol.util.irc.IrcCapability
 import de.justjanne.libquassel.protocol.util.irc.IrcCaseMapper
 import de.justjanne.libquassel.protocol.util.irc.IrcISupport

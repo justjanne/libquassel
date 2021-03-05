@@ -7,12 +7,14 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.network.ChannelModeType
 import de.justjanne.libquassel.protocol.models.network.ChannelModes
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.syncables.stubs.IrcChannelStub
 import de.justjanne.libquassel.protocol.util.update
@@ -30,7 +32,7 @@ open class IrcChannel(
     require(name().isNotEmpty()) {
       "IrcChannel: channelName is empty"
     }
-    renameObject("${network().id}/${name()}")
+    renameObject(state().identifier())
   }
 
   override fun fromVariantMap(properties: QVariantMap) =
@@ -50,6 +52,8 @@ open class IrcChannel(
           .orEmpty()
       )
     }
+    renameObject(state().identifier())
+    initialized = true
   }
 
   override fun toVariantMap(): QVariantMap {

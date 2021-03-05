@@ -7,9 +7,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.exceptions
+package de.justjanne.libquassel.protocol.util.reflect
 
-data class UnknownMethodException(
-  val className: String,
-  val methodName: String
-) : Exception()
+internal infix fun <T> Any?.instanceof(other: Class<T>?): Boolean =
+  other?.isInstance(this) != false

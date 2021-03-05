@@ -43,7 +43,7 @@ data class AliasManagerState(
     } else {
       val found = aliases.firstOrNull { it.name.equals(command, true) }
       if (found != null) {
-        expand(found.expansion ?: "", info, networkState, arguments, previousCommands)
+        expand(found.expansion, info, networkState, arguments, previousCommands)
       } else {
         previousCommands.add(Command(info, message))
       }
@@ -57,15 +57,17 @@ data class AliasManagerState(
     arguments: String,
     previousCommands: MutableList<Command>
   ) {
-    val params = arguments.split(' ')
+    val params =
+      if (arguments.isBlank()) emptyList()
+      else arguments.split(Regex(" "))
     previousCommands.add(
       Command(
         bufferInfo,
         expansion.split(';')
           .map(String::trimStart)
           .map(Expansion.Companion::parse)
-          .map {
-            it.map {
+          .joinToString(";") {
+            it.joinToString("") {
               when (it) {
                 is Expansion.Constant -> when (it.field) {
                   Expansion.ConstantField.CHANNEL ->
@@ -75,37 +77,35 @@ data class AliasManagerState(
                   Expansion.ConstantField.NETWORK ->
                     networkState?.networkName
                 }
-                is Expansion.Parameter -> when (it.field) {
-                  Expansion.ParameterField.HOSTNAME ->
-                    networkState?.ircUser(params[it.index])?.host() ?: "*"
-                  Expansion.ParameterField.VERIFIED_IDENT ->
-                    params.getOrNull(it.index)?.let { param ->
-                      networkState?.ircUser(param)?.verifiedUser() ?: "*"
-                    }
-                  Expansion.ParameterField.IDENT ->
-                    params.getOrNull(it.index)?.let { param ->
-                      networkState?.ircUser(param)?.user() ?: "*"
-                    }
-                  Expansion.ParameterField.ACCOUNT ->
-                    params.getOrNull(it.index)?.let { param ->
-                      networkState?.ircUser(param)?.account() ?: "*"
-                    }
-                  null -> params.getOrNull(it.index) ?: it.source
-                }
+                is Expansion.Parameter ->
+                  if (it.index == 0) arguments
+                  else params.getOrNull(it.index - 1)?.let { param ->
+                    when (it.field) {
+                      Expansion.ParameterField.HOSTNAME ->
+                        networkState?.ircUser(param)?.host()
+                      Expansion.ParameterField.VERIFIED_IDENT ->
+                        networkState?.ircUser(param)?.verifiedUser()
+                      Expansion.ParameterField.IDENT ->
+                        networkState?.ircUser(param)?.user()
+                      Expansion.ParameterField.ACCOUNT ->
+                        networkState?.ircUser(param)?.account()
+                      null -> param
+                    } ?: "*"
+                  } ?: it.source
                 is Expansion.ParameterRange ->
-                  params.subList(it.from, it.to ?: params.size)
+                  params.subList(it.from - 1, it.to ?: params.size )
                     .joinToString(" ")
                 is Expansion.Text ->
                   it.source
               } ?: it.source
             }
-          }.joinToString(";")
+          }
       )
     )
   }
 
   companion object {
-    private fun determineMessageCommand(message: String) = when {
+    internal fun determineMessageCommand(message: String) = when {
       // Only messages starting with a forward slash are commands
       !message.startsWith("/") ->
         Pair(null, message)
@@ -115,9 +115,8 @@ data class AliasManagerState(
       // If the first word of a message contains more than one slash, it is
       // usually a regex of format /[a-z][a-z0-9]*/g, or a path of format
       // /usr/bin/powerline-go. In that case we also pass it right through
-      message.startsWith("/") &&
-        message.substringBefore(' ').indexOf('/', 1) != -1
-      -> Pair(null, message)
+      message.substringBefore(' ').indexOf('/', 1) != -1 ->
+        Pair(null, message)
       // If the first word is purely a /, we won’t consider it a command either
       message.substringBefore(' ') == "/" ->
         Pair(null, message)
@@ -125,7 +124,7 @@ data class AliasManagerState(
       // arguments
       else -> Pair(
         message.trimStart('/').substringBefore(' '),
-        message.substringAfter(' ')
+        message.substringAfter(' ', missingDelimiterValue = "")
       )
     }
   }

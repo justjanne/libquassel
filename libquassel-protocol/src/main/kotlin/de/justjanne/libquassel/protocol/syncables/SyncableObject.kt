@@ -18,7 +18,6 @@ abstract class SyncableObject(
   final override var objectName: String = ""
     internal set
   final override var initialized: Boolean = false
-    internal set
 
   protected fun renameObject(
     newName: String
@@ -29,7 +28,7 @@ abstract class SyncableObject(
     } else if (oldName != newName) {
       objectName = newName
       session?.objectRepository?.rename(this, newName)
-      session?.objectRenamed(
+      session?.rpcHandler?.objectRenamed(
         StringSerializerUtf8.serializeRaw(className),
         oldName,
         newName

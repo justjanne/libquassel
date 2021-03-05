@@ -14,12 +14,12 @@ import de.justjanne.libquassel.annotations.SyncedCall
 import de.justjanne.libquassel.annotations.SyncedObject
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.types.QtType
-import de.justjanne.libquassel.protocol.syncables.SyncableStub
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableStub
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.qVariant
 
 @SyncedObject("IrcChannel")
-interface IrcChannelStub : SyncableStub {
+interface IrcChannelStub : StatefulSyncableStub {
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun addChannelMode(mode: Char, value: String? = null) {
     sync(

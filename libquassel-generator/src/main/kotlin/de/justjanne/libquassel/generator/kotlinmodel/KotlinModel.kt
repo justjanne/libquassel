@@ -16,7 +16,7 @@ import com.squareup.kotlinpoet.FileSpec
 
 sealed class KotlinModel {
   data class FileModel(
-    val source: KSClassDeclaration,
+    val source: List<KSClassDeclaration>,
     val data: FileSpec
   ) : KotlinModel() {
     override fun <D, R> accept(visitor: KotlinModelVisitor<D, R>, data: D) =

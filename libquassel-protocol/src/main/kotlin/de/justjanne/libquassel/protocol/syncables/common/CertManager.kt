@@ -7,10 +7,12 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.CertManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.CertManagerStub
 import de.justjanne.libquassel.protocol.util.update
@@ -43,6 +45,7 @@ open class CertManager(
         certificate = readCertificate(certPem)
       )
     }
+    initialized = true
   }
 
   override fun toVariantMap() = mapOf(

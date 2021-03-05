@@ -7,9 +7,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.exceptions
+package de.justjanne.libquassel.protocol.syncables.invoker
 
-data class WrongObjectTypeException(
-  val obj: Any?,
-  val type: String
-) : Exception()
+interface InvokerRegistry {
+  val clientInvokers: Map<String, Invoker>
+  val coreInvokers: Map<String, Invoker>
+}

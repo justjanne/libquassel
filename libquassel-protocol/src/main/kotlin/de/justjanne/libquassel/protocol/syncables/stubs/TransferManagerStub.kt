@@ -15,13 +15,13 @@ import de.justjanne.libquassel.annotations.SyncedObject
 import de.justjanne.libquassel.protocol.models.dcc.TransferIdList
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
-import de.justjanne.libquassel.protocol.syncables.SyncableStub
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableStub
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.qVariant
 import java.util.UUID
 
 @SyncedObject("TransferManager")
-interface TransferManagerStub : SyncableStub {
+interface TransferManagerStub : StatefulSyncableStub {
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun setTransferIds(transferIds: TransferIdList) {
     sync(

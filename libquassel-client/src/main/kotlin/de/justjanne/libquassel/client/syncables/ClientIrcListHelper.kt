@@ -12,8 +12,8 @@ package de.justjanne.libquassel.client.syncables
 import de.justjanne.libquassel.client.exceptions.IrcListException
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
-import de.justjanne.libquassel.protocol.syncables.IrcListHelper
 import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.common.IrcListHelper
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.into
 import kotlin.coroutines.Continuation

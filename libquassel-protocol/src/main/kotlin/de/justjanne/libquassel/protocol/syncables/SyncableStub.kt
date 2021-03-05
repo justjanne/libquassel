@@ -10,19 +10,13 @@
 package de.justjanne.libquassel.protocol.syncables
 
 import de.justjanne.libquassel.annotations.ProtocolSide
-import de.justjanne.libquassel.protocol.models.types.QtType
-import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.QVariant_
-import de.justjanne.libquassel.protocol.variant.qVariant
 
 interface SyncableStub {
   val className: String
   val objectName: String
-  val initialized: Boolean
+  var initialized: Boolean
   val session: Session?
-
-  fun fromVariantMap(properties: QVariantMap)
-  fun toVariantMap(): QVariantMap
 
   fun sync(target: ProtocolSide, function: String, vararg arg: QVariant_) {
     if (initialized) {
@@ -34,22 +28,5 @@ interface SyncableStub {
     if (initialized) {
       session?.rpc(target, function, arg.toList())
     }
-  }
-
-  fun update(properties: QVariantMap) {
-    fromVariantMap(properties)
-    sync(
-      target = ProtocolSide.CLIENT,
-      "update",
-      qVariant(properties, QtType.QVariantMap)
-    )
-  }
-
-  fun requestUpdate(properties: QVariantMap = toVariantMap()) {
-    sync(
-      target = ProtocolSide.CORE,
-      "requestUpdate",
-      qVariant(properties, QtType.QVariantMap)
-    )
   }
 }

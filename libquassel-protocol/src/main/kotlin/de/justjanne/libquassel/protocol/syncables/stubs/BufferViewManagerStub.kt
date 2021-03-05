@@ -13,13 +13,13 @@ import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.annotations.SyncedCall
 import de.justjanne.libquassel.annotations.SyncedObject
 import de.justjanne.libquassel.protocol.models.types.QtType
-import de.justjanne.libquassel.protocol.syncables.SyncableStub
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableStub
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.qVariant
 
 @SyncedObject("BufferViewManager")
-interface BufferViewManagerStub : SyncableStub {
+interface BufferViewManagerStub : StatefulSyncableStub {
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun addBufferViewConfig(bufferViewConfigId: Int) {
     sync(

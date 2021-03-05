@@ -7,7 +7,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.util
+package de.justjanne.libquassel.protocol.util.reflect
 
-internal infix fun <T> Any?.instanceof(other: Class<T>?): Boolean =
-  other?.isInstance(this) != false
+internal infix fun <T> Class<*>?.subtype(other: Class<T>?): Boolean =
+  this != null && other?.isAssignableFrom(this) == true

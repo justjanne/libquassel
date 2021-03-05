@@ -16,14 +16,14 @@ import de.justjanne.libquassel.protocol.models.dcc.TransferDirection
 import de.justjanne.libquassel.protocol.models.dcc.TransferStatus
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
-import de.justjanne.libquassel.protocol.syncables.SyncableStub
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableStub
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.qVariant
 import java.net.InetAddress
 import java.nio.ByteBuffer
 
 @SyncedObject("Transfer")
-interface TransferStub : SyncableStub {
+interface TransferStub : StatefulSyncableStub {
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun accept(savePath: String) {
     sync(

@@ -16,12 +16,12 @@ import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
-import de.justjanne.libquassel.protocol.syncables.SyncableStub
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableStub
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.qVariant
 
 @SyncedObject("Identity")
-interface IdentityStub : SyncableStub {
+interface IdentityStub : StatefulSyncableStub {
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun setAutoAwayEnabled(enabled: Boolean) {
     sync(

@@ -7,16 +7,12 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.SyncableObject
 import de.justjanne.libquassel.protocol.syncables.stubs.BacklogManagerStub
-import de.justjanne.libquassel.protocol.variant.QVariantMap
-import de.justjanne.libquassel.protocol.variant.QVariant_
 
 open class BacklogManager(
   session: Session? = null
-) : SyncableObject(session, "BacklogManager"), BacklogManagerStub {
-
-  override fun fromVariantMap(properties: QVariantMap) = Unit
-  override fun toVariantMap() = mapOf<String, QVariant_>()
-}
+) : SyncableObject(session, "BacklogManager"), BacklogManagerStub

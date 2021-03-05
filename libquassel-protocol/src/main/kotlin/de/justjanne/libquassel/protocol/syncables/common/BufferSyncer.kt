@@ -7,7 +7,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.bitflags.none
 import de.justjanne.bitflags.of
@@ -20,6 +20,8 @@ import de.justjanne.libquassel.protocol.models.ids.MsgId
 import de.justjanne.libquassel.protocol.models.ids.isValid
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.BufferSyncerState
 import de.justjanne.libquassel.protocol.syncables.stubs.BufferSyncerStub
 import de.justjanne.libquassel.protocol.util.collections.pairs
@@ -102,6 +104,7 @@ open class BufferSyncer(
         }?.filterNotNull()?.toMap().orEmpty()
       )
     }
+    initialized = true
   }
 
   fun lastSeenMsg(buffer: BufferId): MsgId = state().lastSeenMsg[buffer] ?: MsgId(0)
@@ -178,7 +181,7 @@ open class BufferSyncer(
       val bufferInfo = bufferInfo(buffer)
 
       if (bufferInfo != null) {
-        session?.bufferViewManager()?.handleBuffer(bufferInfo, true)
+        session?.bufferViewManager?.handleBuffer(bufferInfo, true)
       }
     }
 
@@ -200,7 +203,7 @@ open class BufferSyncer(
       }
 
       if (oldInfo != null) {
-        session?.bufferViewManager()?.handleBuffer(info)
+        session?.bufferViewManager?.handleBuffer(info)
       }
     }
   }

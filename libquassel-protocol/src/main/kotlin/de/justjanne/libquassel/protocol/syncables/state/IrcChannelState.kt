@@ -22,6 +22,8 @@ data class IrcChannelState(
   val channelModes: ChannelModes = ChannelModes(),
   val userModes: Map<String, Set<Char>> = emptyMap()
 ) {
+  fun identifier() = "${network.id}/$name"
+
   fun channelModeString() = channelModes.modeString()
 
   fun ircUsers(networkState: NetworkState?) = networkState?.let { network ->

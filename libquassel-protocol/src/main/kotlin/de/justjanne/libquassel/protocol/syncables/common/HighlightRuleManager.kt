@@ -7,12 +7,14 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.rules.HighlightNickType
 import de.justjanne.libquassel.protocol.models.rules.HighlightRule
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.HighlightRuleManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.HighlightRuleManagerStub
 import de.justjanne.libquassel.protocol.util.update
@@ -80,6 +82,7 @@ open class HighlightRuleManager(
         }
       )
     }
+    initialized = true
   }
 
   override fun toVariantMap() = mapOf(

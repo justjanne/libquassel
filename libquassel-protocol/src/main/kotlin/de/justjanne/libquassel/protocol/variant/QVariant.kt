@@ -15,8 +15,8 @@ import de.justjanne.libquassel.protocol.io.contentToString
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
-import de.justjanne.libquassel.protocol.util.instanceof
-import de.justjanne.libquassel.protocol.util.subtype
+import de.justjanne.libquassel.protocol.util.reflect.instanceof
+import de.justjanne.libquassel.protocol.util.reflect.subtype
 import java.nio.ByteBuffer
 
 /**

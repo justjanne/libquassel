@@ -13,33 +13,49 @@ import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
-import de.justjanne.libquassel.protocol.syncables.stubs.BacklogManagerStub
-import de.justjanne.libquassel.protocol.syncables.stubs.IgnoreListManagerStub
-import de.justjanne.libquassel.protocol.syncables.stubs.IrcListHelperStub
-import de.justjanne.libquassel.protocol.syncables.stubs.RpcHandlerStub
+import de.justjanne.libquassel.protocol.syncables.common.AliasManager
+import de.justjanne.libquassel.protocol.syncables.common.BacklogManager
+import de.justjanne.libquassel.protocol.syncables.common.BufferSyncer
+import de.justjanne.libquassel.protocol.syncables.common.BufferViewManager
+import de.justjanne.libquassel.protocol.syncables.common.CoreInfo
+import de.justjanne.libquassel.protocol.syncables.common.DccConfig
+import de.justjanne.libquassel.protocol.syncables.common.HighlightRuleManager
+import de.justjanne.libquassel.protocol.syncables.common.Identity
+import de.justjanne.libquassel.protocol.syncables.common.IgnoreListManager
+import de.justjanne.libquassel.protocol.syncables.common.IrcListHelper
+import de.justjanne.libquassel.protocol.syncables.common.Network
+import de.justjanne.libquassel.protocol.syncables.common.NetworkConfig
+import de.justjanne.libquassel.protocol.syncables.common.RpcHandler
 import de.justjanne.libquassel.protocol.variant.QVariantList
+import de.justjanne.libquassel.protocol.variant.QVariantMap
 
-interface Session : RpcHandlerStub {
+interface Session {
   val protocolSide: ProtocolSide
   val objectRepository: ObjectRepository
+  val rpcHandler: RpcHandler
 
   fun network(id: NetworkId): Network?
-  fun identity(id: IdentityId): Identity
+  fun addNetwork(id: NetworkId)
+  fun removeNetwork(id: NetworkId)
 
-  fun aliasManager(): AliasManager
-  fun bufferSyncer(): BufferSyncer
-  fun backlogManager(): BacklogManagerStub
-  fun bufferViewManager(): BufferViewManager
-  fun ignoreListManager(): IgnoreListManagerStub
-  fun highlightRuleManager(): HighlightRuleManager
-  fun ircListHelper(): IrcListHelperStub
+  fun identity(id: IdentityId): Identity?
+  fun addIdentity(properties: QVariantMap)
+  fun removeIdentity(id: IdentityId)
 
-  fun coreInfo(): CoreInfo
-  fun dccConfig(): DccConfig
-  fun networkConfig(): NetworkConfig
+  val aliasManager: AliasManager
+  val backlogManager: BacklogManager
+  val bufferSyncer: BufferSyncer
+  val bufferViewManager: BufferViewManager
+  val highlightRuleManager: HighlightRuleManager
+  val ignoreListManager: IgnoreListManager
+  val ircListHelper: IrcListHelper
 
-  fun synchronize(it: SyncableObject)
-  fun stopSynchronize(it: SyncableObject)
+  val coreInfo: CoreInfo
+  val dccConfig: DccConfig
+  val networkConfig: NetworkConfig
+
+  fun synchronize(syncable: SyncableStub)
+  fun stopSynchronize(syncable: SyncableStub)
 
   fun sync(
     target: ProtocolSide,
@@ -77,10 +93,4 @@ interface Session : RpcHandlerStub {
 
   fun emit(message: SignalProxyMessage)
   fun dispatch(message: SignalProxyMessage)
-  fun dispatch(message: SignalProxyMessage.Sync)
-  fun dispatch(message: SignalProxyMessage.Rpc)
-  fun dispatch(message: SignalProxyMessage.InitRequest)
-  fun dispatch(message: SignalProxyMessage.InitData)
-  fun dispatch(message: SignalProxyMessage.HeartBeat)
-  fun dispatch(message: SignalProxyMessage.HeartBeatReply)
 }

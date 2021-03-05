@@ -9,18 +9,23 @@
 
 package de.justjanne.libquassel.generator.visitors
 
-import com.squareup.kotlinpoet.ANY
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterSpec
-import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
 import com.squareup.kotlinpoet.asTypeName
 import com.squareup.kotlinpoet.buildCodeBlock
 import de.justjanne.libquassel.annotations.ProtocolSide
+import de.justjanne.libquassel.generator.Constants.TYPENAME_GENERATED
+import de.justjanne.libquassel.generator.Constants.TYPENAME_INVOKER
+import de.justjanne.libquassel.generator.Constants.TYPENAME_QVARIANTLIST
+import de.justjanne.libquassel.generator.Constants.TYPENAME_QVARIANT_INTOORTHROW
+import de.justjanne.libquassel.generator.Constants.TYPENAME_SYNCABLESTUB
+import de.justjanne.libquassel.generator.Constants.TYPENAME_UNKNOWN_METHOD_EXCEPTION
+import de.justjanne.libquassel.generator.Constants.TYPENAME_WRONG_OBJECT_TYPE_EXCEPTION
 import de.justjanne.libquassel.generator.kotlinmodel.KotlinModel
 import de.justjanne.libquassel.generator.rpcmodel.RpcModel
 import de.justjanne.libquassel.generator.rpcmodel.RpcModelVisitor
@@ -35,7 +40,7 @@ class RpcModelProcessor : RpcModelVisitor<ProtocolSide, KotlinModel?> {
       "${model.rpcName}${data.name.toLowerCase().capitalize()}Invoker"
     )
     return KotlinModel.FileModel(
-      model.source,
+      listOf(model.source),
       FileSpec.builder(name.packageName, name.simpleName)
         .addImport(
           TYPENAME_QVARIANT_INTOORTHROW.packageName,
@@ -44,7 +49,7 @@ class RpcModelProcessor : RpcModelVisitor<ProtocolSide, KotlinModel?> {
         .addAnnotation(TYPENAME_GENERATED)
         .addType(
           TypeSpec.objectBuilder(name.simpleName)
-            .addSuperinterface(TYPENAME_INVOKER.parameterizedBy(model.name))
+            .addSuperinterface(TYPENAME_INVOKER)
             .addAnnotation(TYPENAME_GENERATED)
             .addProperty(
               PropertySpec.builder(
@@ -63,7 +68,7 @@ class RpcModelProcessor : RpcModelVisitor<ProtocolSide, KotlinModel?> {
                 .addParameter(
                   ParameterSpec.builder(
                     "on",
-                    TYPENAME_ANY
+                    TYPENAME_SYNCABLESTUB
                   ).build()
                 ).addParameter(
                   ParameterSpec.builder(
@@ -127,36 +132,4 @@ class RpcModelProcessor : RpcModelVisitor<ProtocolSide, KotlinModel?> {
     )
 
   override fun visitParameterModel(model: RpcModel.ParameterModel, data: ProtocolSide): KotlinModel? = null
-
-  companion object {
-    private val TYPENAME_INVOKER = ClassName(
-      "de.justjanne.libquassel.protocol.syncables.invoker",
-      "Invoker"
-    )
-    private val TYPENAME_UNKNOWN_METHOD_EXCEPTION = ClassName(
-      "de.justjanne.libquassel.protocol.exceptions",
-      "UnknownMethodException"
-    )
-    private val TYPENAME_WRONG_OBJECT_TYPE_EXCEPTION = ClassName(
-      "de.justjanne.libquassel.protocol.exceptions",
-      "WrongObjectTypeException"
-    )
-    private val TYPENAME_QVARIANTLIST = ClassName(
-      "de.justjanne.libquassel.protocol.variant",
-      "QVariantList"
-    )
-    private val TYPENAME_QVARIANT_INTOORTHROW = ClassName(
-      "de.justjanne.libquassel.protocol.variant",
-      "intoOrThrow"
-    )
-    private val TYPENAME_GENERATED = ClassName(
-      "de.justjanne.libquassel.annotations",
-      "Generated"
-    )
-    private val TYPENAME_ANY = ANY.copy(nullable = true)
-
-    init {
-      System.setProperty("idea.io.use.nio2", "true")
-    }
-  }
 }
