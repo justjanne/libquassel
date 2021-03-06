@@ -93,7 +93,7 @@ data class AliasManagerState(
                     } ?: "*"
                   } ?: it.source
                 is Expansion.ParameterRange ->
-                  params.subList(it.from - 1, it.to ?: params.size )
+                  params.subList(it.from - 1, it.to ?: params.size)
                     .joinToString(" ")
                 is Expansion.Text ->
                   it.source
