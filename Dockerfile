@@ -1,4 +1,4 @@
-FROM k8r.eu/justjanne/quasseldroid-build-env:5d24a78 as builder
+FROM openjdk:8 as builder
 RUN mkdir /build && \
     mkdir /build/.gradle
 COPY . /build/src
