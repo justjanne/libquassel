@@ -10,7 +10,7 @@
 package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.types.QtType
-import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
 import de.justjanne.libquassel.protocol.syncables.stubs.IrcUserStub
@@ -273,7 +273,7 @@ open class IrcUser(
       copy(channels = emptySet())
     }
     network?.removeIrcUser(this)
-    session?.stopSynchronize(this)
+    session?.proxy?.stopSynchronize(this)
     super.quit()
   }
 

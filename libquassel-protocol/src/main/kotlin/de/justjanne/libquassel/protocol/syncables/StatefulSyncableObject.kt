@@ -9,6 +9,7 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
+import de.justjanne.libquassel.protocol.session.Session
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 

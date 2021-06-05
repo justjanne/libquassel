@@ -11,7 +11,7 @@ package de.justjanne.libquassel.protocol.syncables.common
 
 import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.types.QtType
-import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewConfigState
 import de.justjanne.libquassel.protocol.syncables.state.BufferViewManagerState
@@ -59,7 +59,7 @@ open class BufferViewManager(
         bufferViewId = bufferViewConfigId
       )
     )
-    session?.synchronize(config)
+    session?.proxy?.synchronize(config)
     state.update {
       copy(bufferViewConfigs = bufferViewConfigs + Pair(bufferViewConfigId, config))
     }

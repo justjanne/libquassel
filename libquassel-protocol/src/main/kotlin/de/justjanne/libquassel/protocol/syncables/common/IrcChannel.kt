@@ -13,7 +13,7 @@ import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.network.ChannelModeType
 import de.justjanne.libquassel.protocol.models.network.ChannelModes
 import de.justjanne.libquassel.protocol.models.types.QtType
-import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.syncables.stubs.IrcChannelStub
@@ -157,7 +157,7 @@ open class IrcChannel(
           copy(channelModes = ChannelModes())
         }
         network.removeIrcChannel(this)
-        session?.stopSynchronize(this)
+        session?.proxy?.stopSynchronize(this)
       }
     }
     super.part(nick)

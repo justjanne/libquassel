@@ -16,7 +16,7 @@ import de.justjanne.libquassel.protocol.models.rules.IgnoreType
 import de.justjanne.libquassel.protocol.models.rules.ScopeType
 import de.justjanne.libquassel.protocol.models.rules.StrictnessType
 import de.justjanne.libquassel.protocol.models.types.QtType
-import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.IgnoreListManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.IgnoreListManagerStub

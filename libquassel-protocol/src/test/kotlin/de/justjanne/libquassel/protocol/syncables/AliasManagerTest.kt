@@ -18,6 +18,7 @@ import de.justjanne.libquassel.protocol.models.flags.BufferType
 import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.common.AliasManager
 import de.justjanne.libquassel.protocol.syncables.state.AliasManagerState
 import de.justjanne.libquassel.protocol.testutil.mocks.EmptySession

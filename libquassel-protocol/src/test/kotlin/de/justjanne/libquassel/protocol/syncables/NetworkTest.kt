@@ -20,6 +20,7 @@ import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
 import de.justjanne.libquassel.protocol.syncables.common.Network
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
 import de.justjanne.libquassel.protocol.testutil.mocks.EmptySession
+import de.justjanne.libquassel.protocol.testutil.mocks.EmptySyncProxy
 import de.justjanne.libquassel.protocol.testutil.nextNetwork
 import de.justjanne.libquassel.protocol.testutil.nextString
 import de.justjanne.libquassel.protocol.variant.qVariant
@@ -918,8 +919,10 @@ class NetworkTest {
   class NetworkMockSession : EmptySession() {
     val synchronizeCalls = mutableListOf<SyncableStub>()
 
-    override fun synchronize(syncable: SyncableStub) {
-      synchronizeCalls.add(syncable)
+    override val proxy = object : EmptySyncProxy() {
+      override fun synchronize(syncable: SyncableStub) {
+        synchronizeCalls.add(syncable)
+      }
     }
   }
 }

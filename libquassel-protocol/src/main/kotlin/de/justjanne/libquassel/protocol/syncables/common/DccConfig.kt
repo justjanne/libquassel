@@ -13,7 +13,7 @@ import de.justjanne.libquassel.protocol.models.dcc.DccIpDetectionMode
 import de.justjanne.libquassel.protocol.models.dcc.DccPortSelectionMode
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
-import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.DccConfigState
 import de.justjanne.libquassel.protocol.syncables.stubs.DccConfigStub

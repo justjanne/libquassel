@@ -12,7 +12,7 @@ package de.justjanne.libquassel.protocol.syncables.common
 import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
-import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.SyncableObject
 import de.justjanne.libquassel.protocol.syncables.stubs.RpcHandlerStub
 import de.justjanne.libquassel.protocol.variant.QVariantMap

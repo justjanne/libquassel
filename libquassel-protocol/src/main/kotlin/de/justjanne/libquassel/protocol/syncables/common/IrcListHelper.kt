@@ -9,7 +9,7 @@
 
 package de.justjanne.libquassel.protocol.syncables.common
 
-import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.SyncableObject
 import de.justjanne.libquassel.protocol.syncables.stubs.IrcListHelperStub
 

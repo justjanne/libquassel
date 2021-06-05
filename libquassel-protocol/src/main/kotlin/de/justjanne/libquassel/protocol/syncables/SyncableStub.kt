@@ -10,6 +10,7 @@
 package de.justjanne.libquassel.protocol.syncables
 
 import de.justjanne.libquassel.annotations.ProtocolSide
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.variant.QVariant_
 
 interface SyncableStub {
@@ -20,13 +21,13 @@ interface SyncableStub {
 
   fun sync(target: ProtocolSide, function: String, vararg arg: QVariant_) {
     if (initialized) {
-      session?.sync(target, className, objectName, function, arg.toList())
+      session?.proxy?.sync(target, className, objectName, function, arg.toList())
     }
   }
 
   fun rpc(target: ProtocolSide, function: String, vararg arg: QVariant_) {
     if (initialized) {
-      session?.rpc(target, function, arg.toList())
+      session?.proxy?.rpc(target, function, arg.toList())
     }
   }
 }

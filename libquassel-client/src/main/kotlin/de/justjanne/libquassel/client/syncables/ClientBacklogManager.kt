@@ -16,7 +16,7 @@ import de.justjanne.libquassel.protocol.models.flags.MessageType
 import de.justjanne.libquassel.protocol.models.flags.MessageTypes
 import de.justjanne.libquassel.protocol.models.ids.BufferId
 import de.justjanne.libquassel.protocol.models.ids.MsgId
-import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.common.BacklogManager
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import kotlin.coroutines.Continuation

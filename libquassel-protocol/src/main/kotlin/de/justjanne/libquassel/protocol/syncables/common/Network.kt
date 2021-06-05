@@ -17,7 +17,7 @@ import de.justjanne.libquassel.protocol.models.network.NetworkServer
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
-import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
@@ -332,7 +332,7 @@ open class Network(
       user.fromVariantMap(properties, index)
       user.initialized = true
     }
-    session?.synchronize(user)
+    session?.proxy?.synchronize(user)
     state.update {
       copy(ircUsers = ircUsers + Pair(caseMapper().toLowerCase(nick), user))
     }
@@ -360,7 +360,7 @@ open class Network(
       channel.fromVariantMap(properties, index)
       channel.initialized = true
     }
-    session?.synchronize(channel)
+    session?.proxy?.synchronize(channel)
     state.update {
       copy(ircChannels = ircChannels + Pair(caseMapper().toLowerCase(name), channel))
     }
@@ -498,8 +498,8 @@ open class Network(
         copy(connected = true)
       } else {
         session?.let {
-          ircChannels.values.forEach(it::stopSynchronize)
-          ircUsers.values.forEach(it::stopSynchronize)
+          ircChannels.values.forEach(it.proxy::stopSynchronize)
+          ircUsers.values.forEach(it.proxy::stopSynchronize)
         }
         copy(
           connected = isConnected,

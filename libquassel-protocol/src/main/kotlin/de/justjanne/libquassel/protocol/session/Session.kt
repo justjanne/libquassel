@@ -7,12 +7,12 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.syncables
+package de.justjanne.libquassel.protocol.session
 
 import de.justjanne.libquassel.annotations.ProtocolSide
-import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.syncables.ObjectRepository
 import de.justjanne.libquassel.protocol.syncables.common.AliasManager
 import de.justjanne.libquassel.protocol.syncables.common.BacklogManager
 import de.justjanne.libquassel.protocol.syncables.common.BufferSyncer
@@ -25,14 +25,12 @@ import de.justjanne.libquassel.protocol.syncables.common.IgnoreListManager
 import de.justjanne.libquassel.protocol.syncables.common.IrcListHelper
 import de.justjanne.libquassel.protocol.syncables.common.Network
 import de.justjanne.libquassel.protocol.syncables.common.NetworkConfig
-import de.justjanne.libquassel.protocol.syncables.common.RpcHandler
-import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 
 interface Session {
-  val protocolSide: ProtocolSide
+  val side: ProtocolSide
+  val proxy: SyncProxy
   val objectRepository: ObjectRepository
-  val rpcHandler: RpcHandler
 
   fun network(id: NetworkId): Network?
   fun addNetwork(id: NetworkId)
@@ -41,6 +39,8 @@ interface Session {
   fun identity(id: IdentityId): Identity?
   fun addIdentity(properties: QVariantMap)
   fun removeIdentity(id: IdentityId)
+
+  fun rename(className: String, oldName: String, newName: String)
 
   val aliasManager: AliasManager
   val backlogManager: BacklogManager
@@ -53,44 +53,4 @@ interface Session {
   val coreInfo: CoreInfo
   val dccConfig: DccConfig
   val networkConfig: NetworkConfig
-
-  fun synchronize(syncable: SyncableStub)
-  fun stopSynchronize(syncable: SyncableStub)
-
-  fun sync(
-    target: ProtocolSide,
-    className: String,
-    objectName: String,
-    function: String,
-    arguments: QVariantList
-  ) {
-    if (target != protocolSide) {
-      emit(
-        SignalProxyMessage.Sync(
-          className,
-          objectName,
-          function,
-          arguments
-        )
-      )
-    }
-  }
-
-  fun rpc(
-    target: ProtocolSide,
-    function: String,
-    arguments: QVariantList
-  ) {
-    if (target != protocolSide) {
-      emit(
-        SignalProxyMessage.Rpc(
-          function,
-          arguments
-        )
-      )
-    }
-  }
-
-  fun emit(message: SignalProxyMessage)
-  fun dispatch(message: SignalProxyMessage)
 }

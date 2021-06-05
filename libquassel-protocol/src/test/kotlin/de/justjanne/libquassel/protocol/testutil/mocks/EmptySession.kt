@@ -10,12 +10,10 @@
 package de.justjanne.libquassel.protocol.testutil.mocks
 
 import de.justjanne.libquassel.annotations.ProtocolSide
-import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.ObjectRepository
-import de.justjanne.libquassel.protocol.syncables.Session
-import de.justjanne.libquassel.protocol.syncables.SyncableStub
 import de.justjanne.libquassel.protocol.syncables.common.AliasManager
 import de.justjanne.libquassel.protocol.syncables.common.BacklogManager
 import de.justjanne.libquassel.protocol.syncables.common.BufferSyncer
@@ -28,13 +26,12 @@ import de.justjanne.libquassel.protocol.syncables.common.IgnoreListManager
 import de.justjanne.libquassel.protocol.syncables.common.IrcListHelper
 import de.justjanne.libquassel.protocol.syncables.common.Network
 import de.justjanne.libquassel.protocol.syncables.common.NetworkConfig
-import de.justjanne.libquassel.protocol.syncables.common.RpcHandler
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 
 open class EmptySession : Session {
-  override val protocolSide = ProtocolSide.CLIENT
-  override val rpcHandler = RpcHandler(this)
-  override val objectRepository = ObjectRepository()
+  final override val side = ProtocolSide.CLIENT
+  final override val objectRepository = ObjectRepository()
+  override val proxy = EmptySyncProxy()
 
   override fun network(id: NetworkId): Network? = null
   override fun addNetwork(id: NetworkId) = Unit
@@ -42,6 +39,7 @@ open class EmptySession : Session {
   override fun identity(id: IdentityId): Identity? = null
   override fun addIdentity(properties: QVariantMap) = Unit
   override fun removeIdentity(id: IdentityId) = Unit
+  override fun rename(className: String, oldName: String, newName: String) = Unit
 
   override val aliasManager = AliasManager(this)
   override val bufferSyncer = BufferSyncer(this)
@@ -53,9 +51,4 @@ open class EmptySession : Session {
   override val coreInfo = CoreInfo(this)
   override val dccConfig = DccConfig(this)
   override val networkConfig = NetworkConfig(this)
-
-  override fun synchronize(syncable: SyncableStub) = Unit
-  override fun stopSynchronize(syncable: SyncableStub) = Unit
-  override fun emit(message: SignalProxyMessage) = Unit
-  override fun dispatch(message: SignalProxyMessage) = Unit
 }

@@ -9,7 +9,7 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
-import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
+import de.justjanne.libquassel.protocol.session.Session
 
 abstract class SyncableObject(
   override var session: Session?,
@@ -28,11 +28,7 @@ abstract class SyncableObject(
     } else if (oldName != newName) {
       objectName = newName
       session?.objectRepository?.rename(this, newName)
-      session?.rpcHandler?.objectRenamed(
-        StringSerializerUtf8.serializeRaw(className),
-        oldName,
-        newName
-      )
+      session?.rename(className, oldName, newName)
     }
   }
 

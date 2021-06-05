@@ -14,7 +14,7 @@ import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.alias.Alias
 import de.justjanne.libquassel.protocol.models.alias.Command
 import de.justjanne.libquassel.protocol.models.types.QtType
-import de.justjanne.libquassel.protocol.syncables.Session
+import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.AliasManagerState
 import de.justjanne.libquassel.protocol.syncables.stubs.AliasManagerStub

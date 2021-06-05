@@ -9,12 +9,12 @@
 
 package de.justjanne.libquassel.client.io
 
-import de.justjanne.libquassel.client.util.TlsInfo
 import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
+import de.justjanne.libquassel.protocol.util.update
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.runInterruptible
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -26,8 +26,6 @@ class CoroutineChannel {
   private lateinit var channel: StreamChannel
   private val writeContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
   private val readContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
-  private val _tlsInfo = MutableStateFlow<TlsInfo?>(null)
-  val tlsInfo: StateFlow<TlsInfo?> get() = _tlsInfo
 
   suspend fun connect(
     address: InetSocketAddress,
@@ -38,25 +36,33 @@ class CoroutineChannel {
     socket.keepAlive = keepAlive
     socket.connect(address, timeout)
     this.channel = StreamChannel(socket)
+    state.update {
+      copy(connected = true)
+    }
   }
 
   fun enableCompression() {
     channel = channel.withCompression()
+    state.update {
+      copy(compression = true)
+    }
   }
 
   suspend fun enableTLS(context: SSLContext) {
     channel = runInterruptible(writeContext) {
       channel.withTLS(context)
     }
-    _tlsInfo.emit(channel.tlsInfo())
+    state.update {
+      copy(tlsInfo = channel.tlsInfo())
+    }
   }
 
   suspend fun read(buffer: ByteBuffer): Int = runInterruptible(readContext) {
-    this.channel.read(buffer)
+    channel.read(buffer)
   }
 
   suspend fun write(buffer: ByteBuffer): Int = runInterruptible(writeContext) {
-    this.channel.write(buffer)
+    channel.write(buffer)
   }
 
   suspend fun write(chainedBuffer: ChainedByteBuffer) {
@@ -66,6 +72,22 @@ class CoroutineChannel {
   }
 
   suspend fun flush() = runInterruptible(writeContext) {
-    this.channel.flush()
+    channel.flush()
   }
+
+  fun close() {
+    channel.close()
+    state.update {
+      copy(connected = false)
+    }
+  }
+
+  @Suppress("NOTHING_TO_INLINE")
+  inline fun state(): CoroutineChannelState = state.value
+
+  @Suppress("NOTHING_TO_INLINE")
+  inline fun flow(): Flow<CoroutineChannelState> = state
+
+  @PublishedApi
+  internal val state = MutableStateFlow(CoroutineChannelState())
 }
