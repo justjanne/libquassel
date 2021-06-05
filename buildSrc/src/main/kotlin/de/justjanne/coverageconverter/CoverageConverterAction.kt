@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import de.justjanne.coverageconverter.convertCounter
 import de.justjanne.coverageconverter.jacoco.CounterTypeDto
 import de.justjanne.coverageconverter.jacoco.ReportDto
 import org.gradle.api.Action

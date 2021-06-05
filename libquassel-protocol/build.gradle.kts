@@ -10,11 +10,12 @@
 plugins {
   id("java-library")
   id("com.vanniktech.maven.publish")
-  id("com.google.devtools.ksp") version "1.4.30-1.0.0-alpha02"
+  id("com.google.devtools.ksp") version "1.5.10-1.0.0-beta01"
 }
 
 dependencies {
-  api("org.threeten", "threetenbp", "1.4.0")
+  val threetenBpVersion: String by project
+  api("org.threeten", "threetenbp", threetenBpVersion)
   val kotlinBitflagsVersion: String by project
   api("de.justjanne", "kotlin-bitflags", kotlinBitflagsVersion)
   val bouncyCastleVersion: String by project

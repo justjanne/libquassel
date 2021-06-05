@@ -8,44 +8,13 @@
  */
 
 import de.justjanne.coverageconverter.CoverageConverterExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   id("org.jlleitschuh.gradle.ktlint") version "10.0.0" apply false
   id("com.vanniktech.maven.publish") version "0.13.0" apply false
   id("de.justjanne.jacoco-cobertura-converter") apply false
-}
-
-buildscript {
-  repositories {
-    mavenCentral()
-  }
-  dependencies {
-    classpath("org.jetbrains.dokka:dokka-gradle-plugin:1.4.20")
-    classpath("org.jetbrains.kotlin", "kotlin-gradle-plugin", "1.4.31")
-  }
-}
-
-allprojects {
-  apply(plugin = "org.jetbrains.dokka")
-  repositories {
-    mavenCentral()
-    google()
-    exclusiveContent {
-      forRepository {
-        maven {
-          name = "JCenter"
-          setUrl("https://jcenter.bintray.com/")
-        }
-      }
-      filter {
-        // Required for Dokka
-        includeModule("com.soywiz.korlibs.korte", "korte-jvm")
-        includeModule("org.jetbrains.kotlinx", "kotlinx-html-jvm")
-        includeGroup("org.jetbrains.dokka")
-        includeModule("org.jetbrains", "markdown")
-      }
-    }
-  }
+  id("org.jetbrains.dokka") version "1.4.32" apply false
 }
 
 subprojects {
@@ -53,6 +22,12 @@ subprojects {
   apply(plugin = "org.jlleitschuh.gradle.ktlint")
   apply(plugin = "jacoco")
   apply(plugin = "de.justjanne.jacoco-cobertura-converter")
+  apply(plugin = "org.jetbrains.dokka")
+
+  repositories {
+    mavenCentral()
+    google()
+  }
 
   dependencies {
     val implementation by configurations
@@ -60,10 +35,11 @@ subprojects {
     val testRuntimeOnly by configurations
 
     implementation(kotlin("stdlib"))
-    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", "1.4.2")
-
     testImplementation(kotlin("test-junit5"))
-    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", "1.4.2")
+
+    val kotlinxCoroutinesVersion: String by project
+    implementation("org.jetbrains.kotlinx", "kotlinx-coroutines-core", kotlinxCoroutinesVersion)
+    testImplementation("org.jetbrains.kotlinx", "kotlinx-coroutines-test", kotlinxCoroutinesVersion)
 
     val junit5Version: String by project
     testImplementation("org.junit.jupiter", "junit-jupiter-api", junit5Version)
@@ -78,7 +54,7 @@ subprojects {
     useJUnitPlatform()
   }
 
-  tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  tasks.withType<KotlinCompile> {
     kotlinOptions {
       jvmTarget = "1.8"
       freeCompilerArgs = listOf(
@@ -86,6 +62,10 @@ subprojects {
         "-Xopt-in=kotlin.ExperimentalUnsignedTypes"
       )
     }
+  }
+
+  configure<JacocoPluginExtension> {
+    toolVersion = "0.8.7"
   }
 
   configure<CoverageConverterExtension> {

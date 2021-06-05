@@ -12,7 +12,9 @@ repositories {
 }
 
 dependencies {
-  implementation("com.google.devtools.ksp:symbol-processing-api:1.4.30-1.0.0-alpha02")
+  val kspVersion: String by project
+  implementation("com.google.devtools.ksp", "symbol-processing-api", kspVersion)
   implementation(project(":libquassel-annotations"))
-  implementation("com.squareup", "kotlinpoet", "1.7.2")
+  val kotlinPoetVersion: String by project
+  implementation("com.squareup", "kotlinpoet", kotlinPoetVersion)
 }
