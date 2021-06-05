@@ -21,7 +21,7 @@ import com.squareup.kotlinpoet.ClassName
 import de.justjanne.libquassel.generator.annotation.RpcFunctionAnnotation
 import de.justjanne.libquassel.generator.annotation.RpcObjectAnnotation
 import de.justjanne.libquassel.generator.rpcmodel.RpcModel
-import de.justjanne.libquassel.generator.util.asTypeName
+import de.justjanne.libquassel.generator.util.ksp.asTypeName
 
 class KSDeclarationParser(
   private val resolver: Resolver,
@@ -44,6 +44,7 @@ class KSDeclarationParser(
         classDeclaration.getDeclaredFunctions()
           .mapNotNull { it.accept(this, Unit) }
           .mapNotNull { it as? RpcModel.FunctionModel }
+          .toList()
       )
     } catch (t: Throwable) {
       logger.error("Error processing  ${annotation.name}", classDeclaration)
@@ -83,7 +84,7 @@ class KSDeclarationParser(
       return RpcModel.ParameterModel(
         valueParameter,
         valueParameter.name?.asString(),
-        valueParameter.type.resolve().asTypeName()
+        valueParameter.type.asTypeName()
       )
     } catch (t: Throwable) {
       logger.error("Error processing  ${valueParameter.name?.asString()}", valueParameter)

@@ -16,11 +16,12 @@ import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.STRING
 import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.generator.rpcmodel.RpcModel
+import transformName
 
 object Constants {
   fun invokerName(model: RpcModel.ObjectModel, side: ProtocolSide) = ClassName(
     TYPENAME_INVOKER.packageName,
-    "${model.rpcName}${side.name.toLowerCase().capitalize()}Invoker"
+    "${model.rpcName}${transformName(side.name)}Invoker"
   )
 
   val TYPENAME_ANY = ANY.copy(nullable = true)

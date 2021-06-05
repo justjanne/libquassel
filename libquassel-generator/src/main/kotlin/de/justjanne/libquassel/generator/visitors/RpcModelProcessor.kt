@@ -32,12 +32,13 @@ import de.justjanne.libquassel.generator.rpcmodel.RpcModelVisitor
 import de.justjanne.libquassel.generator.util.kotlinpoet.ArgString
 import de.justjanne.libquassel.generator.util.kotlinpoet.buildWhen
 import de.justjanne.libquassel.generator.util.kotlinpoet.withIndent
+import transformName
 
 class RpcModelProcessor : RpcModelVisitor<ProtocolSide, KotlinModel?> {
   override fun visitObjectModel(model: RpcModel.ObjectModel, data: ProtocolSide): KotlinModel {
     val name = ClassName(
       TYPENAME_INVOKER.packageName,
-      "${model.rpcName}${data.name.toLowerCase().capitalize()}Invoker"
+      "${model.rpcName}${transformName(data.name)}Invoker"
     )
     return KotlinModel.FileModel(
       listOf(model.source),

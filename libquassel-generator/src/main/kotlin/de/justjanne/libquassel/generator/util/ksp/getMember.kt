@@ -19,6 +19,7 @@ package de.justjanne.libquassel.generator.util
 import com.google.devtools.ksp.symbol.KSAnnotation
 import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.ClassName
+import de.justjanne.libquassel.generator.util.ksp.asTypeName
 
 internal inline fun <reified T> KSAnnotation.getMember(name: String): T? {
   val matchingArg = arguments.find { it.name?.asString() == name }

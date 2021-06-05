@@ -12,6 +12,7 @@ package de.justjanne.libquassel.generator.util
 import com.google.devtools.ksp.symbol.KSType
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.asClassName
+import de.justjanne.libquassel.generator.util.ksp.asClassName
 
 internal inline fun <reified T : Enum<T>> KSType.toEnum(): T? {
   return asClassName().toEnum(T::class.java)

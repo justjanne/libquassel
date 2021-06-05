@@ -21,20 +21,10 @@ import de.justjanne.libquassel.generator.visitors.KotlinSaver
 import de.justjanne.libquassel.generator.visitors.RpcModelProcessor
 import de.justjanne.libquassel.generator.visitors.RpcObjectCollector
 
-class InvokerProcessor : SymbolProcessor {
-  lateinit var codeGenerator: CodeGenerator
-  lateinit var logger: KSPLogger
-
-  override fun init(
-    options: Map<String, String>,
-    kotlinVersion: KotlinVersion,
-    codeGenerator: CodeGenerator,
-    logger: KSPLogger
-  ) {
-    this.logger = logger
-    this.codeGenerator = codeGenerator
-  }
-
+class InvokerProcessor(
+  private val codeGenerator: CodeGenerator,
+  private val logger: KSPLogger
+) : SymbolProcessor {
   override fun process(resolver: Resolver): List<KSAnnotated> {
     val annotationModels = resolver.getSymbolsWithAnnotation(SyncedObject::class.java.canonicalName)
     val rpcModels = annotationModels.mapNotNull { it.accept(KSDeclarationParser(resolver, logger), Unit) }
@@ -54,6 +44,4 @@ class InvokerProcessor : SymbolProcessor {
 
     return emptyList()
   }
-
-  override fun finish() = Unit
 }
