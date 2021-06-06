@@ -28,7 +28,6 @@ import de.justjanne.libquassel.protocol.util.collections.pairs
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
-import de.justjanne.libquassel.protocol.variant.QVariant_
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 

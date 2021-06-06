@@ -20,14 +20,7 @@ import de.justjanne.libquassel.protocol.session.MessageChannelReadThread
 import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.util.log.trace
 import de.justjanne.libquassel.protocol.variant.QVariantMap
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.runInterruptible
-import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
-import sun.security.util.DisabledAlgorithmConstraints
 import java.nio.ByteBuffer
 
 class ClientHandshakeHandler(

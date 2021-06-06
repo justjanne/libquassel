@@ -10,6 +10,7 @@
 package de.justjanne.libquassel.protocol.variant
 
 import de.justjanne.libquassel.protocol.models.types.QtType
+import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
 
 /**
  * Simple alias for a generic QVariantMap type
@@ -19,7 +20,11 @@ typealias QVariantMap = Map<String, QVariant_>
 /**
  * Transform a QVariantMap into a QVariantList of interleaved keys and values
  */
-fun QVariantMap.toVariantList(): QVariantList =
+fun QVariantMap.toVariantList(byteBuffer: Boolean = false): QVariantList =
   flatMap { (key, value) ->
-    listOf(qVariant(key, QtType.QString), value)
+    if (byteBuffer) {
+      listOf(qVariant(StringSerializerUtf8.serializeRaw(key), QtType.QByteArray), value)
+    } else {
+      listOf(qVariant(key, QtType.QString), value)
+    }
   }

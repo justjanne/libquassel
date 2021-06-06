@@ -42,9 +42,17 @@ object QDateTimeSerializer : PrimitiveSerializer<Temporal> {
       is LocalDateTime ->
         serialize(data, TimeSpec.LocalUnknown, null)
       is OffsetDateTime ->
-        serialize(data.toLocalDateTime(), TimeSpec.OffsetFromUTC, data.offset)
+        if (data.offset === ZoneOffset.UTC) {
+          serialize(data.toLocalDateTime(), TimeSpec.UTC, null)
+        } else {
+          serialize(data.toLocalDateTime(), TimeSpec.OffsetFromUTC, data.offset)
+        }
       is ZonedDateTime ->
-        serialize(data.toLocalDateTime(), TimeSpec.OffsetFromUTC, data.offset)
+        if (data.offset === ZoneOffset.UTC) {
+          serialize(data.toLocalDateTime(), TimeSpec.UTC, null)
+        } else {
+          serialize(data.toLocalDateTime(), TimeSpec.OffsetFromUTC, data.offset)
+        }
       is Instant ->
         serialize(data.atOffset(ZoneOffset.UTC).toLocalDateTime(), TimeSpec.UTC, null)
       else ->
@@ -64,15 +72,9 @@ object QDateTimeSerializer : PrimitiveSerializer<Temporal> {
       TimeSpec.LocalDST ->
         localDateTime.atZone(ZoneId.systemDefault()).toOffsetDateTime()
       TimeSpec.OffsetFromUTC ->
-        localDateTime
-          .atOffset(
-            ZoneOffset.ofTotalSeconds(
-              IntSerializer.deserialize(buffer, featureSet)
-            )
-          )
+        localDateTime.atOffset(ZoneOffset.ofTotalSeconds(IntSerializer.deserialize(buffer, featureSet)))
       TimeSpec.UTC ->
-        localDateTime
-          .atOffset(ZoneOffset.UTC)
+        localDateTime.atOffset(ZoneOffset.UTC)
     }
   }
 }

@@ -16,6 +16,7 @@ import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import org.threeten.bp.Instant
+import org.threeten.bp.ZoneOffset
 
 /**
  * Serializer for [SignalProxyMessage.HeartBeatReply]
@@ -29,6 +30,6 @@ object HeartBeatReplySerializer : SignalProxySerializer<SignalProxyMessage.Heart
   )
 
   override fun deserialize(data: QVariantList) = SignalProxyMessage.HeartBeatReply(
-    data.getOrNull(1).into(Instant.EPOCH)
+    data.getOrNull(1).into(Instant.EPOCH.atOffset(ZoneOffset.UTC)).toInstant()
   )
 }

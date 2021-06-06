@@ -26,7 +26,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
-import kotlin.test.assertFalse
 
 class IrcChannelTest {
   @Test
