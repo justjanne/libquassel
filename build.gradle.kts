@@ -11,7 +11,7 @@ import de.justjanne.coverageconverter.CoverageConverterExtension
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-  id("org.jlleitschuh.gradle.ktlint") version "10.0.0" apply false
+  id("org.jlleitschuh.gradle.ktlint") version "10.1.0" apply false
   id("com.vanniktech.maven.publish") version "0.13.0" apply false
   id("de.justjanne.jacoco-cobertura-converter") apply false
   id("org.jetbrains.dokka") version "1.4.32"
