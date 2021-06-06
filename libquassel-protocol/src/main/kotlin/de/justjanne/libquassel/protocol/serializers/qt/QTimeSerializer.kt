@@ -28,6 +28,10 @@ object QTimeSerializer : PrimitiveSerializer<LocalTime> {
 
   override fun deserialize(buffer: ByteBuffer, featureSet: FeatureSet): LocalTime {
     val millisecondOfDay = IntSerializer.deserialize(buffer, featureSet).toLong()
-    return LocalTime.ofNanoOfDay(millisecondOfDay * 1_000_000)
+    try {
+      return LocalTime.ofNanoOfDay(millisecondOfDay * 1_000_000)
+    } catch (e: Exception) {
+      return LocalTime.MAX
+    }
   }
 }

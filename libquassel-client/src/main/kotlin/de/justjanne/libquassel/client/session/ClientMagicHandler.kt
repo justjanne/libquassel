@@ -60,6 +60,8 @@ class ClientMagicHandler(
 
   override suspend fun read(buffer: ByteBuffer) = true
 
+  override suspend fun done() = Unit
+
   companion object {
     private val logger = LoggerFactory.getLogger(ClientMagicHandler::class.java)
   }

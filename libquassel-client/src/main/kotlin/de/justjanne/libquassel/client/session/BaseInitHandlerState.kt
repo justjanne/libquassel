@@ -7,12 +7,12 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.session
+package de.justjanne.libquassel.client.session
 
-import java.nio.ByteBuffer
+import de.justjanne.libquassel.protocol.syncables.ObjectIdentifier
 
-interface ConnectionHandler {
-  suspend fun init(channel: MessageChannel): Boolean
-  suspend fun done()
-  suspend fun read(buffer: ByteBuffer): Boolean
-}
+data class BaseInitHandlerState(
+  val started: Boolean = false,
+  val total: Int = 0,
+  val waiting: Set<ObjectIdentifier> = setOf()
+)

@@ -13,11 +13,13 @@ import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
+import de.justjanne.libquassel.protocol.syncables.HeartBeatHandler
 import de.justjanne.libquassel.protocol.syncables.ObjectRepository
 import de.justjanne.libquassel.protocol.syncables.common.AliasManager
 import de.justjanne.libquassel.protocol.syncables.common.BacklogManager
 import de.justjanne.libquassel.protocol.syncables.common.BufferSyncer
 import de.justjanne.libquassel.protocol.syncables.common.BufferViewManager
+import de.justjanne.libquassel.protocol.syncables.common.CertManager
 import de.justjanne.libquassel.protocol.syncables.common.CoreInfo
 import de.justjanne.libquassel.protocol.syncables.common.DccConfig
 import de.justjanne.libquassel.protocol.syncables.common.HighlightRuleManager
@@ -26,6 +28,7 @@ import de.justjanne.libquassel.protocol.syncables.common.IgnoreListManager
 import de.justjanne.libquassel.protocol.syncables.common.IrcListHelper
 import de.justjanne.libquassel.protocol.syncables.common.Network
 import de.justjanne.libquassel.protocol.syncables.common.NetworkConfig
+import de.justjanne.libquassel.protocol.syncables.common.RpcHandler
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 
 interface Session {
@@ -34,7 +37,7 @@ interface Session {
   val objectRepository: ObjectRepository
 
   fun init(
-    identities: List<QVariantMap>,
+    identityInfo: List<QVariantMap>,
     bufferInfos: List<BufferInfo>,
     networkIds: List<NetworkId>
   )
@@ -42,12 +45,20 @@ interface Session {
   fun network(id: NetworkId): Network?
   fun addNetwork(id: NetworkId)
   fun removeNetwork(id: NetworkId)
+  fun networks(): Set<Network>
 
   fun identity(id: IdentityId): Identity?
   fun addIdentity(properties: QVariantMap)
   fun removeIdentity(id: IdentityId)
+  fun identities(): Set<Identity>
+
+  fun certManager(id: IdentityId): CertManager?
+  fun certManagers(): Set<CertManager>
 
   fun rename(className: String, oldName: String, newName: String)
+
+  val heartBeatHandler: HeartBeatHandler
+  val rpcHandler: RpcHandler
 
   val aliasManager: AliasManager
   val backlogManager: BacklogManager

@@ -15,4 +15,8 @@ import de.justjanne.libquassel.protocol.syncables.stubs.IrcListHelperStub
 
 open class IrcListHelper(
   session: Session? = null
-) : SyncableObject(session, "IrcListHelper"), IrcListHelperStub
+) : SyncableObject(session, "IrcListHelper"), IrcListHelperStub {
+  init {
+    initialized = true
+  }
+}

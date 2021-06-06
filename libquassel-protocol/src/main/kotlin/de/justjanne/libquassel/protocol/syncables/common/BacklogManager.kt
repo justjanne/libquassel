@@ -15,4 +15,8 @@ import de.justjanne.libquassel.protocol.syncables.stubs.BacklogManagerStub
 
 open class BacklogManager(
   session: Session? = null
-) : SyncableObject(session, "BacklogManager"), BacklogManagerStub
+) : SyncableObject(session, "BacklogManager"), BacklogManagerStub {
+  init {
+    initialized = true
+  }
+}

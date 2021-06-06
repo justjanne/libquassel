@@ -20,13 +20,21 @@ import de.justjanne.libquassel.protocol.session.MessageChannelReadThread
 import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.util.log.trace
 import de.justjanne.libquassel.protocol.variant.QVariantMap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.runInterruptible
+import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
+import sun.security.util.DisabledAlgorithmConstraints
 import java.nio.ByteBuffer
 
 class ClientHandshakeHandler(
   val session: Session
 ) : HandshakeHandler, ClientConnectionHandler() {
   private val messageQueue = CoroutineKeyedQueue<Class<out HandshakeMessage>, HandshakeMessage>()
+  private var sessionInit: HandshakeMessage.SessionInit? = null
 
   override suspend fun read(buffer: ByteBuffer): Boolean {
     return dispatch(HandshakeMessageSerializer.deserialize(buffer, channel!!.negotiatedFeatures))
@@ -36,10 +44,17 @@ class ClientHandshakeHandler(
     logger.trace { "Read handshake message $message" }
     messageQueue.resume(message.javaClass, message)
     if (message is HandshakeMessage.SessionInit) {
-      session.init(message.identities, message.bufferInfos, message.networkIds)
+      sessionInit = message
       return true
-    } else {
-      return false
+    }
+    return false
+  }
+
+  override suspend fun done() {
+    super.done()
+    val message = sessionInit
+    if (message != null) {
+      session.init(message.identities, message.bufferInfos, message.networkIds)
     }
   }
 

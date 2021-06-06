@@ -35,6 +35,6 @@ object InitDataSerializer : SignalProxySerializer<SignalProxyMessage.InitData> {
   override fun deserialize(data: QVariantList) = SignalProxyMessage.InitData(
     StringSerializerUtf8.deserializeRaw(data.getOrNull(1).into<ByteBuffer>()),
     StringSerializerUtf8.deserializeRaw(data.getOrNull(2).into<ByteBuffer>()),
-    data.drop(3).toVariantMap()
+    data.drop(3).toVariantMap(byteBuffer = true)
   )
 }

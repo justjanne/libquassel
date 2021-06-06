@@ -28,6 +28,7 @@ import de.justjanne.libquassel.protocol.util.collections.pairs
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap
+import de.justjanne.libquassel.protocol.variant.QVariant_
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 
@@ -105,6 +106,12 @@ open class BufferSyncer(
       )
     }
     initialized = true
+  }
+
+  fun initializeBufferInfos(infos: List<BufferInfo>) {
+    state.update {
+      copy(bufferInfos = infos.associateBy(BufferInfo::bufferId))
+    }
   }
 
   fun lastSeenMsg(buffer: BufferId): MsgId = state().lastSeenMsg[buffer] ?: MsgId(0)

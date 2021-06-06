@@ -35,6 +35,10 @@ open class BufferViewConfig(
   state: BufferViewConfigState
 ) : StatefulSyncableObject<BufferViewConfigState>(session, "BufferViewConfig", state),
   BufferViewConfigStub {
+  init {
+    renameObject(state().identifier())
+  }
+
   override fun fromVariantMap(properties: QVariantMap) {
     state.update {
       copy(

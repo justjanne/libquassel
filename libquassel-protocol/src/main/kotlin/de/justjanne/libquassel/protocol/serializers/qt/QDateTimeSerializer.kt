@@ -16,6 +16,7 @@ import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.temporal.Temporal
@@ -51,7 +52,7 @@ object QDateTimeSerializer : PrimitiveSerializer<Temporal> {
     }
   }
 
-  override fun deserialize(buffer: ByteBuffer, featureSet: FeatureSet): Temporal {
+  override fun deserialize(buffer: ByteBuffer, featureSet: FeatureSet): OffsetDateTime {
     val julianDay = QDateSerializer.deserialize(buffer, featureSet)
     val localTime = QTimeSerializer.deserialize(buffer, featureSet)
     val localDateTime = LocalDateTime.of(julianDay, localTime)
@@ -61,7 +62,7 @@ object QDateTimeSerializer : PrimitiveSerializer<Temporal> {
       TimeSpec.LocalStandard,
       TimeSpec.LocalUnknown,
       TimeSpec.LocalDST ->
-        localDateTime
+        localDateTime.atZone(ZoneId.systemDefault()).toOffsetDateTime()
       TimeSpec.OffsetFromUTC ->
         localDateTime
           .atOffset(
@@ -72,7 +73,6 @@ object QDateTimeSerializer : PrimitiveSerializer<Temporal> {
       TimeSpec.UTC ->
         localDateTime
           .atOffset(ZoneOffset.UTC)
-          .toInstant()
     }
   }
 }

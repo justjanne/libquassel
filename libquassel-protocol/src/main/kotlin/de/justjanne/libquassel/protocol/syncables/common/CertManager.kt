@@ -33,6 +33,10 @@ open class CertManager(
   state: CertManagerState
 ) : StatefulSyncableObject<CertManagerState>(session, "CertManager", state),
   CertManagerStub {
+  init {
+    renameObject(state().identifier())
+  }
+
   override fun fromVariantMap(properties: QVariantMap) {
     val privateKeyPem = properties["sslKey"].into("")
     val certPem = properties["sslCert"].into("")
@@ -45,6 +49,7 @@ open class CertManager(
         certificate = readCertificate(certPem)
       )
     }
+    renameObject(state().identifier())
     initialized = true
   }
 

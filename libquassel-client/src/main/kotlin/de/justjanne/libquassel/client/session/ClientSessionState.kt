@@ -15,6 +15,7 @@ import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.syncables.common.AliasManager
 import de.justjanne.libquassel.protocol.syncables.common.BufferSyncer
 import de.justjanne.libquassel.protocol.syncables.common.BufferViewManager
+import de.justjanne.libquassel.protocol.syncables.common.CertManager
 import de.justjanne.libquassel.protocol.syncables.common.CoreInfo
 import de.justjanne.libquassel.protocol.syncables.common.DccConfig
 import de.justjanne.libquassel.protocol.syncables.common.HighlightRuleManager
@@ -27,6 +28,7 @@ import de.justjanne.libquassel.protocol.syncables.common.NetworkConfig
 data class ClientSessionState(
   val networks: Map<NetworkId, Network>,
   val identities: Map<IdentityId, Identity>,
+  val certManagers: Map<IdentityId, CertManager>,
   val aliasManager: AliasManager,
   val backlogManager: ClientBacklogManager,
   val bufferSyncer: BufferSyncer,

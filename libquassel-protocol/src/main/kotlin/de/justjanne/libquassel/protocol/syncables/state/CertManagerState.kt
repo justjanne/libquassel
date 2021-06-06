@@ -19,4 +19,6 @@ data class CertManagerState(
   val certificatePem: String = "",
   val privateKey: PrivateKey? = null,
   val certificate: Certificate? = null
-)
+) {
+  fun identifier() = "${identityId.id}"
+}

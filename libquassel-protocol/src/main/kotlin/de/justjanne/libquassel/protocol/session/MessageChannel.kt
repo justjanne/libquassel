@@ -55,7 +55,8 @@ class MessageChannel(
     dispatch(messageBuffer)
   }
 
-  private suspend fun setupHandlers() {
+  private suspend fun setupHandlers(): List<ConnectionHandler> {
+    val removed = mutableListOf<ConnectionHandler>()
     while (true) {
       val handler = handlers.firstOrNull()
       logger.trace { "Setting up handler $handler" }
@@ -63,18 +64,27 @@ class MessageChannel(
         break
       }
       logger.trace { "Handler $handler is done" }
-      handlers.removeFirst()
+      removed.add(handlers.removeFirst())
     }
     if (handlers.isEmpty()) {
       logger.trace { "All handlers done" }
       channel.close()
     }
+    return removed
   }
 
   private suspend fun dispatch(message: ByteBuffer) {
-    if (handlers.first().read(message)) {
-      handlers.removeFirst()
-      setupHandlers()
+    val handlerDone = try {
+      handlers.first().read(message)
+    } catch (e: Exception) {
+      logger.warn("Error while handling message: ", e)
+      false
+    }
+    if (handlerDone) {
+      val removed = listOf(handlers.removeFirst()) + setupHandlers()
+      for (handler in removed) {
+        handler.done()
+      }
     }
   }
 

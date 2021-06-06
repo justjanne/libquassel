@@ -9,7 +9,9 @@
 
 package de.justjanne.libquassel.protocol.variant
 
+import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
 import de.justjanne.libquassel.protocol.util.collections.pairs
+import java.nio.ByteBuffer
 
 /**
  * Simple alias for a generic QVariantList type
@@ -19,7 +21,11 @@ typealias QVariantList = List<QVariant_>
 /**
  * Transform a QVariantList of interleaved keys and values into a QVariantMap
  */
-fun QVariantList.toVariantMap(): QVariantMap =
+fun QVariantList.toVariantMap(byteBuffer: Boolean = false): QVariantMap =
   pairs { key, value ->
-    Pair(key.into(""), value)
+    if (byteBuffer) {
+      Pair(StringSerializerUtf8.deserializeRaw(key.into<ByteBuffer>()), value)
+    } else {
+      Pair(key.into(""), value)
+    }
   }.toMap()

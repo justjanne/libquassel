@@ -24,6 +24,10 @@ abstract class ClientConnectionHandler : ConnectionHandler {
     return false
   }
 
+  override suspend fun done() {
+    this.channel = null
+  }
+
   suspend fun emit(message: SignalProxyMessage) {
     if (channel == null) {
       readyQueue.wait()

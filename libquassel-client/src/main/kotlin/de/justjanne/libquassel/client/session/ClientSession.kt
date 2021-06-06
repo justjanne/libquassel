@@ -12,6 +12,7 @@ import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.client.syncables.ClientBacklogManager
 import de.justjanne.libquassel.protocol.connection.ProtocolFeatures
 import de.justjanne.libquassel.protocol.connection.ProtocolMeta
+import de.justjanne.libquassel.protocol.features.QuasselFeature
 import de.justjanne.libquassel.protocol.io.CoroutineChannel
 import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
@@ -26,6 +27,7 @@ import de.justjanne.libquassel.protocol.syncables.ObjectRepository
 import de.justjanne.libquassel.protocol.syncables.common.AliasManager
 import de.justjanne.libquassel.protocol.syncables.common.BufferSyncer
 import de.justjanne.libquassel.protocol.syncables.common.BufferViewManager
+import de.justjanne.libquassel.protocol.syncables.common.CertManager
 import de.justjanne.libquassel.protocol.syncables.common.CoreInfo
 import de.justjanne.libquassel.protocol.syncables.common.DccConfig
 import de.justjanne.libquassel.protocol.syncables.common.HighlightRuleManager
@@ -34,6 +36,7 @@ import de.justjanne.libquassel.protocol.syncables.common.IgnoreListManager
 import de.justjanne.libquassel.protocol.syncables.common.IrcListHelper
 import de.justjanne.libquassel.protocol.syncables.common.Network
 import de.justjanne.libquassel.protocol.syncables.common.NetworkConfig
+import de.justjanne.libquassel.protocol.syncables.state.CertManagerState
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
 import de.justjanne.libquassel.protocol.util.log.info
 import de.justjanne.libquassel.protocol.util.update
@@ -51,21 +54,23 @@ class ClientSession(
 ) : Session {
   override val side = ProtocolSide.CLIENT
 
-  private val rpcHandler = ClientRpcHandler(this)
-  private val heartBeatHandler = HeartBeatHandler()
+  override val rpcHandler = ClientRpcHandler(this)
+  override val heartBeatHandler = HeartBeatHandler()
   override val objectRepository = ObjectRepository()
   val handshakeHandler = ClientHandshakeHandler(this)
+  val baseInitHandler = BaseInitHandler(this)
   private val proxyMessageHandler = ClientProxyMessageHandler(
     heartBeatHandler,
     objectRepository,
-    rpcHandler
+    rpcHandler,
+    baseInitHandler
   )
-  private val magicHandler = ClientMagicHandler(protocolFeatures, protocols, sslContext)
   override val proxy = CommonSyncProxy(
     ProtocolSide.CLIENT,
     objectRepository,
     proxyMessageHandler
   )
+  private val magicHandler = ClientMagicHandler(protocolFeatures, protocols, sslContext)
   private val messageChannel = MessageChannel(connection)
 
   init {
@@ -76,15 +81,53 @@ class ClientSession(
   }
 
   override fun init(
-    identities: List<QVariantMap>,
+    identityInfo: List<QVariantMap>,
     bufferInfos: List<BufferInfo>,
     networkIds: List<NetworkId>
   ) {
     logger.info {
-      "Client session initialized: networks = $networkIds, buffers = $bufferInfos, identities = $identities"
+      "Client session initialized: networks = $networkIds, buffers = $bufferInfos, identities = $identityInfo"
     }
-    objectRepository.add(state().coreInfo)
-    objectRepository.add(state().backlogManager)
+
+    bufferSyncer.initializeBufferInfos(bufferInfos)
+
+    val networks = networkIds.map {
+      Network(this@ClientSession, NetworkState(networkId = it))
+    }
+    val identities = identityInfo.map {
+      Identity(this@ClientSession).apply {
+        fromVariantMap(it)
+      }
+    }
+
+    state.update {
+      copy(
+        networks = networks.associateBy(Network::networkId),
+        identities = identities.associateBy(Identity::id),
+      )
+    }
+
+    for (network in networks) {
+      baseInitHandler.sync(network)
+    }
+    for (identity in identities) {
+      baseInitHandler.sync(identity)
+      baseInitHandler.sync(CertManager(this, CertManagerState(identityId = identity.id())))
+    }
+    baseInitHandler.sync(state().aliasManager)
+    baseInitHandler.sync(state().bufferSyncer)
+    baseInitHandler.sync(state().bufferViewManager)
+    baseInitHandler.sync(state().coreInfo)
+    if (messageChannel.negotiatedFeatures.hasFeature(QuasselFeature.DccFileTransfer)) {
+      baseInitHandler.sync(state().dccConfig)
+    }
+    baseInitHandler.sync(state().ignoreListManager)
+    if (messageChannel.negotiatedFeatures.hasFeature(QuasselFeature.CoreSideHighlights)) {
+      baseInitHandler.sync(state().highlightRuleManager)
+    }
+    baseInitHandler.sync(state().ircListHelper)
+    baseInitHandler.sync(state().networkConfig)
+    baseInitHandler.sync(state().backlogManager)
   }
 
   override fun network(id: NetworkId) = state().networks[id]
@@ -104,6 +147,8 @@ class ClientSession(
     }
   }
 
+  override fun networks() = state().networks.values.toSet()
+
   override fun identity(id: IdentityId) = state().identities[id]
 
   override fun addIdentity(properties: QVariantMap) {
@@ -122,6 +167,12 @@ class ClientSession(
       copy(identities = identities - id)
     }
   }
+
+  override fun identities() = state().identities.values.toSet()
+
+  override fun certManager(id: IdentityId) = state().certManagers[id]
+
+  override fun certManagers() = state().certManagers.values.toSet()
 
   override fun rename(className: String, oldName: String, newName: String) {
     rpcHandler.objectRenamed(
@@ -162,6 +213,7 @@ class ClientSession(
     ClientSessionState(
       networks = mapOf(),
       identities = mapOf(),
+      certManagers = mapOf(),
       aliasManager = AliasManager(this),
       backlogManager = ClientBacklogManager(this),
       bufferSyncer = BufferSyncer(this),

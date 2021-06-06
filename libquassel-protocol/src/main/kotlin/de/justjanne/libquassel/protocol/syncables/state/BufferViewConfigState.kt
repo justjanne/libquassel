@@ -30,4 +30,6 @@ data class BufferViewConfigState(
   val buffers: List<BufferId> = emptyList(),
   val removedBuffers: Set<BufferId> = emptySet(),
   val hiddenBuffers: Set<BufferId> = emptySet(),
-)
+) {
+  fun identifier() = "$bufferViewId"
+}

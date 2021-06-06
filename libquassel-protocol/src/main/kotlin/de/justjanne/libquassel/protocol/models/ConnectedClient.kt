@@ -19,6 +19,7 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import org.threeten.bp.Instant
+import org.threeten.bp.ZoneOffset
 
 data class ConnectedClient(
   val id: Int,
@@ -51,7 +52,7 @@ data class ConnectedClient(
       versionDate = properties["clientVersionDate"].into("")
         .toLongOrNull()
         ?.let(Instant::ofEpochSecond),
-      connectedSince = properties["connectedSince"].into(Instant.EPOCH),
+      connectedSince = properties["connectedSince"].into(Instant.EPOCH.atOffset(ZoneOffset.UTC)).toInstant(),
       secure = properties["secure"].into(false),
       features = FeatureSet.build(
         LegacyFeature.of(properties["features"].into()),

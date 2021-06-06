@@ -22,6 +22,7 @@ import de.justjanne.libquassel.protocol.variant.QVariant_
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import org.threeten.bp.Instant
+import org.threeten.bp.ZoneOffset
 
 open class CoreInfo(
   session: Session? = null,
@@ -37,7 +38,7 @@ open class CoreInfo(
         versionDate = coreData["quasselBuildDate"].into("")
           .toLongOrNull()
           ?.let(Instant::ofEpochSecond),
-        startTime = coreData["startTime"].into(startTime),
+        startTime = coreData["startTime"].into(startTime.atOffset(ZoneOffset.UTC)).toInstant(),
         connectedClientCount = coreData["sessionConnectedClients"].into(connectedClientCount),
         connectedClients = coreData["sessionConnectedClientData"].into<QVariantList>()
           ?.mapNotNull<QVariant_, QVariantMap>(QVariant_::into)

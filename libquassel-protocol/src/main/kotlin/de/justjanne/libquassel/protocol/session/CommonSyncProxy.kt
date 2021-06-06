@@ -14,6 +14,7 @@ import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.syncables.ObjectRepository
 import de.justjanne.libquassel.protocol.syncables.SyncableStub
 import de.justjanne.libquassel.protocol.variant.QVariantList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 
 class CommonSyncProxy(
@@ -22,9 +23,9 @@ class CommonSyncProxy(
   private val proxyMessageHandler: ProxyMessageHandler
 ) : SyncProxy {
   override fun synchronize(syncable: SyncableStub) {
-    if (objectRepository.add(syncable)) {
-      runBlocking {
-        proxyMessageHandler.dispatch(SignalProxyMessage.InitRequest(syncable.className, syncable.objectName))
+    if (objectRepository.add(syncable) && !syncable.initialized) {
+      runBlocking(context = Dispatchers.IO) {
+        proxyMessageHandler.emit(SignalProxyMessage.InitRequest(syncable.className, syncable.objectName))
       }
     }
   }

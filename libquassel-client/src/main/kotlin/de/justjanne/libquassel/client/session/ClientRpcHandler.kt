@@ -14,10 +14,12 @@ import de.justjanne.libquassel.protocol.models.StatusMessage
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
 import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.common.RpcHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.runBlocking
 import java.nio.ByteBuffer
 
 class ClientRpcHandler(session: Session) : RpcHandler(session) {
@@ -30,11 +32,15 @@ class ClientRpcHandler(session: Session) : RpcHandler(session) {
   }
 
   override fun displayMsg(message: Message) {
-    messages.tryEmit(message)
+    runBlocking(Dispatchers.Default) {
+      messages.emit(message)
+    }
   }
 
   override fun displayStatusMsg(net: String?, msg: String?) {
-    statusMessage.tryEmit(StatusMessage(net, msg ?: return))
+    runBlocking(Dispatchers.Default) {
+      statusMessage.emit(StatusMessage(net, msg ?: ""))
+    }
   }
 
   @Suppress("NOTHING_TO_INLINE")

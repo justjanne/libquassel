@@ -23,11 +23,11 @@ import de.justjanne.testcontainersci.api.providedContainer
 import de.justjanne.testcontainersci.extension.CiContainers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.net.InetSocketAddress
 import javax.net.ssl.SSLContext
-import kotlin.test.assertTrue
 
 @ExperimentalCoroutinesApi
 @CiContainers
@@ -36,17 +36,13 @@ class ClientTest {
     QuasselCoreContainer()
   }
 
-  private val sslContext = SSLContext.getInstance("TLSv1.3").apply {
-    init(null, arrayOf(TestX509TrustManager), null)
-  }
-
-  private val channel = CoroutineChannel()
-
-  private val username = "AzureDiamond"
-  private val password = "hunter2"
+  private val username = "kuschku"
+  private val password = "goalielecturetrawl"
 
   @Test
   fun testConnect(): Unit = runBlocking {
+    val channel = CoroutineChannel()
+
     channel.connect(
       InetSocketAddress(
         quassel.address,
@@ -62,7 +58,9 @@ class ClientTest {
           0x0000u
         )
       ),
-      sslContext
+      SSLContext.getInstance("TLSv1.3").apply {
+        init(null, arrayOf(TestX509TrustManager), null)
+      }
     )
     val coreState: CoreState = session.handshakeHandler.init(
       "Quasseltest v0.1",
@@ -92,6 +90,7 @@ class ClientTest {
       session.handshakeHandler.login("acidburn", "ineverweardresses")
     }
     session.handshakeHandler.login(username, password)
+    session.baseInitHandler.waitForInitDone()
     channel.close()
   }
 }

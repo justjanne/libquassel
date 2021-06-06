@@ -18,6 +18,8 @@ import de.justjanne.libquassel.protocol.serializers.PrimitiveSerializer
 import de.justjanne.libquassel.protocol.util.reflect.instanceof
 import de.justjanne.libquassel.protocol.util.reflect.subtype
 import java.nio.ByteBuffer
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneOffset
 
 /**
  * Simple alias for a generic QVariant type

@@ -21,6 +21,8 @@ import de.justjanne.libquassel.protocol.variant.indexed
 import de.justjanne.libquassel.protocol.variant.into
 import de.justjanne.libquassel.protocol.variant.qVariant
 import org.threeten.bp.Instant
+import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.ZoneOffset
 import org.threeten.bp.temporal.Temporal
 
 open class IrcUser(
@@ -45,11 +47,11 @@ open class IrcUser(
         account = properties["account"].indexed(index).into(account),
         away = properties["away"].indexed(index).into(away),
         awayMessage = properties["awayMessage"].indexed(index).into(awayMessage),
-        idleTime = properties["idleTime"].indexed(index).into(idleTime),
-        loginTime = properties["loginTime"].indexed(index).into(loginTime),
+        idleTime = properties["idleTime"].indexed(index).into(idleTime.atOffset(ZoneOffset.UTC)).toInstant(),
+        loginTime = properties["loginTime"].indexed(index).into(loginTime.atOffset(ZoneOffset.UTC)).toInstant(),
         server = properties["server"].indexed(index).into(server),
         ircOperator = properties["ircOperator"].indexed(index).into(ircOperator),
-        lastAwayMessageTime = properties["lastAwayMessageTime"].indexed(index).into()
+        lastAwayMessageTime = properties["lastAwayMessageTime"].indexed(index).into<OffsetDateTime>()?.toInstant()
           ?: properties["lastAwayMessage"].indexed(index).into<Int>()?.toLong()
             ?.let(Instant::ofEpochSecond)
           ?: lastAwayMessageTime,
