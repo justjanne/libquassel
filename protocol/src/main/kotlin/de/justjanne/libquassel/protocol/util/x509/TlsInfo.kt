@@ -7,7 +7,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.client.util
+package de.justjanne.libquassel.protocol.util.x509
 
 import java.security.cert.Certificate
 import java.security.cert.X509Certificate

@@ -300,10 +300,6 @@ class IrcChannelTest {
       )
       session.networks.add(network)
       val channel = network.state().ircChannels.values.first()
-      println(network.supports())
-      println(network.channelModes())
-      println(network.session)
-      println(channel.session)
 
       assertEquals(emptyMap<Char, Set<String>>(), channel.state().channelModes.a)
       assertEquals(emptyMap<Char, String>(), channel.state().channelModes.b)
@@ -390,7 +386,6 @@ class IrcChannelTest {
       )
       session.networks.add(network)
       val channel = network.state().ircChannels.values.first()
-      println(network.channelModes())
 
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
@@ -441,7 +436,6 @@ class IrcChannelTest {
       )
       session.networks.add(network)
       val channel = network.state().ircChannels.values.first()
-      println(network.channelModes())
 
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
@@ -532,7 +526,6 @@ class IrcChannelTest {
       )
       session.networks.add(network)
       val channel = network.state().ircChannels.values.first()
-      println(network.channelModes())
 
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
@@ -601,7 +594,6 @@ class IrcChannelTest {
       )
       session.networks.add(network)
       val channel = network.state().ircChannels.values.first()
-      println(network.channelModes())
 
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)
@@ -678,7 +670,6 @@ class IrcChannelTest {
       )
       session.networks.add(network)
       val channel = network.state().ircChannels.values.first()
-      println(network.channelModes())
 
       assertEquals(expected.a, channel.state().channelModes.a)
       assertEquals(expected.b, channel.state().channelModes.b)

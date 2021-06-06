@@ -9,13 +9,15 @@
 
 package de.justjanne.libquassel.protocol.session
 
+import de.justjanne.libquassel.protocol.exceptions.HandshakeException
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 
-interface HandshakeMessageHandler {
+interface HandshakeHandler : ConnectionHandler {
   /**
    * Register client and start connection
    */
+  @Throws(HandshakeException.InitException::class)
   suspend fun init(
     /**
      * Human readable (HTML formatted) version of the client
@@ -29,11 +31,12 @@ interface HandshakeMessageHandler {
      * Enabled client features for this connection
      */
     featureSet: FeatureSet
-  )
+  ): CoreState
 
   /**
    * Login to core with authentication data
    */
+  @Throws(HandshakeException.LoginException::class)
   suspend fun login(
     /**
      * Username of the core account
@@ -48,6 +51,7 @@ interface HandshakeMessageHandler {
   /**
    * Configure core for the first time
    */
+  @Throws(HandshakeException.SetupException::class)
   suspend fun configureCore(
     /**
      * Username of a new core account to be created

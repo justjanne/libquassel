@@ -7,9 +7,8 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.client.io
+package de.justjanne.libquassel.protocol.io
 
-import de.justjanne.libquassel.protocol.io.ChainedByteBuffer
 import de.justjanne.libquassel.protocol.util.update
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher

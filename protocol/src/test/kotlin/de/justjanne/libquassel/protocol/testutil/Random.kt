@@ -66,18 +66,18 @@ fun Random.nextNetwork(networkId: NetworkId) = NetworkState(
   ircUsers = List(nextInt(20)) {
     IrcUser(state = nextIrcUser(networkId))
   }.associateBy(IrcUser::nick).mapKeys { (key) ->
-    key.toLowerCase(Locale.ROOT)
+    key.lowercase(Locale.ROOT)
   },
   ircChannels = List(nextInt(20)) {
     IrcChannel(state = nextIrcChannel(networkId))
   }.associateBy(IrcChannel::name).mapKeys { (key) ->
-    key.toLowerCase(Locale.ROOT)
+    key.lowercase(Locale.ROOT)
   },
   supports = List(nextInt(20)) {
-    nextString().toUpperCase(Locale.ROOT) to nextString()
+    nextString().uppercase(Locale.ROOT) to nextString()
   }.toMap(),
   caps = List(nextInt(20)) {
-    nextString().toLowerCase(Locale.ROOT) to nextString()
+    nextString().lowercase(Locale.ROOT) to nextString()
   }.toMap(),
   capsEnabled = List(nextInt(20)) {
     nextString()

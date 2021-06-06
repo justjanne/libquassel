@@ -1,0 +1,28 @@
+/*
+ * libquassel
+ * Copyright (c) 2021 Janne Mareike Koschinski
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public License,
+ * v. 2.0. If a copy of the MPL was not distributed with this file, You can
+ * obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+package de.justjanne.libquassel.client.util
+
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
+
+class CoroutineQueue {
+  private val waiting = mutableListOf<Continuation<Unit>>()
+  suspend fun wait(): Unit = suspendCoroutine {
+    waiting.add(it)
+  }
+
+  suspend fun resume() {
+    for (continuation in waiting) {
+      continuation.resume(Unit)
+    }
+    waiting.clear()
+  }
+}

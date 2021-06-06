@@ -14,6 +14,7 @@ import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.syncables.ObjectRepository
 import de.justjanne.libquassel.protocol.syncables.SyncableStub
 import de.justjanne.libquassel.protocol.variant.QVariantList
+import kotlinx.coroutines.runBlocking
 
 class CommonSyncProxy(
   private val protocolSide: ProtocolSide,
@@ -22,7 +23,9 @@ class CommonSyncProxy(
 ) : SyncProxy {
   override fun synchronize(syncable: SyncableStub) {
     if (objectRepository.add(syncable)) {
-      proxyMessageHandler.dispatch(SignalProxyMessage.InitRequest(syncable.className, syncable.objectName))
+      runBlocking {
+        proxyMessageHandler.dispatch(SignalProxyMessage.InitRequest(syncable.className, syncable.objectName))
+      }
     }
   }
 
@@ -38,14 +41,16 @@ class CommonSyncProxy(
     arguments: QVariantList
   ) {
     if (target != protocolSide) {
-      proxyMessageHandler.emit(
-        SignalProxyMessage.Sync(
-          className,
-          objectName,
-          function,
-          arguments
+      runBlocking {
+        proxyMessageHandler.emit(
+          SignalProxyMessage.Sync(
+            className,
+            objectName,
+            function,
+            arguments
+          )
         )
-      )
+      }
     }
   }
 
@@ -55,12 +60,14 @@ class CommonSyncProxy(
     arguments: QVariantList
   ) {
     if (target != protocolSide) {
-      proxyMessageHandler.emit(
-        SignalProxyMessage.Rpc(
-          function,
-          arguments
+      runBlocking {
+        proxyMessageHandler.emit(
+          SignalProxyMessage.Rpc(
+            function,
+            arguments
+          )
         )
-      )
+      }
     }
   }
 }

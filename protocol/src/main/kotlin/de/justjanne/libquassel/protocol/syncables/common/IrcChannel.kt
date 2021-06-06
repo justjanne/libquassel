@@ -238,7 +238,6 @@ open class IrcChannel(
 
   override fun removeChannelMode(mode: Char, value: String?) {
     val network = session?.network(network())
-    println(network?.channelModeType(mode))
     state.update {
       copy(
         channelModes = channelModes.run {

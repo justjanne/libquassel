@@ -7,11 +7,12 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.session
+package de.justjanne.libquassel.protocol.io
 
-import de.justjanne.libquassel.protocol.models.SignalProxyMessage
+import de.justjanne.libquassel.protocol.util.x509.TlsInfo
 
-interface ProxyMessageHandler : ConnectionHandler {
-  suspend fun emit(message: SignalProxyMessage)
-  suspend fun dispatch(message: SignalProxyMessage)
-}
+data class CoroutineChannelState(
+  val tlsInfo: TlsInfo? = null,
+  val compression: Boolean = false,
+  val connected: Boolean = false,
+)

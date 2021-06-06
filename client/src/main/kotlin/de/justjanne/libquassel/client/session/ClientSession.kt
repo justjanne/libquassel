@@ -6,14 +6,19 @@
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
-package de.justjanne.libquassel.client
+package de.justjanne.libquassel.client.session
 
 import de.justjanne.libquassel.annotations.ProtocolSide
-import de.justjanne.libquassel.client.io.CoroutineChannel
+import de.justjanne.libquassel.protocol.connection.ProtocolFeatures
+import de.justjanne.libquassel.protocol.connection.ProtocolMeta
+import de.justjanne.libquassel.protocol.io.CoroutineChannel
+import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
 import de.justjanne.libquassel.protocol.session.CommonSyncProxy
+import de.justjanne.libquassel.protocol.session.MessageChannel
+import de.justjanne.libquassel.protocol.session.MessageChannelReadThread
 import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.HeartBeatHandler
 import de.justjanne.libquassel.protocol.syncables.ObjectRepository
@@ -30,29 +35,55 @@ import de.justjanne.libquassel.protocol.syncables.common.IrcListHelper
 import de.justjanne.libquassel.protocol.syncables.common.Network
 import de.justjanne.libquassel.protocol.syncables.common.NetworkConfig
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
+import de.justjanne.libquassel.protocol.util.log.info
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.slf4j.LoggerFactory
+import javax.net.ssl.SSLContext
 
 class ClientSession(
-  private val connection: CoroutineChannel
+  connection: CoroutineChannel,
+  protocolFeatures: ProtocolFeatures,
+  protocols: List<ProtocolMeta>,
+  sslContext: SSLContext
 ) : Session {
   override val side = ProtocolSide.CLIENT
 
   private val rpcHandler = ClientRpcHandler(this)
   private val heartBeatHandler = HeartBeatHandler()
   override val objectRepository = ObjectRepository()
+  val handshakeHandler = ClientHandshakeHandler(this)
   private val proxyMessageHandler = ClientProxyMessageHandler(
     heartBeatHandler,
     objectRepository,
     rpcHandler
   )
+  private val magicHandler = ClientMagicHandler(protocolFeatures, protocols, sslContext)
   override val proxy = CommonSyncProxy(
     ProtocolSide.CLIENT,
     objectRepository,
     proxyMessageHandler
   )
+  private val messageChannel = MessageChannel(connection)
+
+  init {
+    messageChannel.register(magicHandler)
+    messageChannel.register(handshakeHandler)
+    messageChannel.register(proxyMessageHandler)
+    MessageChannelReadThread(messageChannel).start()
+  }
+
+  override fun init(
+    identities: List<QVariantMap>,
+    bufferInfos: List<BufferInfo>,
+    networkIds: List<NetworkId>
+  ) {
+    logger.info {
+      "Client session initialized: networks = $networkIds, buffers = $bufferInfos, identities = $identities"
+    }
+  }
 
   override fun network(id: NetworkId) = state().networks[id]
   override fun addNetwork(id: NetworkId) {
@@ -141,4 +172,8 @@ class ClientSession(
       networkConfig = NetworkConfig(this)
     )
   )
+
+  companion object {
+    private val logger = LoggerFactory.getLogger(ClientSession::class.java)
+  }
 }

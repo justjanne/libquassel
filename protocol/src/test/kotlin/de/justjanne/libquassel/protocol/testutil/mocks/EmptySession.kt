@@ -10,6 +10,7 @@
 package de.justjanne.libquassel.protocol.testutil.mocks
 
 import de.justjanne.libquassel.annotations.ProtocolSide
+import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.session.Session
@@ -32,6 +33,8 @@ open class EmptySession : Session {
   final override val side = ProtocolSide.CLIENT
   final override val objectRepository = ObjectRepository()
   override val proxy = EmptySyncProxy()
+
+  override fun init(identities: List<QVariantMap>, bufferInfos: List<BufferInfo>, networkIds: List<NetworkId>) = Unit
 
   override fun network(id: NetworkId): Network? = null
   override fun addNetwork(id: NetworkId) = Unit

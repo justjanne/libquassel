@@ -9,7 +9,6 @@
 package de.justjanne.libquassel.protocol.testutil
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.io.contentToString
 import de.justjanne.libquassel.protocol.io.useChainedByteBuffer
 import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.serializers.SignalProxyMessageSerializer
@@ -50,9 +49,6 @@ inline fun <reified T : SignalProxyMessage> signalProxySerializerTest(
     val after = SignalProxyMessageSerializer.deserialize(
       useChainedByteBuffer {
         SignalProxyMessageSerializer.serialize(it, value, featureSet)
-        if (encoded == null) {
-          println(it.toBuffer().contentToString())
-        }
       },
       featureSet
     )

@@ -7,7 +7,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.client
+package de.justjanne.libquassel.client.session
 
 import de.justjanne.libquassel.protocol.models.Message
 import de.justjanne.libquassel.protocol.models.StatusMessage

@@ -10,6 +10,7 @@
 package de.justjanne.libquassel.protocol.session
 
 import de.justjanne.libquassel.annotations.ProtocolSide
+import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.syncables.ObjectRepository
@@ -31,6 +32,12 @@ interface Session {
   val side: ProtocolSide
   val proxy: SyncProxy
   val objectRepository: ObjectRepository
+
+  fun init(
+    identities: List<QVariantMap>,
+    bufferInfos: List<BufferInfo>,
+    networkIds: List<NetworkId>
+  )
 
   fun network(id: NetworkId): Network?
   fun addNetwork(id: NetworkId)

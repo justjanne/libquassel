@@ -299,9 +299,7 @@ class BufferViewConfigTest {
       val hiddenSize = value.hiddenBuffers().size
       val removedSize = value.removedBuffers().size
       val buffer = value.buffers().first()
-      println(value.buffers())
       value.moveBuffer(buffer, 3)
-      println(value.buffers())
       assertEquals(3, value.buffers().indexOf(buffer))
       assertEquals(bufferSize, value.buffers().size)
       assertEquals(hiddenSize, value.hiddenBuffers().size)

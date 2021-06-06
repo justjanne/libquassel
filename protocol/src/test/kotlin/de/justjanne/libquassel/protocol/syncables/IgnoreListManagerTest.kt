@@ -269,10 +269,6 @@ class IgnoreListManagerTest {
 
       assertFalse(value.isEmpty())
       for (rule in value.state().rules) {
-        println(rule)
-        val index = value.state().indexOf(rule.ignoreRule)
-        println(index)
-        println(value.state().rules[index])
         value.removeIgnoreListItem(rule.ignoreRule)
       }
       assertTrue(value.isEmpty())

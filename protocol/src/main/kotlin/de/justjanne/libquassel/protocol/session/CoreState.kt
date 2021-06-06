@@ -9,9 +9,12 @@
 
 package de.justjanne.libquassel.protocol.session
 
-import de.justjanne.libquassel.protocol.models.SignalProxyMessage
+import de.justjanne.libquassel.protocol.models.setup.BackendInfo
 
-interface ProxyMessageHandler : ConnectionHandler {
-  suspend fun emit(message: SignalProxyMessage)
-  suspend fun dispatch(message: SignalProxyMessage)
+sealed class CoreState {
+  object Configured : CoreState()
+  data class Unconfigured(
+    val databases: List<BackendInfo>,
+    val authenticators: List<BackendInfo>
+  ) : CoreState()
 }

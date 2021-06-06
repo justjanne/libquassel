@@ -7,7 +7,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.client.io
+package de.justjanne.libquassel.protocol.io
 
 import java.io.InputStream
 import java.nio.ByteBuffer

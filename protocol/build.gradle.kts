@@ -20,6 +20,8 @@ dependencies {
   api("de.justjanne", "kotlin-bitflags", kotlinBitflagsVersion)
   val bouncyCastleVersion: String by project
   implementation("org.bouncycastle", "bcpkix-jdk15on", bouncyCastleVersion)
+  val sl4jVersion: String by project
+  implementation("org.slf4j", "slf4j-simple", sl4jVersion)
   api(project(":annotations"))
   ksp(project(":generator"))
 }

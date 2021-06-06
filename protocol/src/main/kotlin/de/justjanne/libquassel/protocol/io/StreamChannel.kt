@@ -7,9 +7,9 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.client.io
+package de.justjanne.libquassel.protocol.io
 
-import de.justjanne.libquassel.client.util.TlsInfo
+import de.justjanne.libquassel.protocol.util.x509.TlsInfo
 import java.io.Flushable
 import java.io.InputStream
 import java.io.OutputStream

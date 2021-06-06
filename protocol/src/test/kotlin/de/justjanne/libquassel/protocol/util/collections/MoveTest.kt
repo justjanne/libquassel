@@ -54,7 +54,6 @@ class MoveTest {
 
   @Test
   fun movesCorrectly() {
-    val data = listOf(1, 2, 3, 4, 5, 7).shuffled()
     assertEquals(
       listOf('a', 'c', 'd', 'e', 'b', 'f'),
       listOf('a', 'b', 'c', 'd', 'e', 'f').move('b', 4)

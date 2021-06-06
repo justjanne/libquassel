@@ -63,17 +63,17 @@ class QCharSerializerTest {
     for (value in 'a'..'z') primitiveSerializerTest(
       QCharSerializer,
       value,
-      byteBufferOf(0, value.toByte())
+      byteBufferOf(0, value.code.toByte())
     )
     for (value in 'A'..'Z') primitiveSerializerTest(
       QCharSerializer,
       value,
-      byteBufferOf(0, value.toByte())
+      byteBufferOf(0, value.code.toByte())
     )
     for (value in '0'..'9') primitiveSerializerTest(
       QCharSerializer,
       value,
-      byteBufferOf(0, value.toByte())
+      byteBufferOf(0, value.code.toByte())
     )
   }
 

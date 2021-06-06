@@ -7,12 +7,11 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.client.io
+package de.justjanne.libquassel.protocol.session
 
-import de.justjanne.libquassel.client.util.TlsInfo
+import java.nio.ByteBuffer
 
-data class CoroutineChannelState(
-  val tlsInfo: TlsInfo? = null,
-  val compression: Boolean = false,
-  val connected: Boolean = false,
-)
+interface ConnectionHandler {
+  suspend fun init(channel: MessageChannel): Boolean
+  suspend fun read(buffer: ByteBuffer): Boolean
+}

@@ -7,9 +7,10 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.client.io
+package de.justjanne.libquassel.protocol.io
 
 import java.io.OutputStream
+import java.net.SocketException
 import java.util.zip.DeflaterOutputStream
 
 /**
@@ -25,6 +26,8 @@ class FixedDeflaterOutputStream(
   override fun close() {
     try {
       super.close()
+    } catch (e: SocketException) {
+      // ignored
     } finally {
       def.end()
     }

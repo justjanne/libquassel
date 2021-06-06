@@ -7,27 +7,34 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.client
+package de.justjanne.libquassel.client.session
 
 import de.justjanne.libquassel.annotations.ProtocolSide
 import de.justjanne.libquassel.protocol.exceptions.RpcInvocationFailedException
 import de.justjanne.libquassel.protocol.models.SignalProxyMessage
+import de.justjanne.libquassel.protocol.serializers.SignalProxyMessageSerializer
 import de.justjanne.libquassel.protocol.session.ProxyMessageHandler
 import de.justjanne.libquassel.protocol.syncables.HeartBeatHandler
 import de.justjanne.libquassel.protocol.syncables.ObjectRepository
 import de.justjanne.libquassel.protocol.syncables.common.RpcHandler
 import de.justjanne.libquassel.protocol.syncables.invoker.Invokers
+import de.justjanne.libquassel.protocol.util.log.trace
+import org.slf4j.LoggerFactory
+import java.nio.ByteBuffer
 
 class ClientProxyMessageHandler(
-  val heartBeatHandler: HeartBeatHandler,
-  val objectRepository: ObjectRepository,
-  val rpcHandler: RpcHandler
-) : ProxyMessageHandler {
-  override fun emit(message: SignalProxyMessage) {
-    TODO("Not Implemented")
+  private val heartBeatHandler: HeartBeatHandler,
+  private val objectRepository: ObjectRepository,
+  private val rpcHandler: RpcHandler
+) : ProxyMessageHandler, ClientConnectionHandler() {
+
+  override suspend fun read(buffer: ByteBuffer): Boolean {
+    dispatch(SignalProxyMessageSerializer.deserialize(buffer, channel!!.negotiatedFeatures))
+    return false
   }
 
-  override fun dispatch(message: SignalProxyMessage) {
+  override suspend fun dispatch(message: SignalProxyMessage) {
+    logger.trace { "Read signal proxy message $message" }
     when (message) {
       is SignalProxyMessage.HeartBeat -> emit(SignalProxyMessage.HeartBeatReply(message.timestamp))
       is SignalProxyMessage.HeartBeatReply -> heartBeatHandler.recomputeLatency(message.timestamp, force = true)
@@ -51,5 +58,9 @@ class ClientProxyMessageHandler(
         invoker.invoke(syncable, message.slotName, message.params)
       }
     }
+  }
+
+  companion object {
+    private val logger = LoggerFactory.getLogger(ClientProxyMessageHandler::class.java)
   }
 }
