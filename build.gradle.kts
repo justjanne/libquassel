@@ -17,17 +17,20 @@ plugins {
   id("org.jetbrains.dokka") version "1.4.32"
 }
 
-subprojects {
-  apply(plugin = "org.jetbrains.kotlin.jvm")
-  apply(plugin = "org.jlleitschuh.gradle.ktlint")
-  apply(plugin = "jacoco")
-  apply(plugin = "de.justjanne.jacoco-cobertura-converter")
+allprojects {
   apply(plugin = "org.jetbrains.dokka")
 
   repositories {
     mavenCentral()
     google()
   }
+}
+
+subprojects {
+  apply(plugin = "org.jetbrains.kotlin.jvm")
+  apply(plugin = "org.jlleitschuh.gradle.ktlint")
+  apply(plugin = "jacoco")
+  apply(plugin = "de.justjanne.jacoco-cobertura-converter")
 
   dependencies {
     val implementation by configurations

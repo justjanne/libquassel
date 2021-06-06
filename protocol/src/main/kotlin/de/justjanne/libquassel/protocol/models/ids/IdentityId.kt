@@ -13,7 +13,8 @@ private typealias IdentityIdType = SignedIdType
 /**
  * A [SignedId] for an identity object
  */
-inline class IdentityId(
+@JvmInline
+value class IdentityId(
   /**
    * Native value
    */

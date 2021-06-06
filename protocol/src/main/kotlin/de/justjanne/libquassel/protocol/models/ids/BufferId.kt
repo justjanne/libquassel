@@ -14,7 +14,8 @@ private typealias BufferIdType = SignedIdType
 /**
  * A [SignedId] for a chat/buuffer
  */
-inline class BufferId(
+@JvmInline
+value class BufferId(
   /**
    * Native value
    */

@@ -35,10 +35,10 @@ abstract class IrcCaseMapper {
       a.equals(b, ignoreCase = true)
 
     override fun toLowerCase(value: String): String =
-      value.toLowerCase(Locale.ENGLISH)
+      value.lowercase(Locale.ROOT)
 
     override fun toUpperCase(value: String): String =
-      value.toUpperCase(Locale.ENGLISH)
+      value.uppercase(Locale.ROOT)
   }
 
   object Rfc1459 : IrcCaseMapper() {
@@ -46,13 +46,13 @@ abstract class IrcCaseMapper {
       toLowerCase(a) == toLowerCase(b) || toUpperCase(a) == toUpperCase(b)
 
     override fun toLowerCase(value: String): String =
-      value.toLowerCase(Locale.ROOT)
+      value.lowercase(Locale.ROOT)
         .replace('[', '{')
         .replace(']', '}')
         .replace('\\', '|')
 
     override fun toUpperCase(value: String): String =
-      value.toUpperCase(Locale.ROOT)
+      value.uppercase(Locale.ROOT)
         .replace('{', '[')
         .replace('}', ']')
         .replace('|', '\\')

@@ -72,12 +72,12 @@ data class NetworkState(
   fun identifier() = "${networkId.id}"
 
   fun caseMapper() = IrcCaseMapper[supportValue(IrcISupport.CASEMAPPING)]
-  fun supports(key: String) = supports.containsKey(key.toUpperCase(Locale.ROOT))
-  fun supportValue(key: String) = supports[key.toUpperCase(Locale.ROOT)]
+  fun supports(key: String) = supports.containsKey(key.uppercase(Locale.ROOT))
+  fun supportValue(key: String) = supports[key.uppercase(Locale.ROOT)]
 
-  fun capAvailable(capability: String) = caps.containsKey(capability.toLowerCase(Locale.ROOT))
-  fun capEnabled(capability: String) = capsEnabled.contains(capability.toLowerCase(Locale.ROOT))
-  fun capValue(capability: String) = caps[capability.toLowerCase(Locale.ROOT)] ?: ""
+  fun capAvailable(capability: String) = caps.containsKey(capability.lowercase(Locale.ROOT))
+  fun capEnabled(capability: String) = capsEnabled.contains(capability.lowercase(Locale.ROOT))
+  fun capValue(capability: String) = caps[capability.lowercase(Locale.ROOT)] ?: ""
 
   fun isSaslSupportLikely(mechanism: String): Boolean {
     if (!capAvailable(IrcCapability.SASL)) {

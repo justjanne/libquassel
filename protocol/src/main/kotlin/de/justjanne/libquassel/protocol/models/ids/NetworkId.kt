@@ -14,7 +14,8 @@ private typealias NetworkIdType = SignedIdType
 /**
  * A [SignedId] for an irc network
  */
-inline class NetworkId(
+@JvmInline
+value class NetworkId(
   /**
    * Native value
    */

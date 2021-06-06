@@ -15,7 +15,8 @@ private typealias MsgIdType = SignedId64Type
  * A [SignedId] for an individual message
  * Warning: this is the only id which can be backed by a 64-bit value
  */
-inline class MsgId(
+@JvmInline
+value class MsgId(
   /**
    * Native value
    */
