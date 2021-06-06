@@ -20,6 +20,10 @@ import de.justjanne.libquassel.protocol.variant.QVariantMap
 open class RpcHandler(
   session: Session? = null
 ) : SyncableObject(session, ""), RpcHandlerStub {
+  init {
+    initialized = true
+  }
+
   override fun bufferInfoUpdated(bufferInfo: BufferInfo) {
     session?.bufferSyncer?.bufferInfoUpdated(bufferInfo)
   }
