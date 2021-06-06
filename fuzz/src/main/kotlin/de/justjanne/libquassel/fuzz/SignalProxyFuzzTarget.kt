@@ -10,9 +10,7 @@ package de.justjanne.libquassel.fuzz
 
 import com.code_intelligence.jazzer.api.FuzzedDataProvider
 import de.justjanne.libquassel.protocol.features.FeatureSet
-import de.justjanne.libquassel.protocol.serializers.HandshakeMessageSerializer
 import de.justjanne.libquassel.protocol.serializers.SignalProxyMessageSerializer
-import java.nio.BufferUnderflowException
 import java.nio.ByteBuffer
 
 object SignalProxyFuzzTarget {
