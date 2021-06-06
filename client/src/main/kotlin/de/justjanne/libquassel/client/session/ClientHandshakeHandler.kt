@@ -63,7 +63,8 @@ class ClientHandshakeHandler(
     ) {
       is HandshakeMessage.ClientInitReject ->
         throw HandshakeException.InitException(response.errorString ?: "Unknown Error")
-      is HandshakeMessage.ClientInitAck ->
+      is HandshakeMessage.ClientInitAck -> {
+        channel!!.negotiatedFeatures = response.featureSet
         if (response.coreConfigured == null) {
           throw HandshakeException.InitException("Unknown Error")
         } else if (response.coreConfigured == true) {
@@ -74,6 +75,7 @@ class ClientHandshakeHandler(
             response.authenticatorInfo
           )
         }
+      }
       else -> throw HandshakeException.InitException("Unknown Error")
     }
   }

@@ -71,7 +71,7 @@ class ObjectRepository {
   }
 
   fun find(className: String, objectName: String): SyncableStub? {
-    return state().syncables[ObjectIdentifier(objectName, className)]
+    return state().syncables[ObjectIdentifier(className, objectName)]
   }
 
   inline fun <reified T : SyncableStub> find(objectName: String): T? {

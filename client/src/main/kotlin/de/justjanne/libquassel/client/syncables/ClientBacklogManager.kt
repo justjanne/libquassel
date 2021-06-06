@@ -10,6 +10,8 @@
 package de.justjanne.libquassel.client.syncables
 
 import de.justjanne.bitflags.of
+import de.justjanne.bitflags.toBits
+import de.justjanne.libquassel.client.util.CoroutineKeyedQueue
 import de.justjanne.libquassel.protocol.models.flags.MessageFlag
 import de.justjanne.libquassel.protocol.models.flags.MessageFlags
 import de.justjanne.libquassel.protocol.models.flags.MessageType
@@ -19,21 +21,14 @@ import de.justjanne.libquassel.protocol.models.ids.MsgId
 import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.common.BacklogManager
 import de.justjanne.libquassel.protocol.variant.QVariantList
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class ClientBacklogManager(
   session: Session
 ) : BacklogManager(session) {
-  private val bufferListeners =
-    mutableMapOf<BacklogData.Buffer, Continuation<BacklogData.Buffer>>()
-  private val bufferFilteredListeners =
-    mutableMapOf<BacklogData.BufferFiltered, Continuation<BacklogData.BufferFiltered>>()
-  private val allListeners =
-    mutableMapOf<BacklogData.All, Continuation<BacklogData.All>>()
-  private val allFilteredListeners =
-    mutableMapOf<BacklogData.AllFiltered, Continuation<BacklogData.AllFiltered>>()
+  private val bufferQueue = CoroutineKeyedQueue<BacklogData.Buffer, QVariantList>()
+  private val bufferFilteredQueue = CoroutineKeyedQueue<BacklogData.BufferFiltered, QVariantList>()
+  private val allQueue = CoroutineKeyedQueue<BacklogData.All, QVariantList>()
+  private val allFilteredQueue = CoroutineKeyedQueue<BacklogData.AllFiltered, QVariantList>()
 
   suspend fun backlog(
     bufferId: BufferId,
@@ -41,9 +36,9 @@ class ClientBacklogManager(
     last: MsgId = MsgId(-1),
     limit: Int = -1,
     additional: Int = 0
-  ) = suspendCoroutine<BacklogData.Buffer> {
-    val data = BacklogData.Buffer(bufferId, first, last, limit, additional)
-    bufferListeners[data] = it
+  ): QVariantList {
+    requestBacklog(bufferId, first, last, limit, additional)
+    return bufferQueue.wait(BacklogData.Buffer(bufferId, first, last, limit, additional))
   }
 
   suspend fun backlogFiltered(
@@ -54,9 +49,9 @@ class ClientBacklogManager(
     additional: Int = 0,
     type: MessageTypes = MessageType.all,
     flags: MessageFlags = MessageFlag.all
-  ) = suspendCoroutine<BacklogData.BufferFiltered> {
-    val data = BacklogData.BufferFiltered(bufferId, first, last, limit, additional, type, flags)
-    bufferFilteredListeners[data] = it
+  ): QVariantList {
+    requestBacklogFiltered(bufferId, first, last, limit, additional, type.toBits().toInt(), flags.toBits().toInt())
+    return bufferFilteredQueue.wait(BacklogData.BufferFiltered(bufferId, first, last, limit, additional, type, flags))
   }
 
   suspend fun backlogAll(
@@ -64,9 +59,9 @@ class ClientBacklogManager(
     last: MsgId = MsgId(-1),
     limit: Int = -1,
     additional: Int = 0
-  ) = suspendCoroutine<BacklogData.All> {
-    val data = BacklogData.All(first, last, limit, additional)
-    allListeners[data] = it
+  ): QVariantList {
+    requestBacklogAll(first, last, limit, additional)
+    return allQueue.wait(BacklogData.All(first, last, limit, additional))
   }
 
   suspend fun backlogAllFiltered(
@@ -76,9 +71,9 @@ class ClientBacklogManager(
     additional: Int = 0,
     type: MessageTypes = MessageType.all,
     flags: MessageFlags = MessageFlag.all
-  ) = suspendCoroutine<BacklogData.AllFiltered> {
-    val data = BacklogData.AllFiltered(first, last, limit, additional, type, flags)
-    allFilteredListeners[data] = it
+  ): QVariantList {
+    requestBacklogAllFiltered(first, last, limit, additional, type.toBits().toInt(), flags.toBits().toInt())
+    return allFilteredQueue.wait(BacklogData.AllFiltered(first, last, limit, additional, type, flags))
   }
 
   override fun receiveBacklog(
@@ -89,14 +84,16 @@ class ClientBacklogManager(
     additional: Int,
     messages: QVariantList
   ) {
-    val data = BacklogData.Buffer(
-      bufferId,
-      first,
-      last,
-      limit,
-      additional
+    bufferQueue.resume(
+      BacklogData.Buffer(
+        bufferId,
+        first,
+        last,
+        limit,
+        additional
+      ),
+      messages
     )
-    bufferListeners[data]?.resume(data.copy(messages = messages))
     super.receiveBacklog(bufferId, first, last, limit, additional, messages)
   }
 
@@ -110,27 +107,31 @@ class ClientBacklogManager(
     flags: Int,
     messages: QVariantList
   ) {
-    val data = BacklogData.BufferFiltered(
-      bufferId,
-      first,
-      last,
-      limit,
-      additional,
-      MessageType.of(type.toUInt()),
-      MessageFlag.of(flags.toUInt())
+    bufferFilteredQueue.resume(
+      BacklogData.BufferFiltered(
+        bufferId,
+        first,
+        last,
+        limit,
+        additional,
+        MessageType.of(type.toUInt()),
+        MessageFlag.of(flags.toUInt())
+      ),
+      messages
     )
-    bufferFilteredListeners[data]?.resume(data.copy(messages = messages))
     super.receiveBacklogFiltered(bufferId, first, last, limit, additional, type, flags, messages)
   }
 
   override fun receiveBacklogAll(first: MsgId, last: MsgId, limit: Int, additional: Int, messages: QVariantList) {
-    val data = BacklogData.All(
-      first,
-      last,
-      limit,
-      additional
+    allQueue.resume(
+      BacklogData.All(
+        first,
+        last,
+        limit,
+        additional
+      ),
+      messages
     )
-    allListeners[data]?.resume(data.copy(messages = messages))
     super.receiveBacklogAll(first, last, limit, additional, messages)
   }
 
@@ -143,15 +144,17 @@ class ClientBacklogManager(
     flags: Int,
     messages: QVariantList
   ) {
-    val data = BacklogData.AllFiltered(
-      first,
-      last,
-      limit,
-      additional,
-      MessageType.of(type.toUInt()),
-      MessageFlag.of(flags.toUInt()),
+    allFilteredQueue.resume(
+      BacklogData.AllFiltered(
+        first,
+        last,
+        limit,
+        additional,
+        MessageType.of(type.toUInt()),
+        MessageFlag.of(flags.toUInt()),
+      ),
+      messages
     )
-    allFilteredListeners[data]?.resume(data.copy(messages = messages))
     super.receiveBacklogAllFiltered(first, last, limit, additional, type, flags, messages)
   }
 
@@ -161,8 +164,7 @@ class ClientBacklogManager(
       val first: MsgId = MsgId(-1),
       val last: MsgId = MsgId(-1),
       val limit: Int = -1,
-      val additional: Int = 0,
-      val messages: QVariantList = emptyList()
+      val additional: Int = 0
     ) : BacklogData()
 
     data class BufferFiltered(
@@ -172,16 +174,14 @@ class ClientBacklogManager(
       val limit: Int = -1,
       val additional: Int = 0,
       val type: MessageTypes = MessageType.all,
-      val flags: MessageFlags = MessageFlag.all,
-      val messages: QVariantList = emptyList()
+      val flags: MessageFlags = MessageFlag.all
     ) : BacklogData()
 
     data class All(
       val first: MsgId = MsgId(-1),
       val last: MsgId = MsgId(-1),
       val limit: Int = -1,
-      val additional: Int = 0,
-      val messages: QVariantList = emptyList()
+      val additional: Int = 0
     ) : BacklogData()
 
     data class AllFiltered(
@@ -190,8 +190,7 @@ class ClientBacklogManager(
       val limit: Int = -1,
       val additional: Int = 0,
       val type: MessageTypes = MessageType.all,
-      val flags: MessageFlags = MessageFlag.all,
-      val messages: QVariantList = emptyList()
+      val flags: MessageFlags = MessageFlag.all
     ) : BacklogData()
   }
 }

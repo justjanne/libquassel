@@ -9,6 +9,7 @@
 package de.justjanne.libquassel.client.session
 
 import de.justjanne.libquassel.annotations.ProtocolSide
+import de.justjanne.libquassel.client.syncables.ClientBacklogManager
 import de.justjanne.libquassel.protocol.connection.ProtocolFeatures
 import de.justjanne.libquassel.protocol.connection.ProtocolMeta
 import de.justjanne.libquassel.protocol.io.CoroutineChannel
@@ -23,7 +24,6 @@ import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.HeartBeatHandler
 import de.justjanne.libquassel.protocol.syncables.ObjectRepository
 import de.justjanne.libquassel.protocol.syncables.common.AliasManager
-import de.justjanne.libquassel.protocol.syncables.common.BacklogManager
 import de.justjanne.libquassel.protocol.syncables.common.BufferSyncer
 import de.justjanne.libquassel.protocol.syncables.common.BufferViewManager
 import de.justjanne.libquassel.protocol.syncables.common.CoreInfo
@@ -83,6 +83,8 @@ class ClientSession(
     logger.info {
       "Client session initialized: networks = $networkIds, buffers = $bufferInfos, identities = $identities"
     }
+    objectRepository.add(state().coreInfo)
+    objectRepository.add(state().backlogManager)
   }
 
   override fun network(id: NetworkId) = state().networks[id]
@@ -161,7 +163,7 @@ class ClientSession(
       networks = mapOf(),
       identities = mapOf(),
       aliasManager = AliasManager(this),
-      backlogManager = BacklogManager(this),
+      backlogManager = ClientBacklogManager(this),
       bufferSyncer = BufferSyncer(this),
       bufferViewManager = BufferViewManager(this),
       highlightRuleManager = HighlightRuleManager(this),

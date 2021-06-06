@@ -13,15 +13,15 @@ import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class CoroutineQueue {
-  private val waiting = mutableListOf<Continuation<Unit>>()
-  suspend fun wait(): Unit = suspendCoroutine {
+class CoroutineQueue<T> {
+  private val waiting = mutableListOf<Continuation<T>>()
+  suspend fun wait(): T = suspendCoroutine {
     waiting.add(it)
   }
 
-  suspend fun resume() {
+  suspend fun resume(value: T) {
     for (continuation in waiting) {
-      continuation.resume(Unit)
+      continuation.resume(value)
     }
     waiting.clear()
   }

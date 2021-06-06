@@ -17,10 +17,10 @@ import de.justjanne.libquassel.protocol.session.MessageChannel
 
 abstract class ClientConnectionHandler : ConnectionHandler {
   protected var channel: MessageChannel? = null
-  private val readyQueue = CoroutineQueue()
+  private val readyQueue = CoroutineQueue<Unit>()
   override suspend fun init(channel: MessageChannel): Boolean {
     this.channel = channel
-    readyQueue.resume()
+    readyQueue.resume(Unit)
     return false
   }
 

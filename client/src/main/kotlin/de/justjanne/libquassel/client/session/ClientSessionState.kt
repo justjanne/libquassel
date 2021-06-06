@@ -9,10 +9,10 @@
 
 package de.justjanne.libquassel.client.session
 
+import de.justjanne.libquassel.client.syncables.ClientBacklogManager
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.syncables.common.AliasManager
-import de.justjanne.libquassel.protocol.syncables.common.BacklogManager
 import de.justjanne.libquassel.protocol.syncables.common.BufferSyncer
 import de.justjanne.libquassel.protocol.syncables.common.BufferViewManager
 import de.justjanne.libquassel.protocol.syncables.common.CoreInfo
@@ -28,7 +28,7 @@ data class ClientSessionState(
   val networks: Map<NetworkId, Network>,
   val identities: Map<IdentityId, Identity>,
   val aliasManager: AliasManager,
-  val backlogManager: BacklogManager,
+  val backlogManager: ClientBacklogManager,
   val bufferSyncer: BufferSyncer,
   val bufferViewManager: BufferViewManager,
   val ignoreListManager: IgnoreListManager,
