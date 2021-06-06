@@ -12,7 +12,7 @@ plugins {
 }
 
 dependencies {
-  api(project(":libquassel-protocol"))
+  api(project(":protocol"))
 
   val testcontainersCiVersion: String by project
   testImplementation("de.justjanne", "testcontainers-ci", testcontainersCiVersion)

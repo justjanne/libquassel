@@ -20,6 +20,6 @@ dependencies {
   api("de.justjanne", "kotlin-bitflags", kotlinBitflagsVersion)
   val bouncyCastleVersion: String by project
   implementation("org.bouncycastle", "bcpkix-jdk15on", bouncyCastleVersion)
-  api(project(":libquassel-annotations"))
-  ksp(project(":libquassel-generator"))
+  api(project(":annotations"))
+  ksp(project(":generator"))
 }

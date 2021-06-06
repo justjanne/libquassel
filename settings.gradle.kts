@@ -8,12 +8,16 @@
  */
 
 rootProject.name = "libquassel"
+rootProject.children.forEach {
+  it.name = rootProject.name + "-" + it.name
+}
 
 include(
-  ":libquassel-annotations",
-  ":libquassel-protocol",
-  ":libquassel-generator",
-  ":libquassel-client"
+  ":annotations",
+  ":protocol",
+  ":generator",
+  ":client",
+  ":fuzz"
 )
 
 pluginManagement {
