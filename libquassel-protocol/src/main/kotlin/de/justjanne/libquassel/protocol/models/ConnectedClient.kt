@@ -37,7 +37,7 @@ data class ConnectedClient(
     "location" to qVariant(location, QtType.QString),
     "clientVersion" to qVariant(version, QtType.QString),
     "clientVersionDate" to qVariant(versionDate?.epochSecond?.toString(), QtType.QString),
-    "connectedSince" to qVariant(connectedSince, QtType.QDateTime),
+    "connectedSince" to qVariant(connectedSince.atOffset(ZoneOffset.UTC), QtType.QDateTime),
     "secure" to qVariant(secure, QtType.Bool),
     "features" to qVariant(features.legacyFeatures().toBits(), QtType.UInt),
     "featureList" to qVariant(features.featureList().map(QuasselFeatureName::name), QtType.QStringList)

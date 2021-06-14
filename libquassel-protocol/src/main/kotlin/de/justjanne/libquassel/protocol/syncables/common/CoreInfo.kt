@@ -50,15 +50,20 @@ open class CoreInfo(
   }
 
   override fun toVariantMap() = mapOf(
-    "quasselVersion" to qVariant(version(), QtType.QString),
-    "quasselBuildDate" to qVariant(versionDate()?.epochSecond?.toString(), QtType.QString),
-    "startTime" to qVariant(startTime(), QtType.QDateTime),
-    "sessionConnectedClients" to qVariant(connectedClientCount(), QtType.Int),
-    "sessionConnectedClientData" to qVariant(
-      connectedClients()
-        .map(ConnectedClient::toVariantMap)
-        .map { qVariant(it, QtType.QVariantMap) },
-      QtType.QVariantList
+    "coreData" to qVariant(
+      mapOf(
+        "quasselVersion" to qVariant(version(), QtType.QString),
+        "quasselBuildDate" to qVariant(versionDate()?.epochSecond?.toString(), QtType.QString),
+        "startTime" to qVariant(startTime().atOffset(ZoneOffset.UTC), QtType.QDateTime),
+        "sessionConnectedClients" to qVariant(connectedClientCount(), QtType.Int),
+        "sessionConnectedClientData" to qVariant(
+          connectedClients()
+            .map(ConnectedClient::toVariantMap)
+            .map { qVariant(it, QtType.QVariantMap) },
+          QtType.QVariantList
+        )
+      ),
+      QtType.QVariantMap
     )
   )
 

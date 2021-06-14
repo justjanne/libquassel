@@ -261,7 +261,7 @@ open class BufferViewConfig(
         }
         .filter { (_, value) -> value.networkId == info.networkId }
         .find { (_, value) ->
-          String.CASE_INSENSITIVE_ORDER.compare(value.bufferName, info.bufferName) > 0
+          String.CASE_INSENSITIVE_ORDER.compare(value.bufferName, info.bufferName) >= 0
         }?.index ?: buffers().size
     )
   }

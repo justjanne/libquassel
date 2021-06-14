@@ -13,6 +13,7 @@ import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.network.ChannelModeType
 import de.justjanne.libquassel.protocol.models.network.ConnectionState
+import de.justjanne.libquassel.protocol.models.network.NetworkInfo
 import de.justjanne.libquassel.protocol.models.network.NetworkServer
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.models.types.QuasselType
@@ -70,12 +71,53 @@ class NetworkTest {
     assertEquals(expected, actual)
   }
 
+  @Test
+  fun testNetworkInfo() {
+    val random = Random(1337)
+    val networkId = NetworkId(random.nextInt())
+    val expected = random.nextNetwork(networkId)
+
+    val actual = Network(state = NetworkState(networkId = networkId)).apply {
+      update(Network(state = expected).toVariantMap())
+    }
+
+    assertEquals(
+      NetworkInfo(
+        networkName = expected.networkName,
+        networkId = expected.networkId,
+        identity = expected.identity,
+        codecForServer = expected.codecForServer,
+        codecForEncoding = expected.codecForEncoding,
+        codecForDecoding = expected.codecForDecoding,
+        serverList = expected.serverList,
+        useRandomServer = expected.useRandomServer,
+        perform = expected.perform,
+        useAutoIdentify = expected.useAutoIdentify,
+        autoIdentifyService = expected.autoIdentifyService,
+        autoIdentifyPassword = expected.autoIdentifyPassword,
+        useSasl = expected.useSasl,
+        saslAccount = expected.saslAccount,
+        saslPassword = expected.saslPassword,
+        useAutoReconnect = expected.useAutoReconnect,
+        autoReconnectInterval = expected.autoReconnectInterval,
+        autoReconnectRetries = expected.autoReconnectRetries,
+        unlimitedReconnectRetries = expected.unlimitedReconnectRetries,
+        rejoinChannels = expected.rejoinChannels,
+        useCustomMessageRate = expected.useCustomMessageRate,
+        messageRateBurstSize = expected.messageRateBurstSize,
+        messageRateDelay = expected.messageRateDelay,
+        unlimitedMessageRate = expected.unlimitedMessageRate
+      ),
+      actual.networkInfo()
+    )
+  }
+
   @Nested
   inner class Setters {
     @Test
     fun testIdentity() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals(IdentityId(4), network.identity())
       network.setIdentity(IdentityId(4))
@@ -85,7 +127,7 @@ class NetworkTest {
     @Test
     fun testMyNick() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals("justJanne", network.myNick())
       network.setMyNick("justJanne")
@@ -95,7 +137,7 @@ class NetworkTest {
     @Test
     fun testLatency() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals(500, network.latency())
       network.setLatency(500)
@@ -105,7 +147,7 @@ class NetworkTest {
     @Test
     fun testNetworkName() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals("Freenode", network.networkName())
       network.setNetworkName("Freenode")
@@ -115,7 +157,7 @@ class NetworkTest {
     @Test
     fun testCurrentServer() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals("irc.freenode.org", network.currentServer())
       network.setCurrentServer("irc.freenode.org")
@@ -125,7 +167,7 @@ class NetworkTest {
     @Test
     fun testConnectionStateValid() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals(ConnectionState.Initializing, network.connectionState())
       network.setConnectionState(ConnectionState.Initializing.value)
@@ -135,7 +177,7 @@ class NetworkTest {
     @Test
     fun testConnectionStateInvalid() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals(ConnectionState.Disconnected, network.connectionState())
       network.setConnectionState(-2)
@@ -145,7 +187,7 @@ class NetworkTest {
     @Test
     fun testServerList() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       val desired = listOf(
         NetworkServer(
@@ -173,7 +215,7 @@ class NetworkTest {
     @Test
     fun testUseRandomServer() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       network.setUseRandomServer(false)
       assertEquals(false, network.useRandomServer())
@@ -184,7 +226,7 @@ class NetworkTest {
     @Test
     fun testPerform() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       val value = listOf(
         "/wait 5; /ns ghost",
@@ -206,7 +248,7 @@ class NetworkTest {
     @Test
     fun testUseAutoIdentify() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       network.setUseAutoIdentify(false)
       assertEquals(false, network.useAutoIdentify())
@@ -217,7 +259,7 @@ class NetworkTest {
     @Test
     fun testAutoIdentifyPassword() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals("hunter2", network.autoIdentifyPassword())
       network.setAutoIdentifyPassword("hunter2")
@@ -227,7 +269,7 @@ class NetworkTest {
     @Test
     fun testAutoIdentifyService() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals("NickServ", network.autoIdentifyService())
       network.setAutoIdentifyService("NickServ")
@@ -237,7 +279,7 @@ class NetworkTest {
     @Test
     fun testUseSasl() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       network.setUseSasl(false)
       assertEquals(false, network.useSasl())
@@ -248,7 +290,7 @@ class NetworkTest {
     @Test
     fun testSaslAccount() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals("AzureDiamond", network.saslAccount())
       network.setSaslAccount("AzureDiamond")
@@ -258,7 +300,7 @@ class NetworkTest {
     @Test
     fun testSaslPassword() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals("hunter2", network.saslPassword())
       network.setSaslPassword("hunter2")
@@ -268,7 +310,7 @@ class NetworkTest {
     @Test
     fun testUseAutoReconnect() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       network.setUseAutoReconnect(false)
       assertEquals(false, network.useAutoReconnect())
@@ -279,7 +321,7 @@ class NetworkTest {
     @Test
     fun testAutoReconnectInterval() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals(2500u, network.autoReconnectInterval())
       network.setAutoReconnectInterval(2500u)
@@ -289,7 +331,7 @@ class NetworkTest {
     @Test
     fun testAutoReconnectRetries() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals(7u.toUShort(), network.autoReconnectRetries())
       network.setAutoReconnectRetries(7u.toUShort())
@@ -299,7 +341,7 @@ class NetworkTest {
     @Test
     fun testUnlimitedReconnectRetries() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       network.setUnlimitedReconnectRetries(false)
       assertEquals(false, network.unlimitedReconnectRetries())
@@ -310,7 +352,7 @@ class NetworkTest {
     @Test
     fun testRejoinChannels() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       network.setRejoinChannels(false)
       assertEquals(false, network.rejoinChannels())
@@ -321,7 +363,7 @@ class NetworkTest {
     @Test
     fun testUseCustomMessageRate() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       network.setUseCustomMessageRate(false)
       assertEquals(false, network.useCustomMessageRate())
@@ -332,7 +374,7 @@ class NetworkTest {
     @Test
     fun testMessageRateBurstSize() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals(20u, network.messageRateBurstSize())
       network.setMessageRateBurstSize(20u)
@@ -342,7 +384,7 @@ class NetworkTest {
     @Test
     fun testMessageRateDelay() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals(1200u, network.messageRateDelay())
       network.setMessageRateDelay(1200u)
@@ -352,7 +394,7 @@ class NetworkTest {
     @Test
     fun testUnlimitedMessageRate() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       network.setUnlimitedMessageRate(false)
       assertEquals(false, network.unlimitedMessageRate())
@@ -363,7 +405,7 @@ class NetworkTest {
     @Test
     fun testCodecForServer() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals("UTF_8", network.codecForServer())
       network.setCodecForServer(StringSerializerUtf8.serializeRaw("UTF_8"))
@@ -375,7 +417,7 @@ class NetworkTest {
     @Test
     fun testCodecForEncoding() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals("UTF_8", network.codecForEncoding())
       network.setCodecForEncoding(StringSerializerUtf8.serializeRaw("UTF_8"))
@@ -387,7 +429,7 @@ class NetworkTest {
     @Test
     fun testCodecForDecoding() {
       val random = Random(1337)
-      val network = Network(state = random.nextNetwork(NetworkId(random.nextInt())))
+      val network = Network(state = random.nextNetwork())
 
       assertNotEquals("UTF_8", network.codecForDecoding())
       network.setCodecForDecoding(StringSerializerUtf8.serializeRaw("UTF_8"))
