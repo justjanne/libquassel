@@ -29,7 +29,6 @@ publishing {
 
 configure<SigningExtension> {
   if (canSign) {
-    useGpgCmd()
     sign(publishing.publications["maven"])
   }
 }
