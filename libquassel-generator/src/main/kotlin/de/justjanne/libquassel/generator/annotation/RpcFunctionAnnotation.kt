@@ -27,7 +27,7 @@ data class RpcFunctionAnnotation(
       val annotation = it.findAnnotationWithType<SyncedCall>(resolver)
         ?: return null
       return RpcFunctionAnnotation(
-        name = annotation.getMember("name"),
+        name = annotation.getMember<String>("name")?.ifBlank { null },
         target = annotation.getMember<KSType>("target")
           ?.toEnum<ProtocolSide>(),
       )

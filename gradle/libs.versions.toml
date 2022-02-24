@@ -1,0 +1,22 @@
+[versions]
+bouncycastle = "1.70"
+hamcrest = "2.2"
+junit = "5.7.2"
+kotlin-stdlib = "1.6.10"
+kotlin-bitflags = "1.3.0"
+kotlin-coroutines = "1.5.0"
+slf4j = "1.7.30"
+testcontainers = "1.3.0"
+threetenbp = "1.5.2"
+kotlinpoet = "1.10.2"
+ksp = "1.6.10-1.0.4"
+
+[libraries]
+testcontainers = { module = "de.justjanne:testcontainers-ci", version.ref = "testcontainers" }
+slf4j = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+hamcrest = { module = "org.hamcrest:hamcrest-library", version.ref = "hamcrest" }
+ksp = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
+threetenbp = { module = "org.threeten:threetenbp", version.ref = "threetenbp" }
+kotlin-bitflags = { module = "de.justjanne:kotlin-bitflags", version.ref = "kotlin-bitflags" }
+bouncycastle = { module = "org.bouncycastle:bcpkix-jdk15on", version.ref = "bouncycastle" }

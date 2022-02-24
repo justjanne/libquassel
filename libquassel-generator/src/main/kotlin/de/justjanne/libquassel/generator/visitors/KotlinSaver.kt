@@ -27,11 +27,16 @@ class KotlinSaver : KotlinModelVisitor<CodeGenerator, Unit> {
       "Source may not be empty. Sources was empty for $model"
     }
 
-    val writer = data.createNewFile(
-      generateDependencies(model.source),
-      model.data.packageName,
-      model.data.name
-    ).bufferedWriter(Charsets.UTF_8)
+    val file = try {
+      data.createNewFile(
+        generateDependencies(model.source),
+        model.data.packageName,
+        model.data.name
+      )
+    } catch (_: FileAlreadyExistsException) {
+      return
+    }
+    val writer = file.bufferedWriter(Charsets.UTF_8)
     model.data.writeTo(writer)
     try {
       writer.close()

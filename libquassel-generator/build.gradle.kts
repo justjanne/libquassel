@@ -7,14 +7,13 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-repositories {
-  google()
+plugins {
+  id("justjanne.kotlin")
+  id("justjanne.publication")
 }
 
 dependencies {
-  val kspVersion: String by project
-  implementation("com.google.devtools.ksp", "symbol-processing-api", kspVersion)
   implementation(project(":libquassel-annotations"))
-  val kotlinPoetVersion: String by project
-  implementation("com.squareup", "kotlinpoet", kotlinPoetVersion)
+  implementation(libs.ksp)
+  implementation(libs.kotlinpoet)
 }

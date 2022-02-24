@@ -8,5 +8,6 @@
  */
 
 plugins {
-  id("com.vanniktech.maven.publish")
+  id("justjanne.kotlin")
+  id("justjanne.publication")
 }

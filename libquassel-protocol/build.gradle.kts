@@ -8,20 +8,16 @@
  */
 
 plugins {
-  id("java-library")
-  id("com.vanniktech.maven.publish")
-  id("com.google.devtools.ksp") version "1.5.10-1.0.0-beta01"
+  id("justjanne.kotlin")
+  id("justjanne.publication")
 }
 
 dependencies {
-  val threetenBpVersion: String by project
-  api("org.threeten", "threetenbp", threetenBpVersion)
-  val kotlinBitflagsVersion: String by project
-  api("de.justjanne", "kotlin-bitflags", kotlinBitflagsVersion)
-  val bouncyCastleVersion: String by project
-  implementation("org.bouncycastle", "bcpkix-jdk15on", bouncyCastleVersion)
-  val sl4jVersion: String by project
-  implementation("org.slf4j", "slf4j-simple", sl4jVersion)
   api(project(":libquassel-annotations"))
   ksp(project(":libquassel-generator"))
+  api(libs.threetenbp)
+  api(libs.kotlin.bitflags)
+  implementation(libs.bouncycastle)
+  implementation(libs.slf4j)
+  testImplementation(libs.hamcrest)
 }

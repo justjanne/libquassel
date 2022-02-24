@@ -8,14 +8,16 @@
  */
 
 plugins {
-  id("com.vanniktech.maven.publish")
+  id("justjanne.kotlin")
+  id("justjanne.publication")
+  id("jacoco-report-aggregation")
 }
 
 dependencies {
   api(project(":libquassel-protocol"))
-
-  val testcontainersCiVersion: String by project
-  testImplementation("de.justjanne", "testcontainers-ci", testcontainersCiVersion)
-  val sl4jVersion: String by project
-  implementation("org.slf4j", "slf4j-simple", sl4jVersion)
+  testImplementation(libs.testcontainers)
+  implementation(libs.slf4j)
+}
+tasks.check {
+  dependsOn(tasks.named<JacocoReport>("testCodeCoverageReport"))
 }
