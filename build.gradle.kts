@@ -15,4 +15,4 @@ plugins {
 }
 
 group = "de.justjanne.libquassel"
-version = "0.8.0"
+version = "0.8.1"

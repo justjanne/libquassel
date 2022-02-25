@@ -12,13 +12,13 @@ package de.justjanne.libquassel.protocol.util
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 
 @ExperimentalCoroutinesApi
 @Suppress("NOTHING_TO_INLINE")
 inline fun <T> Flow<StateHolder<T>?>.flatMap(): Flow<T?> =
-  flatMapLatest { it?.flow() ?: emptyFlow() }
+  flatMapLatest { it?.flow() ?: flowOf(null) }
 
 @ExperimentalCoroutinesApi
 inline fun <reified T> Flow<Iterable<StateHolder<T>>?>.combineLatest(): Flow<List<T>> =
