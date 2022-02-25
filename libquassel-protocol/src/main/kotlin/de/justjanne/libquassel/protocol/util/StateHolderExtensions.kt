@@ -22,4 +22,7 @@ inline fun <T> Flow<StateHolder<T>?>.flatMap(): Flow<T?> =
 
 @ExperimentalCoroutinesApi
 inline fun <reified T> Flow<Iterable<StateHolder<T>>?>.combineLatest(): Flow<List<T>> =
-  flatMapLatest { combine(it?.map(StateHolder<T>::flow).orEmpty(), ::listOf) }
+  flatMapLatest {
+    if (it != null) combine(it.map(StateHolder<T>::flow), ::listOf)
+    else flowOf(emptyList())
+  }
