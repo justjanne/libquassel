@@ -1,18 +1,17 @@
 /*
  * libquassel
- * Copyright (c) 2021 Janne Mareike Koschinski
+ * Copyright (c) 2022 Janne Mareike Koschinski
  *
  * This Source Code Form is subject to the terms of the Mozilla Public License,
  * v. 2.0. If a copy of the MPL was not distributed with this file, You can
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-plugins {
-  id("justjanne.dokka")
-  id("justjanne.publish-maven-central")
-  idea
-  eclipse
-}
+package de.justjanne.libquassel.protocol.util
 
-group = "de.justjanne.libquassel"
-version = "0.8.0"
+import kotlinx.coroutines.flow.Flow
+
+interface StateHolder<T> {
+  fun state(): T
+  fun flow(): Flow<T>
+}

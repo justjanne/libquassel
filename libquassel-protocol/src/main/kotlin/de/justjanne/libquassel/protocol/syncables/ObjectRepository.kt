@@ -9,11 +9,12 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
+import de.justjanne.libquassel.protocol.util.StateHolder
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class ObjectRepository {
+class ObjectRepository : StateHolder<ObjectRepositoryState> {
   fun add(syncable: SyncableStub): Boolean {
     val identifier = ObjectIdentifier(syncable)
     if (syncable is StatefulSyncableStub) {
@@ -78,12 +79,7 @@ class ObjectRepository {
     return find(T::class.java.simpleName, objectName) as? T
   }
 
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state() = flow().value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow() = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(ObjectRepositoryState())
+  override fun state() = flow().value
+  override fun flow() = state
+  private val state = MutableStateFlow(ObjectRepositoryState())
 }

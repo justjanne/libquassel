@@ -9,6 +9,7 @@
 
 package de.justjanne.libquassel.protocol.io
 
+import de.justjanne.libquassel.protocol.util.StateHolder
 import de.justjanne.libquassel.protocol.util.update
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
@@ -21,7 +22,7 @@ import java.nio.ByteBuffer
 import java.util.concurrent.Executors
 import javax.net.ssl.SSLContext
 
-class CoroutineChannel {
+class CoroutineChannel : StateHolder<CoroutineChannelState> {
   private lateinit var channel: StreamChannel
   private val writeContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
   private val readContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
@@ -81,12 +82,7 @@ class CoroutineChannel {
     }
   }
 
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state(): CoroutineChannelState = state.value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow(): Flow<CoroutineChannelState> = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(CoroutineChannelState())
+  override fun state(): CoroutineChannelState = state.value
+  override fun flow(): Flow<CoroutineChannelState> = state
+  private val state = MutableStateFlow(CoroutineChannelState())
 }

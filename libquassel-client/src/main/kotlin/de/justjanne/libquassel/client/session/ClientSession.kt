@@ -38,6 +38,7 @@ import de.justjanne.libquassel.protocol.syncables.common.Network
 import de.justjanne.libquassel.protocol.syncables.common.NetworkConfig
 import de.justjanne.libquassel.protocol.syncables.state.CertManagerState
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
+import de.justjanne.libquassel.protocol.util.StateHolder
 import de.justjanne.libquassel.protocol.util.log.info
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantMap
@@ -51,7 +52,7 @@ class ClientSession(
   protocolFeatures: ProtocolFeatures,
   protocols: List<ProtocolMeta>,
   sslContext: SSLContext
-) : Session {
+) : Session, StateHolder<ClientSessionState> {
   override val side = ProtocolSide.CLIENT
 
   override val rpcHandler = ClientRpcHandler(this)
@@ -202,14 +203,9 @@ class ClientSession(
 
   override val networkConfig get() = state().networkConfig
 
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state(): ClientSessionState = state.value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow(): Flow<ClientSessionState> = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(
+  override fun state(): ClientSessionState = state.value
+  override fun flow(): Flow<ClientSessionState> = state
+  private val state = MutableStateFlow(
     ClientSessionState(
       networks = mapOf(),
       identities = mapOf(),

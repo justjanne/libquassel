@@ -9,11 +9,12 @@
 
 package de.justjanne.libquassel.protocol.syncables
 
+import de.justjanne.libquassel.protocol.util.StateHolder
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.threeten.bp.Instant
 
-class HeartBeatHandler {
+class HeartBeatHandler : StateHolder<Long?> {
   private var lastReceived: Instant? = null
 
   /**
@@ -30,14 +31,12 @@ class HeartBeatHandler {
   fun recomputeLatency(current: Instant, force: Boolean) {
     val last = lastReceived?.toEpochMilli() ?: return
     val roundtripLatency = current.toEpochMilli() - last
-    if (force || roundtripLatency > this.roundtripLatency.value ?: return) {
+    if (force || roundtripLatency > (this.roundtripLatency.value ?: return)) {
       this.roundtripLatency.value = roundtripLatency
     }
   }
 
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow(): Flow<Long?> = roundtripLatency
-
-  @PublishedApi
-  internal val roundtripLatency = MutableStateFlow<Long?>(null)
+  override fun flow(): Flow<Long?> = roundtripLatency
+  override fun state(): Long? = roundtripLatency.value
+  private val roundtripLatency = MutableStateFlow<Long?>(null)
 }

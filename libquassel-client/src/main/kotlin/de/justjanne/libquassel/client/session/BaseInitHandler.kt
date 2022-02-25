@@ -12,13 +12,14 @@ package de.justjanne.libquassel.client.session
 import de.justjanne.libquassel.client.util.CoroutineQueue
 import de.justjanne.libquassel.protocol.syncables.ObjectIdentifier
 import de.justjanne.libquassel.protocol.syncables.SyncableStub
+import de.justjanne.libquassel.protocol.util.StateHolder
 import de.justjanne.libquassel.protocol.util.update
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class BaseInitHandler(
   private val session: ClientSession
-) {
+) : StateHolder<BaseInitHandlerState> {
   private val coroutineQueue = CoroutineQueue<Unit>()
 
   fun sync(stub: SyncableStub) {
@@ -45,12 +46,7 @@ class BaseInitHandler(
     coroutineQueue.wait()
   } else Unit
 
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun state(): BaseInitHandlerState = state.value
-
-  @Suppress("NOTHING_TO_INLINE")
-  inline fun flow(): Flow<BaseInitHandlerState> = state
-
-  @PublishedApi
-  internal val state = MutableStateFlow(BaseInitHandlerState())
+  override fun state(): BaseInitHandlerState = state.value
+  override fun flow(): Flow<BaseInitHandlerState> = state
+  private val state = MutableStateFlow(BaseInitHandlerState())
 }
