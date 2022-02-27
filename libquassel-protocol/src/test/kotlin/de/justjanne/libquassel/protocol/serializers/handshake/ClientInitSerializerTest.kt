@@ -9,6 +9,7 @@
 package de.justjanne.libquassel.protocol.serializers.handshake
 
 import de.justjanne.libquassel.protocol.features.FeatureSet
+import de.justjanne.libquassel.protocol.features.QuasselFeature
 import de.justjanne.libquassel.protocol.models.HandshakeMessage
 import de.justjanne.libquassel.protocol.testutil.byteBufferOf
 import de.justjanne.libquassel.protocol.testutil.handshakeSerializerTest
@@ -89,7 +90,30 @@ class ClientInitSerializerTest {
       clientVersion = "Quasseldroid <a href=\"https://git.kuschku.de/justJanne/QuasselDroid-ng/commit/" +
         "b622ad63056b6054b06e09f8e1f1ef2b0c3aaf9a\">v1.3.3</a>",
       buildDate = "2020-04-27T22:21:17Z",
-      featureSet = FeatureSet.all()
+      featureSet = FeatureSet.build(
+        QuasselFeature.SynchronizedMarkerLine,
+        QuasselFeature.SaslAuthentication,
+        QuasselFeature.SaslExternal,
+        QuasselFeature.HideInactiveNetworks,
+        QuasselFeature.PasswordChange,
+        QuasselFeature.CapNegotiation,
+        QuasselFeature.VerifyServerSSL,
+        QuasselFeature.CustomRateLimits,
+        QuasselFeature.DccFileTransfer,
+        QuasselFeature.AwayFormatTimestamp,
+        QuasselFeature.Authenticators,
+        QuasselFeature.BufferActivitySync,
+        QuasselFeature.CoreSideHighlights,
+        QuasselFeature.SenderPrefixes,
+        QuasselFeature.RemoteDisconnect,
+        QuasselFeature.ExtendedFeatures,
+        QuasselFeature.LongTime,
+        QuasselFeature.RichMessages,
+        QuasselFeature.BacklogFilterType,
+        QuasselFeature.EcdsaCertfpKeys,
+        QuasselFeature.LongMessageId,
+        QuasselFeature.SyncedCoreInfo,
+      )
     ),
     byteBufferOf(
       0x00u, 0x00u, 0x00u, 0x0Au, 0x00u, 0x00u, 0x00u, 0x0Cu, 0x00u, 0x00u, 0x00u, 0x00u, 0x07u, 0x4Du, 0x73u, 0x67u,
