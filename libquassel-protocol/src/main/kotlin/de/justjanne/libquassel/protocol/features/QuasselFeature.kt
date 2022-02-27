@@ -130,7 +130,17 @@ enum class QuasselFeature {
   /**
    * Support for dynamically updated core information
    */
-  SyncedCoreInfo;
+  SyncedCoreInfo,
+
+  /**
+   * Support for loading backlog in ascending order, old to new
+   */
+  LoadBacklogForwards,
+
+  /**
+   * Support for controlling what IRCv3 capabilities are skipped during negotiation
+   */
+  SkipIrcCaps;
 
   /**
    * Get the standardized feature name

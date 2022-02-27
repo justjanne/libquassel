@@ -27,6 +27,7 @@ class ClientBacklogManager(
 ) : BacklogManager(session) {
   private val bufferQueue = CoroutineKeyedQueue<BacklogData.Buffer, QVariantList>()
   private val bufferFilteredQueue = CoroutineKeyedQueue<BacklogData.BufferFiltered, QVariantList>()
+  private val bufferForwardQueue = CoroutineKeyedQueue<BacklogData.BufferForward, QVariantList>()
   private val allQueue = CoroutineKeyedQueue<BacklogData.All, QVariantList>()
   private val allFilteredQueue = CoroutineKeyedQueue<BacklogData.AllFiltered, QVariantList>()
 
@@ -52,6 +53,18 @@ class ClientBacklogManager(
   ): QVariantList {
     requestBacklogFiltered(bufferId, first, last, limit, additional, type.toBits().toInt(), flags.toBits().toInt())
     return bufferFilteredQueue.wait(BacklogData.BufferFiltered(bufferId, first, last, limit, additional, type, flags))
+  }
+
+  suspend fun backlogForward(
+    bufferId: BufferId,
+    first: MsgId = MsgId(-1),
+    last: MsgId = MsgId(-1),
+    limit: Int = -1,
+    type: MessageTypes = MessageType.all,
+    flags: MessageFlags = MessageFlag.all
+  ): QVariantList {
+    requestBacklogForward(bufferId, first, last, limit, type.toBits().toInt(), flags.toBits().toInt())
+    return bufferForwardQueue.wait(BacklogData.BufferForward(bufferId, first, last, limit, type, flags))
   }
 
   suspend fun backlogAll(
@@ -173,6 +186,15 @@ class ClientBacklogManager(
       val last: MsgId = MsgId(-1),
       val limit: Int = -1,
       val additional: Int = 0,
+      val type: MessageTypes = MessageType.all,
+      val flags: MessageFlags = MessageFlag.all
+    ) : BacklogData()
+
+    data class BufferForward(
+      val bufferId: BufferId,
+      val first: MsgId = MsgId(-1),
+      val last: MsgId = MsgId(-1),
+      val limit: Int = -1,
       val type: MessageTypes = MessageType.all,
       val flags: MessageFlags = MessageFlag.all
     ) : BacklogData()

@@ -65,6 +65,27 @@ interface BacklogManagerStub : SyncableStub {
   }
 
   @SyncedCall(target = ProtocolSide.CORE)
+  fun requestBacklogForward(
+    bufferId: BufferId,
+    first: MsgId = MsgId(-1),
+    last: MsgId = MsgId(-1),
+    limit: Int = -1,
+    type: Int = -1,
+    flags: Int = -1
+  ) {
+    sync(
+      target = ProtocolSide.CORE,
+      "requestBacklogForward",
+      qVariant(bufferId, QuasselType.BufferId),
+      qVariant(first, QuasselType.MsgId),
+      qVariant(last, QuasselType.MsgId),
+      qVariant(limit, QtType.Int),
+      qVariant(type, QtType.Int),
+      qVariant(flags, QtType.Int),
+    )
+  }
+
+  @SyncedCall(target = ProtocolSide.CORE)
   fun requestBacklogAll(
     first: MsgId = MsgId(-1),
     last: MsgId = MsgId(-1),
@@ -142,6 +163,29 @@ interface BacklogManagerStub : SyncableStub {
       qVariant(last, QuasselType.MsgId),
       qVariant(limit, QtType.Int),
       qVariant(additional, QtType.Int),
+      qVariant(type, QtType.Int),
+      qVariant(flags, QtType.Int),
+      qVariant(messages, QtType.QVariantList),
+    )
+  }
+
+  @SyncedCall(target = ProtocolSide.CLIENT)
+  fun receiveBacklogForward(
+    bufferId: BufferId,
+    first: MsgId = MsgId(-1),
+    last: MsgId = MsgId(-1),
+    limit: Int = -1,
+    type: Int = -1,
+    flags: Int = -1,
+    messages: QVariantList
+  ) {
+    sync(
+      target = ProtocolSide.CLIENT,
+      "receiveBacklogForward",
+      qVariant(bufferId, QuasselType.BufferId),
+      qVariant(first, QuasselType.MsgId),
+      qVariant(last, QuasselType.MsgId),
+      qVariant(limit, QtType.Int),
       qVariant(type, QtType.Int),
       qVariant(flags, QtType.Int),
       qVariant(messages, QtType.QVariantList),
