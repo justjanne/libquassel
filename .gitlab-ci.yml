@@ -19,7 +19,7 @@ stages:
 test:
   stage: "test"
   services:
-    - name: "k8r.eu/justjanne/quassel-docker:v0.13.1"
+    - name: "k8r.eu/justjanne/quassel-docker:v0.14.0"
       alias: "quasselcore"
   variables:
     QUASSEL_CONTAINER: "quasselcore"
