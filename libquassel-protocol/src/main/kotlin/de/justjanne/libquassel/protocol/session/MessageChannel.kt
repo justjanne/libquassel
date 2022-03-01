@@ -17,12 +17,14 @@ import de.justjanne.libquassel.protocol.models.SignalProxyMessage
 import de.justjanne.libquassel.protocol.serializers.HandshakeMessageSerializer
 import de.justjanne.libquassel.protocol.serializers.SignalProxyMessageSerializer
 import de.justjanne.libquassel.protocol.util.log.trace
+import kotlinx.coroutines.coroutineScope
 import org.slf4j.LoggerFactory
+import java.io.Closeable
 import java.nio.ByteBuffer
 
 class MessageChannel(
   val channel: CoroutineChannel
-) {
+) : Closeable {
   var negotiatedFeatures = FeatureSet.none()
 
   private var handlers = mutableListOf<ConnectionHandler>()
@@ -98,7 +100,7 @@ class MessageChannel(
     SignalProxyMessageSerializer.serialize(it, message, negotiatedFeatures)
   }
 
-  suspend fun emit(sizePrefix: Boolean = true, f: (ChainedByteBuffer) -> Unit) {
+  suspend fun emit(sizePrefix: Boolean = true, f: (ChainedByteBuffer) -> Unit) = coroutineScope {
     val sendBuffer = sendBuffer.get()
     val sizeBuffer = sizeBuffer.get()
 
@@ -113,6 +115,10 @@ class MessageChannel(
     channel.write(sendBuffer)
     channel.flush()
     sendBuffer.clear()
+  }
+
+  override fun close() {
+    channel.close()
   }
 
   companion object {

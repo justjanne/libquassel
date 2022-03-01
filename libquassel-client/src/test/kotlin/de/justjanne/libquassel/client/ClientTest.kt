@@ -19,7 +19,6 @@ import de.justjanne.libquassel.protocol.exceptions.HandshakeException
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.CoroutineChannel
 import de.justjanne.libquassel.protocol.models.ids.BufferId
-import de.justjanne.libquassel.protocol.models.ids.MsgId
 import de.justjanne.libquassel.protocol.session.CoreState
 import de.justjanne.testcontainersci.api.providedContainer
 import de.justjanne.testcontainersci.extension.CiContainers
@@ -29,8 +28,8 @@ import kotlinx.coroutines.withTimeout
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.slf4j.LoggerFactory
 import java.net.InetSocketAddress
-import java.time.Duration
 import javax.net.ssl.SSLContext
 import kotlin.test.assertEquals
 
@@ -40,6 +39,8 @@ class ClientTest {
   private val quassel = providedContainer("QUASSEL_CONTAINER") {
     QuasselCoreContainer()
   }
+
+  private val logger = LoggerFactory.getLogger(ClientTest::class.java)
 
   private val username = "AzureDiamond"
   private val password = "hunter2"
@@ -96,19 +97,23 @@ class ClientTest {
     }
     session.handshakeHandler.login(username, password)
     session.baseInitHandler.waitForInitDone()
-    withTimeout(Duration.ofSeconds(5).toMillis()) {
+    logger.trace("Init Done")
+    withTimeout(5_000L) {
       assertEquals(
         emptyList(),
         session.backlogManager.backlog(bufferId = BufferId(1), limit = 5)
       )
+      logger.trace("Backlog Test #1 Done")
       assertEquals(
         emptyList(),
         session.backlogManager.backlogAll(limit = 5)
       )
+      logger.trace("Backlog Test #2 Done")
       assertEquals(
         emptyList(),
         session.backlogManager.backlogForward(bufferId = BufferId(1), limit = 5)
       )
+      logger.trace("Backlog Test #3 Done")
     }
     channel.close()
   }

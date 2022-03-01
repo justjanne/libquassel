@@ -37,10 +37,10 @@ class ClientBacklogManager(
     last: MsgId = MsgId(-1),
     limit: Int = -1,
     additional: Int = 0
-  ): QVariantList {
-    requestBacklog(bufferId, first, last, limit, additional)
-    return bufferQueue.wait(BacklogData.Buffer(bufferId, first, last, limit, additional))
-  }
+  ): QVariantList =
+    bufferQueue.wait(BacklogData.Buffer(bufferId, first, last, limit, additional)) {
+      requestBacklog(bufferId, first, last, limit, additional)
+    }
 
   suspend fun backlogFiltered(
     bufferId: BufferId,
@@ -50,10 +50,10 @@ class ClientBacklogManager(
     additional: Int = 0,
     type: MessageTypes = MessageType.all,
     flags: MessageFlags = MessageFlag.all
-  ): QVariantList {
-    requestBacklogFiltered(bufferId, first, last, limit, additional, type.toBits().toInt(), flags.toBits().toInt())
-    return bufferFilteredQueue.wait(BacklogData.BufferFiltered(bufferId, first, last, limit, additional, type, flags))
-  }
+  ): QVariantList =
+    bufferFilteredQueue.wait(BacklogData.BufferFiltered(bufferId, first, last, limit, additional, type, flags)) {
+      requestBacklogFiltered(bufferId, first, last, limit, additional, type.toBits().toInt(), flags.toBits().toInt())
+    }
 
   suspend fun backlogForward(
     bufferId: BufferId,
@@ -62,20 +62,20 @@ class ClientBacklogManager(
     limit: Int = -1,
     type: MessageTypes = MessageType.all,
     flags: MessageFlags = MessageFlag.all
-  ): QVariantList {
-    requestBacklogForward(bufferId, first, last, limit, type.toBits().toInt(), flags.toBits().toInt())
-    return bufferForwardQueue.wait(BacklogData.BufferForward(bufferId, first, last, limit, type, flags))
-  }
+  ): QVariantList =
+    bufferForwardQueue.wait(BacklogData.BufferForward(bufferId, first, last, limit, type, flags)) {
+      requestBacklogForward(bufferId, first, last, limit, type.toBits().toInt(), flags.toBits().toInt())
+    }
 
   suspend fun backlogAll(
     first: MsgId = MsgId(-1),
     last: MsgId = MsgId(-1),
     limit: Int = -1,
     additional: Int = 0
-  ): QVariantList {
-    requestBacklogAll(first, last, limit, additional)
-    return allQueue.wait(BacklogData.All(first, last, limit, additional))
-  }
+  ): QVariantList =
+    allQueue.wait(BacklogData.All(first, last, limit, additional)) {
+      requestBacklogAll(first, last, limit, additional)
+    }
 
   suspend fun backlogAllFiltered(
     first: MsgId = MsgId(-1),
@@ -84,10 +84,10 @@ class ClientBacklogManager(
     additional: Int = 0,
     type: MessageTypes = MessageType.all,
     flags: MessageFlags = MessageFlag.all
-  ): QVariantList {
-    requestBacklogAllFiltered(first, last, limit, additional, type.toBits().toInt(), flags.toBits().toInt())
-    return allFilteredQueue.wait(BacklogData.AllFiltered(first, last, limit, additional, type, flags))
-  }
+  ): QVariantList =
+    allFilteredQueue.wait(BacklogData.AllFiltered(first, last, limit, additional, type, flags)) {
+      requestBacklogAllFiltered(first, last, limit, additional, type.toBits().toInt(), flags.toBits().toInt())
+    }
 
   override fun receiveBacklog(
     bufferId: BufferId,

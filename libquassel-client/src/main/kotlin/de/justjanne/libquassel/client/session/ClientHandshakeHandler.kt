@@ -16,7 +16,6 @@ import de.justjanne.libquassel.protocol.models.HandshakeMessage
 import de.justjanne.libquassel.protocol.serializers.HandshakeMessageSerializer
 import de.justjanne.libquassel.protocol.session.CoreState
 import de.justjanne.libquassel.protocol.session.HandshakeHandler
-import de.justjanne.libquassel.protocol.session.MessageChannelReadThread
 import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.util.log.trace
 import de.justjanne.libquassel.protocol.variant.QVariantMap
@@ -56,18 +55,13 @@ class ClientHandshakeHandler(
     buildDate: String,
     featureSet: FeatureSet
   ): CoreState {
-    emit(
-      HandshakeMessage.ClientInit(
-        clientVersion,
-        buildDate,
-        featureSet
-      )
-    )
     when (
       val response = messageQueue.wait(
         HandshakeMessage.ClientInitAck::class.java,
         HandshakeMessage.ClientInitReject::class.java
-      )
+      ) {
+        emit(HandshakeMessage.ClientInit(clientVersion, buildDate, featureSet))
+      }
     ) {
       is HandshakeMessage.ClientInitReject ->
         throw HandshakeException.InitException(response.errorString ?: "Unknown Error")
@@ -89,17 +83,13 @@ class ClientHandshakeHandler(
   }
 
   override suspend fun login(username: String, password: String) {
-    emit(
-      HandshakeMessage.ClientLogin(
-        username,
-        password
-      )
-    )
     when (
       val response = messageQueue.wait(
         HandshakeMessage.ClientLoginAck::class.java,
         HandshakeMessage.ClientLoginReject::class.java
-      )
+      ) {
+        emit(HandshakeMessage.ClientLogin(username, password))
+      }
     ) {
       is HandshakeMessage.ClientLoginReject ->
         throw HandshakeException.LoginException(response.errorString ?: "Unknown Error")
@@ -117,21 +107,17 @@ class ClientHandshakeHandler(
     authenticator: String,
     authenticatorConfiguration: QVariantMap
   ) {
-    emit(
-      HandshakeMessage.CoreSetupData(
-        adminUsername,
-        adminPassword,
-        backend,
-        backendConfiguration,
-        authenticator,
-        authenticatorConfiguration
-      )
-    )
     when (
       val response = messageQueue.wait(
         HandshakeMessage.CoreSetupAck::class.java,
         HandshakeMessage.CoreSetupReject::class.java
-      )
+      ) {
+        emit(
+          HandshakeMessage.CoreSetupData(
+            adminUsername, adminPassword, backend, backendConfiguration, authenticator, authenticatorConfiguration
+          )
+        )
+      }
     ) {
       is HandshakeMessage.CoreSetupReject ->
         throw HandshakeException.SetupException(response.errorString ?: "Unknown Error")
@@ -142,6 +128,6 @@ class ClientHandshakeHandler(
   }
 
   companion object {
-    private val logger = LoggerFactory.getLogger(MessageChannelReadThread::class.java)
+    private val logger = LoggerFactory.getLogger(ClientHandshakeHandler::class.java)
   }
 }

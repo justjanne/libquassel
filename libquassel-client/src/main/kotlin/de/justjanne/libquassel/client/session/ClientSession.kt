@@ -20,7 +20,7 @@ import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.serializers.qt.StringSerializerUtf8
 import de.justjanne.libquassel.protocol.session.CommonSyncProxy
 import de.justjanne.libquassel.protocol.session.MessageChannel
-import de.justjanne.libquassel.protocol.session.MessageChannelReadThread
+import de.justjanne.libquassel.protocol.session.MessageChannelReader
 import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.HeartBeatHandler
 import de.justjanne.libquassel.protocol.syncables.ObjectRepository
@@ -78,7 +78,7 @@ class ClientSession(
     messageChannel.register(magicHandler)
     messageChannel.register(handshakeHandler)
     messageChannel.register(proxyMessageHandler)
-    MessageChannelReadThread(messageChannel).start()
+    MessageChannelReader(messageChannel).start()
   }
 
   override fun init(

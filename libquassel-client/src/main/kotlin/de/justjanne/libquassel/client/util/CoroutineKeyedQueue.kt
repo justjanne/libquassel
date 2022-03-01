@@ -9,6 +9,9 @@
 
 package de.justjanne.libquassel.client.util
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
@@ -16,9 +19,12 @@ import kotlin.coroutines.suspendCoroutine
 
 class CoroutineKeyedQueue<Key, Value> {
   private val waiting = mutableMapOf<Key, MutableList<Continuation<Value>>>()
-  suspend fun wait(vararg keys: Key): Value = suspendCoroutine {
-    for (key in keys) {
-      waiting.getOrPut(key, ::mutableListOf).add(it)
+  suspend fun wait(vararg keys: Key, beforeWait: (suspend CoroutineScope.() -> Unit)? = null): Value = coroutineScope {
+    suspendCoroutine { continuation ->
+      for (key in keys) {
+        waiting.getOrPut(key, ::mutableListOf).add(continuation)
+      }
+      beforeWait?.let { launch(block = it) }
     }
   }
 

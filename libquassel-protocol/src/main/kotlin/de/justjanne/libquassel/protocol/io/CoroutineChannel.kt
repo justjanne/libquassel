@@ -16,13 +16,14 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runInterruptible
+import java.io.Closeable
 import java.net.InetSocketAddress
 import java.net.Socket
 import java.nio.ByteBuffer
 import java.util.concurrent.Executors
 import javax.net.ssl.SSLContext
 
-class CoroutineChannel : StateHolder<CoroutineChannelState> {
+class CoroutineChannel : StateHolder<CoroutineChannelState>, Closeable {
   private lateinit var channel: StreamChannel
   private val writeContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
   private val readContext = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
@@ -75,7 +76,7 @@ class CoroutineChannel : StateHolder<CoroutineChannelState> {
     channel.flush()
   }
 
-  fun close() {
+  override fun close() {
     channel.close()
     state.update {
       copy(connected = false)
