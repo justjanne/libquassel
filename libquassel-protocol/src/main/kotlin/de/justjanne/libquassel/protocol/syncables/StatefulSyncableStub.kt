@@ -18,6 +18,10 @@ interface StatefulSyncableStub : SyncableStub {
   fun fromVariantMap(properties: QVariantMap)
   fun toVariantMap(): QVariantMap
 
+  /**
+   * Replaces all properties of the object with the content of the
+   * "properties" parameter. This parameter is in network representation.
+   */
   fun update(properties: QVariantMap) {
     fromVariantMap(properties)
     sync(
@@ -27,6 +31,10 @@ interface StatefulSyncableStub : SyncableStub {
     )
   }
 
+  /**
+   * Replaces all properties of the object with the content of the
+   * "properties" parameter. This parameter is in network representation.
+   */
   fun requestUpdate(properties: QVariantMap = toVariantMap()) {
     sync(
       target = ProtocolSide.CORE,

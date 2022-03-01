@@ -22,6 +22,15 @@ import de.justjanne.libquassel.protocol.variant.qVariant
 
 @SyncedObject("BacklogManager")
 interface BacklogManagerStub : SyncableStub {
+  /**
+   * Loads backlog for [bufferId], where the message id is >= [first] and < [last].
+   * If [first] or [last] is unset, the list will be unbounded in that direction.
+   *
+   * If a [limit] is set, the list will be truncated to the newest N messages.
+   *
+   * If both [first] and [last] are set, and the list of messages is not truncated by [limit],
+   * [additional] messages will be loaded before [last].
+   */
   @SyncedCall(target = ProtocolSide.CORE)
   fun requestBacklog(
     bufferId: BufferId,
@@ -41,6 +50,17 @@ interface BacklogManagerStub : SyncableStub {
     )
   }
 
+  /**
+   * Loads backlog for [bufferId], where the message id is >= [first] and < [last].
+   * If [first] or [last] is unset, the list will be unbounded in that direction.
+   *
+   * If a [limit] is set, the list will be truncated to the newest N messages.
+   *
+   * If both [first] and [last] are set, and the list of messages is not truncated by [limit],
+   * [additional] messages will be loaded before [last].
+   *
+   * Only messages matching [type] and [flags] will be returned and counted.
+   */
   @SyncedCall(target = ProtocolSide.CORE)
   fun requestBacklogFiltered(
     bufferId: BufferId,
@@ -64,6 +84,14 @@ interface BacklogManagerStub : SyncableStub {
     )
   }
 
+  /**
+   * Loads backlog for [bufferId], where the message id is >= [first] and < [last].
+   * If [first] or [last] is unset, the list will be unbounded in that direction.
+   *
+   * If a [limit] is set, the list will be truncated to the oldest N messages.
+   *
+   * Only messages matching [type] and [flags] will be returned and counted.
+   */
   @SyncedCall(target = ProtocolSide.CORE)
   fun requestBacklogForward(
     bufferId: BufferId,
@@ -85,6 +113,15 @@ interface BacklogManagerStub : SyncableStub {
     )
   }
 
+  /**
+   * Loads backlog for all buffers, where the message id is >= [first] and < [last].
+   * If [first] or [last] is unset, the list will be unbounded in that direction.
+   *
+   * If a [limit] is set, the list will be truncated to the newest N messages.
+   *
+   * If both [first] and [last] are set, and the list of messages is not truncated by [limit],
+   * [additional] messages will be loaded before [last].
+   */
   @SyncedCall(target = ProtocolSide.CORE)
   fun requestBacklogAll(
     first: MsgId = MsgId(-1),
@@ -102,6 +139,17 @@ interface BacklogManagerStub : SyncableStub {
     )
   }
 
+  /**
+   * Loads backlog for all buffers, where the message id is >= [first] and < [last].
+   * If [first] or [last] is unset, the list will be unbounded in that direction.
+   *
+   * If a [limit] is set, the list will be truncated to the newest N messages.
+   *
+   * If both [first] and [last] are set, and the list of messages is not truncated by [limit],
+   * [additional] messages will be loaded before [last].
+   *
+   * Only messages matching [type] and [flags] will be returned and counted.
+   */
   @SyncedCall(target = ProtocolSide.CORE)
   fun requestBacklogAllFiltered(
     first: MsgId = MsgId(-1),
@@ -123,6 +171,10 @@ interface BacklogManagerStub : SyncableStub {
     )
   }
 
+  /**
+   * Response to the corresponding [requestBacklog] call.
+   * [messages] contains the messages as `QVariant<Message>`
+   */
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun receiveBacklog(
     bufferId: BufferId,
@@ -144,6 +196,10 @@ interface BacklogManagerStub : SyncableStub {
     )
   }
 
+  /**
+   * Response to the corresponding [requestBacklogFiltered] call.
+   * [messages] contains the messages as `QVariant<Message>`
+   */
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun receiveBacklogFiltered(
     bufferId: BufferId,
@@ -169,6 +225,10 @@ interface BacklogManagerStub : SyncableStub {
     )
   }
 
+  /**
+   * Response to the corresponding [requestBacklogForward] call.
+   * [messages] contains the messages as `QVariant<Message>`
+   */
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun receiveBacklogForward(
     bufferId: BufferId,
@@ -192,6 +252,10 @@ interface BacklogManagerStub : SyncableStub {
     )
   }
 
+  /**
+   * Response to the corresponding [requestBacklogAll] call.
+   * [messages] contains the messages as `QVariant<Message>`
+   */
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun receiveBacklogAll(
     first: MsgId = MsgId(-1),
@@ -211,6 +275,10 @@ interface BacklogManagerStub : SyncableStub {
     )
   }
 
+  /**
+   * Response to the corresponding [requestBacklogAllFiltered] call.
+   * [messages] contains the messages as `QVariant<Message>`
+   */
   @SyncedCall(target = ProtocolSide.CLIENT)
   fun receiveBacklogAllFiltered(
     first: MsgId = MsgId(-1),

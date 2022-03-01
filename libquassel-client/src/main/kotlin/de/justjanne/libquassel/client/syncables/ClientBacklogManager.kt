@@ -9,6 +9,7 @@
 
 package de.justjanne.libquassel.client.syncables
 
+import de.justjanne.bitflags.none
 import de.justjanne.bitflags.of
 import de.justjanne.bitflags.toBits
 import de.justjanne.libquassel.client.util.CoroutineKeyedQueue
@@ -48,8 +49,8 @@ class ClientBacklogManager(
     last: MsgId = MsgId(-1),
     limit: Int = -1,
     additional: Int = 0,
-    type: MessageTypes = MessageType.all,
-    flags: MessageFlags = MessageFlag.all
+    type: MessageTypes = MessageType.none(),
+    flags: MessageFlags = MessageFlag.none()
   ): QVariantList =
     bufferFilteredQueue.wait(BacklogData.BufferFiltered(bufferId, first, last, limit, additional, type, flags)) {
       requestBacklogFiltered(bufferId, first, last, limit, additional, type.toBits().toInt(), flags.toBits().toInt())
@@ -60,8 +61,8 @@ class ClientBacklogManager(
     first: MsgId = MsgId(-1),
     last: MsgId = MsgId(-1),
     limit: Int = -1,
-    type: MessageTypes = MessageType.all,
-    flags: MessageFlags = MessageFlag.all
+    type: MessageTypes = MessageType.none(),
+    flags: MessageFlags = MessageFlag.none()
   ): QVariantList =
     bufferForwardQueue.wait(BacklogData.BufferForward(bufferId, first, last, limit, type, flags)) {
       requestBacklogForward(bufferId, first, last, limit, type.toBits().toInt(), flags.toBits().toInt())
@@ -82,8 +83,8 @@ class ClientBacklogManager(
     last: MsgId = MsgId(-1),
     limit: Int = -1,
     additional: Int = 0,
-    type: MessageTypes = MessageType.all,
-    flags: MessageFlags = MessageFlag.all
+    type: MessageTypes = MessageType.none(),
+    flags: MessageFlags = MessageFlag.none()
   ): QVariantList =
     allFilteredQueue.wait(BacklogData.AllFiltered(first, last, limit, additional, type, flags)) {
       requestBacklogAllFiltered(first, last, limit, additional, type.toBits().toInt(), flags.toBits().toInt())
