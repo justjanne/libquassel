@@ -135,6 +135,29 @@ class ClientBacklogManager(
     super.receiveBacklogFiltered(bufferId, first, last, limit, additional, type, flags, messages)
   }
 
+  override fun receiveBacklogForward(
+    bufferId: BufferId,
+    first: MsgId,
+    last: MsgId,
+    limit: Int,
+    type: Int,
+    flags: Int,
+    messages: QVariantList
+  ) {
+    bufferForwardQueue.resume(
+      BacklogData.BufferForward(
+        bufferId,
+        first,
+        last,
+        limit,
+        MessageType.of(type.toUInt()),
+        MessageFlag.of(flags.toUInt())
+      ),
+      messages
+    )
+    super.receiveBacklogForward(bufferId, first, last, limit, type, flags, messages)
+  }
+
   override fun receiveBacklogAll(first: MsgId, last: MsgId, limit: Int, additional: Int, messages: QVariantList) {
     allQueue.resume(
       BacklogData.All(

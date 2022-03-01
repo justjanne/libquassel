@@ -18,16 +18,21 @@ import de.justjanne.libquassel.protocol.connection.ProtocolVersion
 import de.justjanne.libquassel.protocol.exceptions.HandshakeException
 import de.justjanne.libquassel.protocol.features.FeatureSet
 import de.justjanne.libquassel.protocol.io.CoroutineChannel
+import de.justjanne.libquassel.protocol.models.ids.BufferId
+import de.justjanne.libquassel.protocol.models.ids.MsgId
 import de.justjanne.libquassel.protocol.session.CoreState
 import de.justjanne.testcontainersci.api.providedContainer
 import de.justjanne.testcontainersci.extension.CiContainers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.net.InetSocketAddress
+import java.time.Duration
 import javax.net.ssl.SSLContext
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 @CiContainers
@@ -36,8 +41,8 @@ class ClientTest {
     QuasselCoreContainer()
   }
 
-  private val username = "kuschku"
-  private val password = "goalielecturetrawl"
+  private val username = "AzureDiamond"
+  private val password = "hunter2"
 
   @Test
   fun testConnect(): Unit = runBlocking {
@@ -91,6 +96,20 @@ class ClientTest {
     }
     session.handshakeHandler.login(username, password)
     session.baseInitHandler.waitForInitDone()
+    withTimeout(Duration.ofSeconds(5).toMillis()) {
+      assertEquals(
+        emptyList(),
+        session.backlogManager.backlog(bufferId = BufferId(1), limit = 5)
+      )
+      assertEquals(
+        emptyList(),
+        session.backlogManager.backlogAll(limit = 5)
+      )
+      assertEquals(
+        emptyList(),
+        session.backlogManager.backlogForward(bufferId = BufferId(1), limit = 5)
+      )
+    }
     channel.close()
   }
 }

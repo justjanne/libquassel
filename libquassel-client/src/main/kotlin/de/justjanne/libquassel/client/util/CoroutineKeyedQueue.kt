@@ -9,6 +9,7 @@
 
 package de.justjanne.libquassel.client.util
 
+import org.slf4j.LoggerFactory
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -22,12 +23,20 @@ class CoroutineKeyedQueue<Key, Value> {
   }
 
   fun resume(key: Key, value: Value) {
-    val continuations = waiting[key].orEmpty().distinct()
+    val queue = waiting[key]
+    if (queue == null) {
+      logger.warn("Trying to resume message with unknown key: $key")
+    }
+    val continuations = queue.orEmpty().distinct()
     for (continuation in continuations) {
       continuation.resume(value)
     }
     for (it in waiting.keys) {
       waiting[it]?.removeAll(continuations)
     }
+  }
+
+  companion object {
+    private val logger = LoggerFactory.getLogger(CoroutineKeyedQueue::class.java)
   }
 }
