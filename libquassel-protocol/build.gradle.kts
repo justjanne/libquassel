@@ -15,6 +15,7 @@ plugins {
 dependencies {
   api(project(":libquassel-annotations"))
   ksp(project(":libquassel-generator"))
+  implementation(project(":libquassel-irc"))
   api(libs.threetenbp)
   api(libs.kotlin.bitflags)
   implementation(libs.bouncycastle)

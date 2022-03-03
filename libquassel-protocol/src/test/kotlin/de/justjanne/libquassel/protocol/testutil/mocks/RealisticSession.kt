@@ -10,6 +10,7 @@
 package de.justjanne.libquassel.protocol.testutil.mocks
 
 import de.justjanne.bitflags.of
+import de.justjanne.libquassel.irc.IrcCaseMapper
 import de.justjanne.libquassel.protocol.models.BufferInfo
 import de.justjanne.libquassel.protocol.models.flags.BufferType
 import de.justjanne.libquassel.protocol.models.ids.BufferId
@@ -27,7 +28,6 @@ import de.justjanne.libquassel.protocol.syncables.state.BufferSyncerState
 import de.justjanne.libquassel.protocol.syncables.state.IrcChannelState
 import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
-import de.justjanne.libquassel.protocol.util.irc.IrcCaseMapper
 
 class RealisticSession : EmptySession() {
   private val networks = setOf(

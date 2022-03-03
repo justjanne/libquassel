@@ -9,6 +9,7 @@
 
 package de.justjanne.libquassel.protocol.syncables.common
 
+import de.justjanne.libquassel.irc.HostmaskHelper
 import de.justjanne.libquassel.protocol.models.QStringList
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.network.ConnectionState
@@ -24,7 +25,6 @@ import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
 import de.justjanne.libquassel.protocol.syncables.state.NetworkState
 import de.justjanne.libquassel.protocol.syncables.stubs.NetworkStub
 import de.justjanne.libquassel.protocol.util.collections.transpose
-import de.justjanne.libquassel.protocol.util.irc.HostmaskHelper
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantList
 import de.justjanne.libquassel.protocol.variant.QVariantMap

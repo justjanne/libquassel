@@ -7,7 +7,7 @@
  * obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-package de.justjanne.libquassel.protocol.util.irc
+package de.justjanne.libquassel.irc
 
 object IrcISupport {
   /**

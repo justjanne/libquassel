@@ -9,12 +9,12 @@
 
 package de.justjanne.libquassel.protocol.syncables.common
 
+import de.justjanne.libquassel.irc.HostmaskHelper
 import de.justjanne.libquassel.protocol.models.types.QtType
 import de.justjanne.libquassel.protocol.session.Session
 import de.justjanne.libquassel.protocol.syncables.StatefulSyncableObject
 import de.justjanne.libquassel.protocol.syncables.state.IrcUserState
 import de.justjanne.libquassel.protocol.syncables.stubs.IrcUserStub
-import de.justjanne.libquassel.protocol.util.irc.HostmaskHelper
 import de.justjanne.libquassel.protocol.util.update
 import de.justjanne.libquassel.protocol.variant.QVariantMap
 import de.justjanne.libquassel.protocol.variant.indexed
