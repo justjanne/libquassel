@@ -9,6 +9,9 @@
 
 package de.justjanne.libquassel.protocol.syncables.state
 
+import de.justjanne.libquassel.irc.IrcCapability
+import de.justjanne.libquassel.irc.IrcCaseMapper
+import de.justjanne.libquassel.irc.IrcISupport
 import de.justjanne.libquassel.protocol.models.ids.IdentityId
 import de.justjanne.libquassel.protocol.models.ids.NetworkId
 import de.justjanne.libquassel.protocol.models.network.ChannelModeType
@@ -16,9 +19,6 @@ import de.justjanne.libquassel.protocol.models.network.ConnectionState
 import de.justjanne.libquassel.protocol.models.network.NetworkServer
 import de.justjanne.libquassel.protocol.syncables.common.IrcChannel
 import de.justjanne.libquassel.protocol.syncables.common.IrcUser
-import de.justjanne.libquassel.protocol.util.irc.IrcCapability
-import de.justjanne.libquassel.protocol.util.irc.IrcCaseMapper
-import de.justjanne.libquassel.protocol.util.irc.IrcISupport
 import java.util.Locale
 
 data class NetworkState(
