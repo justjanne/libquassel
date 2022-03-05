@@ -6,7 +6,6 @@ plugins {
   id("justjanne.ktlint")
   id("com.google.devtools.ksp")
   kotlin("jvm")
-  kotlin("kapt")
 }
 
 repositories {
