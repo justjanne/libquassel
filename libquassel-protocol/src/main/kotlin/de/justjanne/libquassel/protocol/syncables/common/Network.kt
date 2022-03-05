@@ -502,7 +502,7 @@ open class Network(
           ircUsers.values.forEach(it.proxy::stopSynchronize)
         }
         copy(
-          connected = isConnected,
+          connected = false,
           myNick = "",
           currentServer = "",
           ircChannels = emptyMap(),
