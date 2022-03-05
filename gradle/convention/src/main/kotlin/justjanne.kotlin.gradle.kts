@@ -29,8 +29,7 @@ dependencies {
 tasks.withType<KotlinCompile> {
   kotlinOptions {
     freeCompilerArgs = listOf(
-      "-Xinline-classes",
-      "-Xopt-in=kotlin.ExperimentalUnsignedTypes"
+      "-opt-in=kotlin.ExperimentalUnsignedTypes"
     )
     jvmTarget = "1.8"
   }
