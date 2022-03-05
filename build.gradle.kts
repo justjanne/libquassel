@@ -8,6 +8,7 @@
  */
 
 plugins {
+  id("justjanne.version")
   id("justjanne.dokka")
   id("justjanne.publish-maven-central")
   idea
@@ -15,4 +16,3 @@ plugins {
 }
 
 group = "de.justjanne.libquassel"
-version = "0.10.1"
