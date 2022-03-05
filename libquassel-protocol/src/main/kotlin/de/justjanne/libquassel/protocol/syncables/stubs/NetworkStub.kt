@@ -35,7 +35,7 @@ interface NetworkStub : StatefulSyncableStub {
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setCurrentServer(currentServer: String) {
+  fun setCurrentServer(currentServer: String?) {
     sync(
       target = ProtocolSide.CLIENT,
       "setCurrentServer",
@@ -44,7 +44,7 @@ interface NetworkStub : StatefulSyncableStub {
   }
 
   @SyncedCall(target = ProtocolSide.CLIENT)
-  fun setMyNick(myNick: String) {
+  fun setMyNick(myNick: String?) {
     sync(
       target = ProtocolSide.CLIENT,
       "setMyNick",
@@ -361,7 +361,7 @@ interface NetworkStub : StatefulSyncableStub {
   @SyncedCall(target = ProtocolSide.CORE)
   fun requestConnect() {
     sync(
-      target = ProtocolSide.CLIENT,
+      target = ProtocolSide.CORE,
       "requestConnect",
     )
   }
@@ -369,7 +369,7 @@ interface NetworkStub : StatefulSyncableStub {
   @SyncedCall(target = ProtocolSide.CORE)
   fun requestDisconnect() {
     sync(
-      target = ProtocolSide.CLIENT,
+      target = ProtocolSide.CORE,
       "requestDisconnect",
     )
   }
@@ -377,7 +377,7 @@ interface NetworkStub : StatefulSyncableStub {
   @SyncedCall(target = ProtocolSide.CORE)
   fun requestSetNetworkInfo(info: NetworkInfo) {
     sync(
-      target = ProtocolSide.CLIENT,
+      target = ProtocolSide.CORE,
       "requestSetNetworkInfo",
       qVariant(info, QuasselType.NetworkInfo),
     )

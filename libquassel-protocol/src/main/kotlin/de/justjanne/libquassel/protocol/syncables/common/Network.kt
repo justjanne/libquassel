@@ -464,7 +464,7 @@ open class Network(
     super.setIdentity(identityId)
   }
 
-  override fun setMyNick(myNick: String) {
+  override fun setMyNick(myNick: String?) {
     state.update {
       copy(myNick = myNick)
     }
@@ -485,7 +485,7 @@ open class Network(
     super.setNetworkName(networkName)
   }
 
-  override fun setCurrentServer(currentServer: String) {
+  override fun setCurrentServer(currentServer: String?) {
     state.update {
       copy(currentServer = currentServer)
     }
