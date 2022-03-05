@@ -27,7 +27,7 @@ data class NetworkState(
   val myNick: String? = "",
   val latency: Int = 0,
   val networkName: String = "<not initialized>",
-  val currentServer: String? = null,
+  val currentServer: String? = "",
   val connected: Boolean = false,
   val connectionState: ConnectionState = ConnectionState.Disconnected,
   val ircUsers: Map<String, IrcUser> = emptyMap(),
