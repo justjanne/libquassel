@@ -39,7 +39,7 @@ abstract class StatefulSyncableObject<T>(
     return result
   }
 
-  override fun state(): T = state.value
-  override fun flow(): Flow<T> = state
+  final override fun state(): T = state.value
+  final override fun flow(): Flow<T> = state
   protected val state = MutableStateFlow(state)
 }

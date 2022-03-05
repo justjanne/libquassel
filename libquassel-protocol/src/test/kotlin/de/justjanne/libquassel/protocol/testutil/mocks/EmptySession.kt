@@ -55,7 +55,7 @@ open class EmptySession : Session {
   override fun removeIdentity(id: IdentityId) = Unit
   override fun identities() = emptySet<Identity>()
 
-  override fun certManager(id: IdentityId) = null
+  override fun certManager(id: IdentityId): CertManager? = null
   override fun certManagers() = emptySet<CertManager>()
 
   override fun rename(className: String, oldName: String, newName: String) = Unit
